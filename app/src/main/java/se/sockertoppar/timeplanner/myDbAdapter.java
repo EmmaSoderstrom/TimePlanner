@@ -9,7 +9,11 @@ import android.util.Log;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+
+import static android.R.id.list;
 
 /**
  * Created by User on 2017-08-15.
@@ -27,21 +31,32 @@ public class myDbAdapter {
         myhelper = new myDbHelper(context);
     }
 
-    public void insertData(MainActivity mainActivity, String name, String date, String time, long dateTimeMillisek) {
+    /**
+     * Lägger till ett nytt objekt i databasen
+     * @param mainActivity
+     * @param name
+     * @param date
+     * @param time
+     * @param dateTimeMillisek
+     */
+    public void insertData(MainActivity mainActivity, String name, String date, String time, String dateTimeMillisek) {
         Log.d(TAG, "insertData: " + name + ", " + date + ", " + time + ", " + dateTimeMillisek);
         SQLiteDatabase dbb = myhelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        
-        String dateTimeMillisekString = String.valueOf(dateTimeMillisek);
         contentValues.put(myDbHelper.NAME, name);
         contentValues.put(myDbHelper.DATE, date);
         contentValues.put(myDbHelper.TIME, time);
-        contentValues.put(myDbHelper.DATETIMEMILLISEK, dateTimeMillisekString);
+        contentValues.put(myDbHelper.DATETIMEMILLISEK, dateTimeMillisek);
 
         dbb.insert(myDbHelper.TABLE_NAME, null , contentValues);
     }
 
+    /**
+     * hämtar all data från databasen
+     * @param mainActivity
+     * @return
+     */
     public String getData(MainActivity mainActivity) {
         SQLiteDatabase db = myhelper.getWritableDatabase();
 
@@ -56,34 +71,17 @@ public class myDbAdapter {
             String time = cursor.getString(cursor.getColumnIndex(myDbHelper.TIME));
             String dateTimeMillisek = cursor.getString(cursor.getColumnIndex(myDbHelper.DATETIMEMILLISEK));
             buffer.append(cid + ", " + name + ", " + date + ", " + time + ", "  + dateTimeMillisek + " \n");
-            Log.d(TAG, "getData: " + cid + ", " + name + ", " + date + ", " + time + ", " + dateTimeMillisek);
+            //Log.d(TAG, "getData: " + cid + ", " + name + ", " + date + ", " + time + ", " + dateTimeMillisek);
         }
         return buffer.toString();
     }
 
-//    public String getDataToButtons2(MainActivity mainActivity) {
-//        SQLiteDatabase db = myhelper.getWritableDatabase();
-//
-//        String[] columns = {myDbHelper.PLANNERID, myDbHelper.NAME, myDbHelper.DATE, myDbHelper.TIME};
-//        Cursor cursor = db.query(myDbHelper.TABLE_NAME,columns,null,null,null,null,null);
-//        StringBuffer buffer = new StringBuffer();
-//
-//        mainActivity.clearButtonString();
-//
-//        while (cursor.moveToNext()) {
-//            int cid = cursor.getInt(cursor.getColumnIndex(myDbHelper.PLANNERID));
-//            String name = cursor.getString(cursor.getColumnIndex(myDbHelper.NAME));
-//            String date = cursor.getString(cursor.getColumnIndex(myDbHelper.DATE));
-//            String time = cursor.getString(cursor.getColumnIndex(myDbHelper.TIME));
-//            buffer.append(cid + ", " + name + ", " + date + ", " + time + " \n");
-//            Log.d(TAG, "getDataToButtons2: " + cid + ", " + name + ", " + date + ", " + time);
-//            mainActivity.addButtonString(name + ", " + date + ", " + time);
-//        }
-//        return buffer.toString();
-//    }
 
-
-
+    /**
+     * skapar en ny arraylist med den information som behövs till listan på startsidan
+     * @param mainActivity
+     * @return
+     */
     public ArrayList<PlannerListObjekt> getDataToButton(MainActivity mainActivity) {
         SQLiteDatabase db = myhelper.getWritableDatabase();
 
@@ -101,14 +99,23 @@ public class myDbAdapter {
             String dateTimeMillisek = cursor.getString(cursor.getColumnIndex(myDbHelper.DATETIMEMILLISEK));
             //buffer.append(cid + ", " + name + ", " + date + ", " + time + " \n");
             //Log.d(TAG, "getDataToButton: " + cid + ", " + name + ", " + date + ", " + time);
-            plannerListObjekt = new PlannerListObjekt(cid, name, date, time);
+
+            plannerListObjekt = new PlannerListObjekt(cid, name, date, time, dateTimeMillisek);
+            plannerListObjektArrayList.add(plannerListObjekt);
 
             // TODO: 2017-08-22
-            //sortera i kronologisk ordning. gemföra tid.
+            //sortera i kronologisk ordning på tid baserat på slut tiden för objektet.
+            Collections.sort(plannerListObjektArrayList, new Comparator<PlannerListObjekt>() {
+                public int compare(PlannerListObjekt o1, PlannerListObjekt o2) {
+                    Double a = Double.valueOf(o1.getDateTimeMillisek());
+                    Double b = Double.valueOf(o2.getDateTimeMillisek());
 
-
-
-            plannerListObjektArrayList.add(plannerListObjekt);
+                    //return compare(a, b);
+                    //return (int )a.compareTo( (int)b);
+                    return Double.compare(a,b) ;
+                    //return o1.getDateTimeMillisek().compareTo o2.getDateTimeMillisek();
+                }
+            });
         }
         return plannerListObjektArrayList;
     }
@@ -141,7 +148,8 @@ public class myDbAdapter {
         private static final String DATETIMEMILLISEK = "DateTimeMillisek";    // Column 5
         private static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME
                 + " (" + PLANNERID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + NAME + " VARCHAR(255), " + DATE + " VARCHAR(255), " + TIME + " VARCHAR(255), " + DATETIMEMILLISEK + " VARCHAR(255));";
+                + NAME + " VARCHAR(255), " + DATE + " VARCHAR(255), " + TIME + " VARCHAR(255), "
+                + DATETIMEMILLISEK + " VARCHAR(255));";
         private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         private Context context;
 

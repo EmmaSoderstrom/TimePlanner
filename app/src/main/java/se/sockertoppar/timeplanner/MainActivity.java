@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         dialogAddPlanner.showCalendar();
     }
 
-    public void saveNewTimePlanner(String plannerName, String plannerDate, int plannerTimeH, int plannerTimeM, long plannerDateTimeMillisek){
+    public void saveNewTimePlanner(String plannerName, String plannerDate, int plannerTimeH, int plannerTimeM, String plannerDateTimeMillisek){
         Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate + ", " + plannerTimeH + ":" + plannerTimeM);
         helper.insertData(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM), plannerDateTimeMillisek);
         setUpButtonList();
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         Message.message(this,data);
     }
 
-    public void delete(int id) {
+    public void deleteObjektInDatabas(int id) {
         Log.d(TAG, "delete: " + id);
         helper.delete(id);
         setUpButtonList();
@@ -89,33 +89,6 @@ public class MainActivity extends AppCompatActivity {
     public void clearButtonArrayList(){
         arrayListButtonObjekt.clear();
     }
-
-//    public void setUpButtonList(){
-//        helper.getDataToButtons2(this);
-//        Log.d(TAG, "setUpButtonList: " + buttonStringArray);
-//
-//        if (adapter2 == null) {
-//            adapter2 = new ButtonListContiner2(this, buttonStringArray);
-//
-//            ListView listView = (ListView) findViewById(R.id.list_view_button);
-//            listView.setAdapter(adapter2);
-//
-//            // TODO: 2017-08-18
-//            //klick funkar inte
-//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    Log.d(TAG, "onItemClick: ");
-//
-//                }
-//            });
-
-//
-//        }else {
-//            Log.d("tag", "notifyDataSetChanged");
-//            adapter2.notifyDataSetChanged();
-//        }
-//    }
 
     public void setUpButtonList(){
 

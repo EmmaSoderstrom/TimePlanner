@@ -10,13 +10,15 @@ public class PlannerListObjekt {
     String name;
     String date;
     String time;
+    String dateTimeMillisek;
 
-    public PlannerListObjekt(int id, String name, String date, String time){
+    public PlannerListObjekt(int id, String name, String date, String time, String dateTimeMillisek){
 
         this.id = id;
         this.name = name;
         this.date = date;
         this.time = time;
+        this.dateTimeMillisek = dateTimeMillisek;
     }
 
     public int getId() {
@@ -35,6 +37,10 @@ public class PlannerListObjekt {
         return time;
     }
 
+    public String getDateTimeMillisek() {
+        return dateTimeMillisek;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -49,6 +55,10 @@ public class PlannerListObjekt {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public void setDateTimeMillisek(String dateTimeMillisek) {
+        this.dateTimeMillisek = dateTimeMillisek;
     }
 }
 

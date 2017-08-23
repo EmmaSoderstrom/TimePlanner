@@ -15,7 +15,6 @@ public class DialogConfirmDelete {
 
     String TAG = "tag";
     View diaView;
-    boolean confirmState;
 
 
     public DialogConfirmDelete(){
@@ -30,7 +29,6 @@ public class DialogConfirmDelete {
 
         String sPart1 = mainActivity.getResources().getString(R.string.dialog_confirm_delete_title_part1);
         String sPart2 = mainActivity.getResources().getString(R.string.dialog_confirm_delete_title_part2);
-
         builderConfirm.setTitle(sPart1 + " " + name + " " + sPart2);
         //builderConfirm.setCancelable(false);
 
@@ -41,13 +39,12 @@ public class DialogConfirmDelete {
         /**
          * Knappar på dialog
          */
-
         builderConfirm.setPositiveButton(
                 "Ja",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.d("tag", "Dialog ja");
-                        mainActivity.delete(objektId);
+                        mainActivity.deleteObjektInDatabas(objektId);
                         dialog.cancel();
                     }
                 });
@@ -63,5 +60,4 @@ public class DialogConfirmDelete {
         AlertDialog alertConfirm = builderConfirm.create();
         alertConfirm.show();
     }
-
 }

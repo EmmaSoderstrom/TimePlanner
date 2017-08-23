@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 
 import java.text.SimpleDateFormat;
+
+import android.content.res.Resources;
 import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -83,7 +85,7 @@ public class DialogAddPlanner {
             @Override
             public void onSelectedDayChange(CalendarView view, int sYear, int sMonth, int sDay) {
                 day = sDay;
-                month = sMonth;
+                month = sMonth + 1;
                 year = sYear;
 
                 String newDate = day + "/" + (month + 1) + "/" + year;
@@ -147,21 +149,30 @@ public class DialogAddPlanner {
                         int plannerTimeM = (int)timePicker.getCurrentMinute();
 
 
-                        String str_date= year + "-" + month + "-" + day + " "
+                        String strDate= year + "-" + month + "-" + day + " "
                                 + plannerTimeH + ":" + plannerTimeM + ":" + "00";               // tex. "2017-01-07 10:11:23"
+                        Log.d(TAG, "strDate: " + strDate);
+                        //String test = Locale.getDefault().getLanguage();
+                        //Locale l = new Locale ( "sv" , "SV" );
+                        //Log.d(TAG, "test: " + test);
+                        // TODO: 2017-08-23
+                        //språk
                         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
                         Date date = null;
                         long plannerDateTimeMillisek = 0;
                         try {
-                            date = formatter.parse(str_date);
-                            //Log.d(TAG, "onClick: Today is " + date.getTime());
+                            date = formatter.parse(strDate);
+                            Log.d(TAG, "date: " + date.getTime());
                             plannerDateTimeMillisek = date.getTime();
                         }catch(Exception  e){
                             Log.d(TAG, "error: " + e);
                         }
 
-                        mainActivity.saveNewTimePlanner(plannerName, plannerDate, plannerTimeH, plannerTimeM, plannerDateTimeMillisek);
+                        Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate+ ", " + plannerTimeH+ ", " + plannerTimeM+ ", " +
+                                String.valueOf(plannerDateTimeMillisek));
+                        mainActivity.saveNewTimePlanner(plannerName, plannerDate, plannerTimeH, plannerTimeM,
+                                String.valueOf(plannerDateTimeMillisek));
                         alertAddPlanner.dismiss();
                     }else{
                         Toast.makeText(context, (R.string.dialog_no_name_message), Toast.LENGTH_LONG).show();
