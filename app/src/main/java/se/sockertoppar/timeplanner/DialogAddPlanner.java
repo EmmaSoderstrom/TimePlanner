@@ -2,6 +2,9 @@ package se.sockertoppar.timeplanner;
 
 import android.content.Context;
 import android.content.DialogInterface;
+
+import java.text.SimpleDateFormat;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.util.Log;
@@ -12,7 +15,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by User on 2017-08-14.
@@ -23,6 +34,11 @@ public class DialogAddPlanner {
     String TAG = "tag";
     View diaView;
     TextView textDate;
+
+    int day;
+    int month;
+    int year;
+
 
 
     public DialogAddPlanner(){
@@ -50,12 +66,12 @@ public class DialogAddPlanner {
          * Hämtar dagens datum och sätter datumstexten till datumet
          */
         Calendar cal = Calendar.getInstance();
-        int day = cal.get(Calendar.DATE);
+        day = cal.get(Calendar.DATE);
         // TODO: 2017-08-14
         //Varför + 1 på månad
-        int month = cal.get(Calendar.MONTH) + 1;
-        int year = cal.get(Calendar.YEAR);
-        String date = day + "/" + month + "/" + year;
+        month = cal.get(Calendar.MONTH) + 1;
+        year = cal.get(Calendar.YEAR);
+        final String date = day + "/" + month + "/" + year;
         textDate.setText(date);
 
         /**
@@ -65,7 +81,11 @@ public class DialogAddPlanner {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 
             @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int day) {
+            public void onSelectedDayChange(CalendarView view, int sYear, int sMonth, int sDay) {
+                day = sDay;
+                month = sMonth;
+                year = sYear;
+
                 String newDate = day + "/" + (month + 1) + "/" + year;
                 textDate.setText(newDate);
             }
@@ -125,8 +145,23 @@ public class DialogAddPlanner {
                         String plannerDate = (String) textDate.getText();
                         int plannerTimeH = (int)timePicker.getCurrentHour();
                         int plannerTimeM = (int)timePicker.getCurrentMinute();
-                        //Log.d(TAG, "klar: " + plannerName + ", " + plannerDate + ", " + plannerTimeH + ":" + plannerTimeM);
-                        mainActivity.saveNewTimePlanner(plannerName, plannerDate, plannerTimeH, plannerTimeM);
+
+
+                        String str_date= year + "-" + month + "-" + day + " "
+                                + plannerTimeH + ":" + plannerTimeM + ":" + "00";               // tex. "2017-01-07 10:11:23"
+                        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                        Date date = null;
+                        long plannerDateTimeMillisek = 0;
+                        try {
+                            date = formatter.parse(str_date);
+                            //Log.d(TAG, "onClick: Today is " + date.getTime());
+                            plannerDateTimeMillisek = date.getTime();
+                        }catch(Exception  e){
+                            Log.d(TAG, "error: " + e);
+                        }
+
+                        mainActivity.saveNewTimePlanner(plannerName, plannerDate, plannerTimeH, plannerTimeM, plannerDateTimeMillisek);
                         alertAddPlanner.dismiss();
                     }else{
                         Toast.makeText(context, (R.string.dialog_no_name_message), Toast.LENGTH_LONG).show();

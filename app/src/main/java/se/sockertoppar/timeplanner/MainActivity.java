@@ -17,6 +17,7 @@ import android.widget.ListView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         linearLayoutListContiner = (LinearLayout)findViewById(R.id.linearLayout_list_continer);
 
+        viewdata();
         setUpButtonList();
     }
 
@@ -67,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
         dialogAddPlanner.showCalendar();
     }
 
-    public void saveNewTimePlanner(String plannerName, String plannerDate, int plannerTimeH, int plannerTimeM){
+    public void saveNewTimePlanner(String plannerName, String plannerDate, int plannerTimeH, int plannerTimeM, long plannerDateTimeMillisek){
         Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate + ", " + plannerTimeH + ":" + plannerTimeM);
-        helper.insertData(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM));
+        helper.insertData(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM), plannerDateTimeMillisek);
         setUpButtonList();
     }
 
