@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">TimePlanner</string>
+
+    <string name="dialog_add_planner_title">Lägg till en ny tidsplannerare</string>
+    <string name="dialog_confirm_delete_title_part1">Vill du ta bort</string>
+    <string name="dialog_confirm_delete_title_part2">\?</string>
+
+    <string name="dialog_add_planner_layout_subtext">Skapa en ny tidsplannerare</string>
+    <string name="dialog_add_planner_layout_name">Namn</string>
+    <string name="dialog_add_planner_layout_tid">Tid</string>
+
+    <string name="dialog_no_name_message">Ange ett namn</string>
+</resources>
