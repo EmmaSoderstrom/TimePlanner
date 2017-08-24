@@ -2,6 +2,7 @@ package se.sockertoppar.timeplanner;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.view.ScrollingView;
 import android.support.v7.app.AppCompatActivity;
@@ -19,10 +20,15 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static android.provider.AlarmClock.EXTRA_MESSAGE;
+
 public class MainActivity extends AppCompatActivity {
 
+
+    public static final String EXTRA_MESSAGE = "se.sockertoppar.timeplanner.MESSAGE";
+
     String TAG = "tag";
-    myDbAdapter helper;
+    myDbAdapter myDatabasHelper;
 
     DialogAddPlanner dialogAddPlanner;
     DialogConfirmDelete dialogConfirmDelete;
@@ -33,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout linearLayoutListContiner;
 
     ButtonListContiner adapter;
-    ButtonListContiner2 adapter2;
     ListView listView = null;
 
     ArrayList<String> buttonStringArray = new ArrayList<String>();
@@ -45,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        helper = new myDbAdapter(this);
+        myDatabasHelper = new myDbAdapter(this);
 
         dialogAddPlanner = new DialogAddPlanner();
         dialogConfirmDelete = new DialogConfirmDelete();
@@ -71,18 +76,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void saveNewTimePlanner(String plannerName, String plannerDate, int plannerTimeH, int plannerTimeM, String plannerDateTimeMillisek){
         Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate + ", " + plannerTimeH + ":" + plannerTimeM);
-        helper.insertData(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM), plannerDateTimeMillisek);
+        myDatabasHelper.insertData(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM), plannerDateTimeMillisek);
         setUpButtonList();
     }
 
+    public int saveNewTimePlannerInt(String plannerName, String plannerDate, int plannerTimeH, int plannerTimeM, String plannerDateTimeMillisek){
+        Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate + ", " + plannerTimeH + ":" + plannerTimeM);
+        int objektId = myDatabasHelper.insertDataInt(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM), plannerDateTimeMillisek);
+        setUpButtonList();
+
+        return objektId;
+    }
+
     public void viewdata(){
-        String data = helper.getData(this);
+        String data = myDatabasHelper.getData();
         Message.message(this,data);
     }
 
     public void deleteObjektInDatabas(int id) {
         Log.d(TAG, "delete: " + id);
-        helper.delete(id);
+        myDatabasHelper.delete(id);
         setUpButtonList();
     }
 
@@ -92,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setUpButtonList(){
 
-        arrayListButtonObjekt = helper.getDataToButton(this);
+        arrayListButtonObjekt = myDatabasHelper.getDataToButton(this);
         Log.d(TAG, "setUpButtonList: " + arrayListButtonObjekt);
 
         if (adapter == null) {
@@ -106,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Log.d(TAG, "onItemClick: " + arrayListButtonObjekt.get(position).getName()
                             + ", id, " + arrayListButtonObjekt.get(position).getId());
+                    goToTimePlanner(arrayListButtonObjekt.get(position).getId());
                 }
             });
 
@@ -126,6 +140,13 @@ public class MainActivity extends AppCompatActivity {
             Log.d("tag", "notifyDataSetChanged");
             adapter.notifyDataSetChanged();
         }
+    }
+
+    public void goToTimePlanner(int id){
+        Intent intent = new Intent(this, TimePlannerActivity.class);
+        String message = String.valueOf(id);
+        intent.putExtra(EXTRA_MESSAGE, message);
+        startActivity(intent);
     }
 
 }

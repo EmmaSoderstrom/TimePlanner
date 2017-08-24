@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.SyncStateContract;
 import android.util.Log;
 
 import java.lang.reflect.Array;
@@ -52,12 +53,26 @@ public class myDbAdapter {
         dbb.insert(myDbHelper.TABLE_NAME, null , contentValues);
     }
 
+    public int insertDataInt(MainActivity mainActivity, String name, String date, String time, String dateTimeMillisek) {
+        Log.d(TAG, "insertData: " + name + ", " + date + ", " + time + ", " + dateTimeMillisek);
+        SQLiteDatabase dbb = myhelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(myDbHelper.NAME, name);
+        contentValues.put(myDbHelper.DATE, date);
+        contentValues.put(myDbHelper.TIME, time);
+        contentValues.put(myDbHelper.DATETIMEMILLISEK, dateTimeMillisek);
+
+        long id = dbb.insert(myDbHelper.TABLE_NAME, null , contentValues);
+
+        return (int)id;
+    }
+
     /**
      * hämtar all data från databasen
-     * @param mainActivity
      * @return
      */
-    public String getData(MainActivity mainActivity) {
+    public String getData() {
         SQLiteDatabase db = myhelper.getWritableDatabase();
 
         String[] columns = {myDbHelper.PLANNERID, myDbHelper.NAME, myDbHelper.DATE, myDbHelper.TIME, myDbHelper.DATETIMEMILLISEK};
@@ -71,7 +86,6 @@ public class myDbAdapter {
             String time = cursor.getString(cursor.getColumnIndex(myDbHelper.TIME));
             String dateTimeMillisek = cursor.getString(cursor.getColumnIndex(myDbHelper.DATETIMEMILLISEK));
             buffer.append(cid + ", " + name + ", " + date + ", " + time + ", "  + dateTimeMillisek + " \n");
-            //Log.d(TAG, "getData: " + cid + ", " + name + ", " + date + ", " + time + ", " + dateTimeMillisek);
         }
         return buffer.toString();
     }
@@ -98,7 +112,6 @@ public class myDbAdapter {
             String time = cursor.getString(cursor.getColumnIndex(myDbHelper.TIME));
             String dateTimeMillisek = cursor.getString(cursor.getColumnIndex(myDbHelper.DATETIMEMILLISEK));
             //buffer.append(cid + ", " + name + ", " + date + ", " + time + " \n");
-            //Log.d(TAG, "getDataToButton: " + cid + ", " + name + ", " + date + ", " + time);
 
             plannerListObjekt = new PlannerListObjekt(cid, name, date, time, dateTimeMillisek);
             plannerListObjektArrayList.add(plannerListObjekt);
@@ -110,10 +123,7 @@ public class myDbAdapter {
                     Double a = Double.valueOf(o1.getDateTimeMillisek());
                     Double b = Double.valueOf(o2.getDateTimeMillisek());
 
-                    //return compare(a, b);
-                    //return (int )a.compareTo( (int)b);
                     return Double.compare(a,b) ;
-                    //return o1.getDateTimeMillisek().compareTo o2.getDateTimeMillisek();
                 }
             });
         }
@@ -125,6 +135,23 @@ public class myDbAdapter {
         String[] whereArgs ={String.valueOf(id)};
 
         db.delete(myDbHelper.TABLE_NAME ,myDbHelper.PLANNERID +" = ?",whereArgs);
+    }
+
+    public PlannerListObjekt getObjektById(String id) {
+        Log.d(TAG, "id: " + id);
+        SQLiteDatabase db = myhelper.getWritableDatabase();
+
+        String[] columns = {myDbHelper.PLANNERID, myDbHelper.NAME, myDbHelper.DATE, myDbHelper.TIME, myDbHelper.DATETIMEMILLISEK};
+        Cursor cursor = db.query(myDbHelper.TABLE_NAME,columns,myDbHelper.PLANNERID + "=?",new String[]{id},null,null,null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        //String test = cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2);
+        PlannerListObjekt plannerListObjekt = new PlannerListObjekt(Integer.valueOf(cursor.getString(0)),
+                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+        return plannerListObjekt;
+
     }
 
     public int updateName(String oldName , String newName) {

@@ -61,7 +61,6 @@ public class ButtonListContiner extends ArrayAdapter<PlannerListObjekt> {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            //rowView = inflater.inflate(R.layout.list_buttons, null,true);
             rowView = inflater.inflate(R.layout.main_list_layout, null,true);
         } else {
             rowView = convertView;

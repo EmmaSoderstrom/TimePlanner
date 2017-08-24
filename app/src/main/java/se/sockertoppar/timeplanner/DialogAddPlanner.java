@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 
 import java.text.SimpleDateFormat;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
@@ -171,9 +172,12 @@ public class DialogAddPlanner {
 
                         Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate+ ", " + plannerTimeH+ ", " + plannerTimeM+ ", " +
                                 String.valueOf(plannerDateTimeMillisek));
-                        mainActivity.saveNewTimePlanner(plannerName, plannerDate, plannerTimeH, plannerTimeM,
+                        int objektId = mainActivity.saveNewTimePlannerInt(plannerName, plannerDate, plannerTimeH, plannerTimeM,
                                 String.valueOf(plannerDateTimeMillisek));
+                        mainActivity.viewdata();
+                        mainActivity.goToTimePlanner(objektId);
                         alertAddPlanner.dismiss();
+
                     }else{
                         Toast.makeText(context, (R.string.dialog_no_name_message), Toast.LENGTH_LONG).show();
                     }
