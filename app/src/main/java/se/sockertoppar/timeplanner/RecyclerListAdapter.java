@@ -20,14 +20,13 @@ import se.sockertoppar.timeplanner.helper.ItemTouchHelperViewHolder;
 
 public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapter.ItemViewHolder> implements ItemTouchHelperAdapter {
 
-    private static final String[] STRINGS = new String[]{
-            "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"
-    };
+
+
 
     private final List<String> mItems = new ArrayList<>();
 
-    public RecyclerListAdapter() {
-        mItems.addAll(Arrays.asList(STRINGS));
+    public RecyclerListAdapter(ArrayList<String> arrayString) {
+        mItems.addAll(arrayString);
     }
 
     @Override

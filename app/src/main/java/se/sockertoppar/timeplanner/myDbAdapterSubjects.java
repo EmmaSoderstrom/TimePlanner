@@ -5,22 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.SyncStateContract;
 import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-
-import static android.R.id.list;
 
 /**
  * Created by User on 2017-08-15.
  */
 
-public class myDbAdapter {
+public class myDbAdapterSubjects {
 
     String TAG = "tag";
     myDbHelper myhelper;
@@ -28,7 +23,7 @@ public class myDbAdapter {
     PlannerListObjekt plannerListObjekt;
     ArrayList<PlannerListObjekt> plannerListObjektArrayList = new ArrayList<PlannerListObjekt>();
 
-    public myDbAdapter(Context context) {
+    public myDbAdapterSubjects(Context context) {
         myhelper = new myDbHelper(context);
     }
 
@@ -139,7 +134,7 @@ public class myDbAdapter {
         SQLiteDatabase db = myhelper.getWritableDatabase();
         String[] whereArgs ={String.valueOf(id)};
 
-        db.delete(myDbHelper.TABLE_NAME ,myDbHelper.PLANNERID +" = ?",whereArgs);
+        db.delete(myDbHelper.TABLE_NAME , myDbHelper.PLANNERID +" = ?",whereArgs);
     }
 
     public PlannerListObjekt getObjektById(String id) {
@@ -147,7 +142,7 @@ public class myDbAdapter {
         SQLiteDatabase db = myhelper.getWritableDatabase();
 
         String[] columns = {myDbHelper.PLANNERID, myDbHelper.NAME, myDbHelper.DATE, myDbHelper.TIME, myDbHelper.DATETIMEMILLISEK};
-        Cursor cursor = db.query(myDbHelper.TABLE_NAME,columns,myDbHelper.PLANNERID + "=?",new String[]{id},null,null,null);
+        Cursor cursor = db.query(myDbHelper.TABLE_NAME,columns, myDbHelper.PLANNERID + "=?",new String[]{id},null,null,null);
 
         if (cursor != null)
             cursor.moveToFirst();

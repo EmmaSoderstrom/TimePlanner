@@ -80,9 +80,12 @@ public class MainActivity extends AppCompatActivity {
         setUpButtonList();
     }
 
-    public int saveNewTimePlannerInt(String plannerName, String plannerDate, int plannerTimeH, int plannerTimeM, String plannerDateTimeMillisek){
-        Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate + ", " + plannerTimeH + ":" + plannerTimeM);
-        int objektId = myDatabasHelper.insertDataInt(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM), plannerDateTimeMillisek);
+    public int saveNewTimePlannerInt(String plannerName, String plannerDate, int plannerTimeH, int plannerTimeM,
+                                     String plannerDateTimeMillisek, ArrayList<ArrayList<String>> subjectsArrayList){
+        Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate + ", " + plannerTimeH + ":" + plannerTimeM
+                + " array = " + subjectsArrayList);
+        int objektId = myDatabasHelper.insertDataInt(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM),
+                plannerDateTimeMillisek, subjectsArrayList);
         setUpButtonList();
 
         return objektId;

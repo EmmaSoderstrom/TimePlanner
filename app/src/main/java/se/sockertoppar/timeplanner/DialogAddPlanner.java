@@ -23,6 +23,7 @@ import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.ParseException;
 import java.text.ParsePosition;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -41,6 +42,7 @@ public class DialogAddPlanner {
     int day;
     int month;
     int year;
+    ArrayList<ArrayList<String>> subjectsArrayList = new ArrayList<ArrayList<String>>();
 
 
 
@@ -170,10 +172,13 @@ public class DialogAddPlanner {
                             Log.d(TAG, "error: " + e);
                         }
 
+
+
+
                         Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate+ ", " + plannerTimeH+ ", " + plannerTimeM+ ", " +
                                 String.valueOf(plannerDateTimeMillisek));
                         int objektId = mainActivity.saveNewTimePlannerInt(plannerName, plannerDate, plannerTimeH, plannerTimeM,
-                                String.valueOf(plannerDateTimeMillisek));
+                                String.valueOf(plannerDateTimeMillisek), subjectsArrayList);
                         mainActivity.viewdata();
                         mainActivity.goToTimePlanner(objektId);
                         alertAddPlanner.dismiss();

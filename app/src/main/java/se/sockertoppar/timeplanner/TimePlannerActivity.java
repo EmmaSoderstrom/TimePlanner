@@ -1,17 +1,26 @@
 package se.sockertoppar.timeplanner;
 
+
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+
+
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
+
+import se.sockertoppar.timeplanner.helper.SimpleItemTouchHelperCallback;
 
 public class TimePlannerActivity extends AppCompatActivity {
 
@@ -20,7 +29,8 @@ public class TimePlannerActivity extends AppCompatActivity {
     myDbAdapter myDatabasHelper;
     PlannerListObjekt plannerListObjekt;
 
-    String[] subjects = {"Packa det sista", "Kolla passet", "Äta lunch"};
+    private ItemTouchHelper mItemTouchHelper;
+    ArrayList<String> subjects = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +46,23 @@ public class TimePlannerActivity extends AppCompatActivity {
         plannerListObjekt = myDatabasHelper.getObjektById(message);
 
         setUpPage();
+
+
+        subjects.add("Packa det sista");
+        subjects.add("Kolla passet");
+        subjects.add("Åka taxi");
+        subjects.add("Äta lunch");
+
+        RecyclerListAdapter adapter = new RecyclerListAdapter(subjects);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        //recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
 
 
 
