@@ -7,11 +7,10 @@
     tools:context="se.sockertoppar.timeplanner.TimePlannerActivity"
     android:id="@+id/relativelayout">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:scrollbars="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        />
+    <fragment
+        class="se.sockertoppar.timeplanner.RecyclerListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
 </RelativeLayout>
