@@ -56,7 +56,7 @@ public class myDbAdapter {
     }
 
     public int insertDataInt(MainActivity mainActivity, String name, String date, String time,
-                             String dateTimeMillisek, ArrayList<ArrayList<String>> subjectsArrayList) {
+                             String dateTimeMillisek) {
         Log.d(TAG, "insertData: " + name + ", " + date + ", " + time + ", " + dateTimeMillisek);
         SQLiteDatabase dbb = myhelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -66,7 +66,6 @@ public class myDbAdapter {
         contentValues.put(myDbHelper.DATE, date);
         contentValues.put(myDbHelper.TIME, time);
         contentValues.put(myDbHelper.DATETIMEMILLISEK, dateTimeMillisek);
-        //contentValues.put(myDbHelper.SUBJECTSARRAYLIST, subjectsArrayList);
 
         long id = dbb.insert(myDbHelper.TABLE_NAME, null , contentValues);
 
@@ -121,8 +120,6 @@ public class myDbAdapter {
             plannerListObjekt = new PlannerListObjekt(cid, name, date, time, dateTimeMillisek);
             plannerListObjektArrayList.add(plannerListObjekt);
 
-            // TODO: 2017-08-22
-            //sortera i kronologisk ordning på tid baserat på slut tiden för objektet.
             Collections.sort(plannerListObjektArrayList, new Comparator<PlannerListObjekt>() {
                 public int compare(PlannerListObjekt o1, PlannerListObjekt o2) {
                     Double a = Double.valueOf(o1.getDateTimeMillisek());

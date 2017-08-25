@@ -42,8 +42,6 @@ public class DialogAddPlanner {
     int day;
     int month;
     int year;
-    ArrayList<ArrayList<String>> subjectsArrayList = new ArrayList<ArrayList<String>>();
-
 
 
     public DialogAddPlanner(){
@@ -178,7 +176,7 @@ public class DialogAddPlanner {
                         Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate+ ", " + plannerTimeH+ ", " + plannerTimeM+ ", " +
                                 String.valueOf(plannerDateTimeMillisek));
                         int objektId = mainActivity.saveNewTimePlannerInt(plannerName, plannerDate, plannerTimeH, plannerTimeM,
-                                String.valueOf(plannerDateTimeMillisek), subjectsArrayList);
+                                String.valueOf(plannerDateTimeMillisek));
                         mainActivity.viewdata();
                         mainActivity.goToTimePlanner(objektId);
                         alertAddPlanner.dismiss();

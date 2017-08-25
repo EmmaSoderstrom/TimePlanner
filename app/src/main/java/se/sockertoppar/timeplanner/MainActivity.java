@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     String TAG = "tag";
     myDbAdapter myDatabasHelper;
+    myDbAdapterSubjects myDatabasHelperSubjects;
 
     DialogAddPlanner dialogAddPlanner;
     DialogConfirmDelete dialogConfirmDelete;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myDatabasHelper = new myDbAdapter(this);
+        //myDatabasHelperSubjects = new myDbAdapterSubjects(this);
 
         dialogAddPlanner = new DialogAddPlanner();
         dialogConfirmDelete = new DialogConfirmDelete();
@@ -74,18 +76,17 @@ public class MainActivity extends AppCompatActivity {
         dialogAddPlanner.showCalendar();
     }
 
-    public void saveNewTimePlanner(String plannerName, String plannerDate, int plannerTimeH, int plannerTimeM, String plannerDateTimeMillisek){
-        Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate + ", " + plannerTimeH + ":" + plannerTimeM);
-        myDatabasHelper.insertData(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM), plannerDateTimeMillisek);
-        setUpButtonList();
-    }
+//    public void saveNewTimePlanner(String plannerName, String plannerDate, int plannerTimeH, int plannerTimeM, String plannerDateTimeMillisek){
+//        Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate + ", " + plannerTimeH + ":" + plannerTimeM);
+//        myDatabasHelper.insertData(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM), plannerDateTimeMillisek);
+//        setUpButtonList();
+//    }
 
     public int saveNewTimePlannerInt(String plannerName, String plannerDate, int plannerTimeH, int plannerTimeM,
-                                     String plannerDateTimeMillisek, ArrayList<ArrayList<String>> subjectsArrayList){
-        Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate + ", " + plannerTimeH + ":" + plannerTimeM
-                + " array = " + subjectsArrayList);
+                                     String plannerDateTimeMillisek){
+        Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate + ", " + plannerTimeH + ":" + plannerTimeM);
         int objektId = myDatabasHelper.insertDataInt(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM),
-                plannerDateTimeMillisek, subjectsArrayList);
+                plannerDateTimeMillisek);
         setUpButtonList();
 
         return objektId;

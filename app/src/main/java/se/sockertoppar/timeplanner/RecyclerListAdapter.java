@@ -23,9 +23,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
 
 
-    private final List<String> mItems = new ArrayList<>();
+    private final List<Subjects> mItems = new ArrayList<>();
 
-    public RecyclerListAdapter(ArrayList<String> arrayString) {
+    public RecyclerListAdapter(ArrayList<Subjects> arrayString) {
         mItems.addAll(arrayString);
     }
 
@@ -38,7 +38,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
-        holder.textView.setText(mItems.get(position));
+        holder.textView.setText(mItems.get(position).getName());
     }
 
     @Override
@@ -47,9 +47,11 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         notifyItemRemoved(position);
     }
 
+    // TODO: 2017-08-25
+    //ta bort från databas också inte bara från array
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        String prev = mItems.remove(fromPosition);
+        Subjects prev = mItems.remove(fromPosition);
         mItems.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
         notifyItemMoved(fromPosition, toPosition);
     }

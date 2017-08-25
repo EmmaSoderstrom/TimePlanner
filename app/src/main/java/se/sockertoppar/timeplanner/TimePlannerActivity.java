@@ -25,8 +25,10 @@ import se.sockertoppar.timeplanner.helper.SimpleItemTouchHelperCallback;
 public class TimePlannerActivity extends AppCompatActivity {
 
     String TAG = "tag";
+    String thisObjektsId;
 
     myDbAdapter myDatabasHelper;
+    myDbAdapterSubjects myDatabasHelperSubjects;
     PlannerListObjekt plannerListObjekt;
 
     private ItemTouchHelper mItemTouchHelper;
@@ -39,21 +41,31 @@ public class TimePlannerActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        thisObjektsId = message;
         Log.d(TAG, "onCreate: message " + message);
 
         myDatabasHelper = new myDbAdapter(this);
+        myDatabasHelperSubjects = new myDbAdapterSubjects(this);
         //viewdata();
         plannerListObjekt = myDatabasHelper.getObjektById(message);
 
         setUpPage();
 
+        /**
+         * Gör arrayList
+         */
 
-        subjects.add("Packa det sista");
-        subjects.add("Kolla passet");
-        subjects.add("Åka taxi");
-        subjects.add("Äta lunch");
+        ArrayList<Subjects> subjectsArrayList = myDatabasHelperSubjects.getDataToSubjectsList(this, thisObjektsId);
 
-        RecyclerListAdapter adapter = new RecyclerListAdapter(subjects);
+        viewdataSubjects();
+
+
+//        subjects.add("Packa det sista");
+//        subjects.add("Kolla passet");
+//        subjects.add("Åka taxi");
+//        subjects.add("Äta lunch");
+
+        RecyclerListAdapter adapter = new RecyclerListAdapter(subjectsArrayList);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         //recyclerView.setHasFixedSize(true);
@@ -72,10 +84,28 @@ public class TimePlannerActivity extends AppCompatActivity {
         setTitle(plannerListObjekt.getName());
         // TODO: 2017-08-24
         //subtitle med datum och ev. tid
+        //samt sista del i list med slut tid
     }
 
     public void viewdata(){
         String data = myDatabasHelper.getData();
         Message.message(this,data);
+    }
+
+    public void viewdataSubjects(){
+        String data = myDatabasHelperSubjects.getData();
+        Message.message(this,data);
+    }
+
+    public ArrayList<String> getSubjectsString(){
+
+        return subjects;
+    }
+
+    public void onClickAddSubject(View view){
+//        myDatabasHelperSubjects.insertData(thisObjektsId, "Rulla tummarna", "10min", "7");
+//        myDatabasHelperSubjects.insertData(thisObjektsId, "Titta på fåglarna", "20min", "6");
+//        myDatabasHelperSubjects.insertData(thisObjektsId, "Flyga lite", "1h 45min", "5");
+        viewdataSubjects();
     }
 }
