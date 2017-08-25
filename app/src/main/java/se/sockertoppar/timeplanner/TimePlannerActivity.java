@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Window;
 import android.widget.RelativeLayout;
@@ -24,8 +25,6 @@ public class TimePlannerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        requestWindowFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_time_planner);
 
         Intent intent = getIntent();
@@ -38,15 +37,7 @@ public class TimePlannerActivity extends AppCompatActivity {
 
         setUpPage();
 
-        Context context = getApplicationContext();
 
-        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.relativelayout);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-
-        LinearLayoutManager recylerViewLayoutManager = new LinearLayoutManager(context);
-        recyclerView.setLayoutManager(recylerViewLayoutManager);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(context, subjects);
-        recyclerView.setAdapter(recyclerViewAdapter);
 
     }
 
