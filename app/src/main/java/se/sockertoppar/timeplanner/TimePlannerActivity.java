@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -17,8 +18,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import se.sockertoppar.timeplanner.helper.SimpleItemTouchHelperCallback;
 
@@ -33,6 +37,7 @@ public class TimePlannerActivity extends AppCompatActivity {
 
     private ItemTouchHelper mItemTouchHelper;
     ArrayList<String> subjects = new ArrayList<String>();
+    ArrayList<Subjects> subjectsArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +60,11 @@ public class TimePlannerActivity extends AppCompatActivity {
          * Gör arrayList
          */
 
-        ArrayList<Subjects> subjectsArrayList = myDatabasHelperSubjects.getDataToSubjectsList(this, thisObjektsId);
+        subjectsArrayList = myDatabasHelperSubjects.getDataToSubjectsList(this, thisObjektsId);
+        seUpRecycleview();
 
         viewdataSubjects();
+
 
 
 //        subjects.add("Packa det sista");
@@ -65,16 +72,7 @@ public class TimePlannerActivity extends AppCompatActivity {
 //        subjects.add("Åka taxi");
 //        subjects.add("Äta lunch");
 
-        RecyclerListAdapter adapter = new RecyclerListAdapter(subjectsArrayList);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        //recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
 
 
 
@@ -84,7 +82,13 @@ public class TimePlannerActivity extends AppCompatActivity {
         setTitle(plannerListObjekt.getName());
         // TODO: 2017-08-24
         //subtitle med datum och ev. tid
-        //samt sista del i list med slut tid
+        TextView objectName = (TextView)findViewById(R.id.object_name);
+        TextView objectEndtime = (TextView)findViewById(R.id.object_endtime);
+        objectName.setText(plannerListObjekt.getName());
+
+        MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(plannerListObjekt.getDateTimeMillisek());
+
+        objectEndtime.setText(millisekFormatChanger.getTimeString());
     }
 
     public void viewdata(){
@@ -106,6 +110,21 @@ public class TimePlannerActivity extends AppCompatActivity {
 //        myDatabasHelperSubjects.insertData(thisObjektsId, "Rulla tummarna", "10min", "7");
 //        myDatabasHelperSubjects.insertData(thisObjektsId, "Titta på fåglarna", "20min", "6");
 //        myDatabasHelperSubjects.insertData(thisObjektsId, "Flyga lite", "1h 45min", "5");
-        viewdataSubjects();
+        DialogAddSubject dialogAddSubject = new DialogAddSubject();
+        dialogAddSubject.showDialogAddSubject(this, this);
+        //viewdataSubjects();
+    }
+
+    public void seUpRecycleview(){
+        RecyclerListAdapter adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        //recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(recyclerView);
     }
 }

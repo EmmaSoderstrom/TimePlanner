@@ -60,9 +60,9 @@ public class MainActivity extends AppCompatActivity {
         context = this;
 
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        linearLayoutListContiner = (LinearLayout)findViewById(R.id.linearLayout_list_continer);
+        //linearLayoutListContiner = (LinearLayout)findViewById(R.id.linearLayout_list_continer);
 
-        viewdata();
+        //viewdata();
         setUpButtonList();
     }
 

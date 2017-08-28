@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:id="@+id/editTextSubjectName"
+        android:hint="@string/dialog_add_planner_layout_name"
+        android:imeOptions="actionDone"
+        android:singleLine="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="18dp">
+
+        <TimePicker
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/timePicker"
+            android:timePickerMode="spinner"></TimePicker>
+
+        <!--<NumberPicker-->
+            <!--android:id="@+id/num_picker_hour"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"></NumberPicker>-->
+        <!--<NumberPicker-->
+            <!--android:id="@+id/num_picker_minuts"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"></NumberPicker>-->
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

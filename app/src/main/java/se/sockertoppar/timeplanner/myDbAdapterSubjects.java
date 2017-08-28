@@ -139,9 +139,18 @@ public class myDbAdapterSubjects {
     public int updateName(String oldName , String newName) {
         SQLiteDatabase db = myhelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(myDbHelper.POINTINGID,newName);
+        contentValues.put(myDbHelper.SUBJECTSID,newName);
         String[] whereArgs= {oldName};
-        int count = db.update(myDbHelper.TABLE_NAME, contentValues, myDbHelper.POINTINGID + " = ?", whereArgs);
+        int count = db.update(myDbHelper.TABLE_NAME, contentValues, myDbHelper.SUBJECTSID + " = ?", whereArgs);
+        return count;
+    }
+
+    public int updatePos(String id , String newPos) {
+        SQLiteDatabase db = myhelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(myDbHelper.POSITION,newPos);
+        String[] whereArgs= {id};
+        int count = db.update(myDbHelper.TABLE_NAME, contentValues, myDbHelper.SUBJECTSID + " = ?", whereArgs);
         return count;
     }
 

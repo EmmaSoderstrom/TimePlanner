@@ -1,0 +1,132 @@
+package se.sockertoppar.timeplanner;
+
+import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
+import android.text.InputType;
+import android.util.Log;
+import android.view.View;
+import android.widget.CalendarView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+/**
+ * Created by User on 2017-08-14.
+ */
+
+public class DialogAddSubject {
+
+    String TAG = "tag";
+    View diaView;
+    TextView textDate;
+
+    int day;
+    int month;
+    int year;
+
+
+    public DialogAddSubject(){
+        super();
+    }
+
+    public void showDialogAddSubject(final Context context, final TimePlannerActivity timePlannerActivity) {
+        Log.d(TAG, "showDialogAddPlanner: ");
+
+        AlertDialog.Builder builderAddPlanner = new AlertDialog.Builder(context);
+        //builder1.setMessage(R.string.dialog_add_planner_message);
+        builderAddPlanner.setTitle(R.string.dialog_add_subject_title);
+        //builderAddPlanner.setCancelable(false);
+
+        diaView = View.inflate(context, R.layout.dialog_add_subject, null);
+        builderAddPlanner.setView(diaView);
+
+        EditText editTextSubjectName = (EditText)diaView.findViewById(R.id.editTextSubjectName);
+        editTextSubjectName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+
+        TimePicker timePicker = (TimePicker)diaView.findViewById(R.id.timePicker);
+        timePicker.setIs24HourView(true);
+        timePicker.setCurrentHour(0);
+        timePicker.setCurrentMinute(0);
+
+//        NumberPicker numberPickerHour = (NumberPicker)diaView.findViewById(R.id.num_picker_hour);
+//        numberPickerHour.setMaxValue(23);
+//        numberPickerHour.setMinValue(0);
+//        //numberPickerHour.setDisplayedValues(numbers);
+//        NumberPicker numberPickerMinuts = (NumberPicker)diaView.findViewById(R.id.num_picker_minuts);
+//        numberPickerMinuts.setMaxValue(59);
+//        numberPickerMinuts.setMinValue(0);
+
+
+
+        /**
+         * Knappar på dialog
+         */
+
+        builderAddPlanner.setPositiveButton(
+                "Klar",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //Måste finnas, men skrivs över med ennan metod
+                    }
+                });
+//        builderAddPlanner.setNegativeButton(
+//                "Cancel",
+//                new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        //Måste finnas, men skrivs över med ennan metod
+//                    }
+//                });
+
+        final AlertDialog aletAddSubject = builderAddPlanner.create();
+        aletAddSubject.show();
+
+        aletAddSubject.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("tag", "Dialog Klar");
+
+                    EditText editTextSubjectName = (EditText)diaView.findViewById(R.id.editTextSubjectName);
+                    int textLength = editTextSubjectName.getText().length();
+
+                    if(textLength > 0) {
+                        //String plannerName = editTextSubjectName.getText().toString();
+
+
+                        aletAddSubject.dismiss();
+
+                    }else{
+                        Toast.makeText(context, (R.string.dialog_no_name_message), Toast.LENGTH_LONG).show();
+                    }
+
+
+            }
+        });
+
+//        aletAddSubject.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d("tag", "Dialog Cancel");
+//                LinearLayout LLCalendarView = (LinearLayout) diaView.findViewById(R.id.LinerCalendarView);
+//                boolean visibility = getVisibilityCalender(LLCalendarView);
+//                if(visibility) {
+//                    showCalendar();
+//                    Log.d(TAG, "klar: true " + visibility);
+//                }else{
+//                    Log.d(TAG, "klar: false " + visibility);
+//                    aletAddSubject.dismiss();
+//
+//                }
+//            }
+//        });
+
+    }
+}

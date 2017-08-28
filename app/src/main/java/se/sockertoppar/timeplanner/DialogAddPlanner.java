@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
@@ -59,6 +60,9 @@ public class DialogAddPlanner {
         diaView = View.inflate(context, R.layout.dialog_add_planner, null);
         builderAddPlanner.setView(diaView);
 
+        EditText editTextPlannerName = (EditText)diaView.findViewById(R.id.editTextPlannerName);
+        editTextPlannerName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+
 
         /**
          * Val av datum
@@ -74,6 +78,8 @@ public class DialogAddPlanner {
         //Varför + 1 på månad
         month = cal.get(Calendar.MONTH) + 1;
         year = cal.get(Calendar.YEAR);
+
+
         final String date = day + "/" + month + "/" + year;
         textDate.setText(date);
 
