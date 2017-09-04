@@ -1,12 +1,15 @@
 package se.sockertoppar.timeplanner;
 
 
+import android.app.AlarmManager;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
 
+import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,6 +42,8 @@ public class TimePlannerActivity extends AppCompatActivity {
     ArrayList<String> subjects = new ArrayList<String>();
     ArrayList<Subjects> subjectsArrayList = new ArrayList<>();
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +60,7 @@ public class TimePlannerActivity extends AppCompatActivity {
 
         setUpPage();
         updateRecycleview();
+
 
     }
 
@@ -103,9 +109,17 @@ public class TimePlannerActivity extends AppCompatActivity {
         //viewdata();
     }
 
+    public void addSubjektToDatabas(String name, String time, int pos){
+        Log.d(TAG, "addSubjektToDatabas: " + name + " , " + time + " , " + String.valueOf(pos));
+        // TODO: 2017-09-04
+        //position till en mer än befintliga sysslor
+        myDatabasHelperSubjects.insertData(thisObjektsId, name, time, String.valueOf(pos));
+        //viewdata();
+    }
+
     public void seUpRecycleview(){
         Log.d(TAG, "seUpRecycleview: " + subjectsArrayList.size());
-        RecyclerListAdapter adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects);
+        RecyclerListAdapter adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects, this);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         //recyclerView.setHasFixedSize(true);
@@ -122,4 +136,13 @@ public class TimePlannerActivity extends AppCompatActivity {
         subjectsArrayList = myDatabasHelperSubjects.getDataToSubjectsList(this, thisObjektsId);
         seUpRecycleview();
     }
+
+
+//    public void deleteObjektInDatabas(int id) {
+//        Log.d(TAG, "delete: " + id);
+//        //myDatabasHelper.delete(id);
+//        myDatabasHelperSubjects.deleteById(id);
+//        //setUpButtonList();
+//    }
+
 }

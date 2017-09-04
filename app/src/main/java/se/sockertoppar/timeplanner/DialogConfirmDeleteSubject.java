@@ -1,6 +1,5 @@
 package se.sockertoppar.timeplanner;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
@@ -12,28 +11,29 @@ import android.view.View;
  * Created by User on 2017-08-14.
  */
 
-public class DialogConfirmDelete {
+public class DialogConfirmDeleteSubject {
 
     String TAG = "tag";
-    MainActivity mainActivity;
+    TimePlannerActivity timePlannerActivity;
     View diaView;
+    boolean confirmation = false;
 
 
-    public DialogConfirmDelete(){
+    public DialogConfirmDeleteSubject(){
         super();
     }
 
-    public void showDialogConfirmDelete(final Context context, String name, final int objektId) {
+    public boolean showDialogConfirmDelete(final Context context, String name, final int objektId) {
         Log.d(TAG, "showDialogAddPlanner: " + context.getClass().getSimpleName());
 
-        mainActivity = (MainActivity) context;
+        timePlannerActivity = (TimePlannerActivity) context;
         //context.getApplicationContext();
 
         AlertDialog.Builder builderConfirm = new AlertDialog.Builder(context);
         //builder1.setMessage(R.string.dialog_add_planner_message);
 
-        String sPart1 = mainActivity.getResources().getString(R.string.dialog_confirm_delete_title_part1);
-        String sPart2 = mainActivity.getResources().getString(R.string.dialog_confirm_delete_title_part2);
+        String sPart1 = timePlannerActivity.getResources().getString(R.string.dialog_confirm_delete_title_part1);
+        String sPart2 = timePlannerActivity.getResources().getString(R.string.dialog_confirm_delete_title_part2);
         builderConfirm.setTitle(sPart1 + " " + name + " " + sPart2);
         //builderConfirm.setCancelable(false);
 
@@ -44,12 +44,13 @@ public class DialogConfirmDelete {
         /**
          * Knappar på dialog
          */
+
         builderConfirm.setPositiveButton(
                 "Ja",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.d("tag", "Dialog ja");
-                        mainActivity.deleteObjektInDatabas(objektId);
+                        confirmation = true;
                         dialog.cancel();
                     }
                 });
@@ -58,11 +59,14 @@ public class DialogConfirmDelete {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.d("tag", "Dialog nej");
+                        confirmation = false;
                         dialog.cancel();
                     }
                 });
 
         AlertDialog alertConfirm = builderConfirm.create();
         alertConfirm.show();
+
+        return confirmation;
     }
 }

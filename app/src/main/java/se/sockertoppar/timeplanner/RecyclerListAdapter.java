@@ -13,6 +13,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.Subject;
+
 import se.sockertoppar.timeplanner.helper.ItemTouchHelperAdapter;
 import se.sockertoppar.timeplanner.helper.ItemTouchHelperViewHolder;
 
@@ -28,13 +30,17 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     public static List<Subjects> mItems = new ArrayList<>();
     static myDbAdapterSubjects myDatabasHelperSubjects;
+    DialogConfirmDeleteSubject dialogConfirmDeleteSubject;
+    TimePlannerActivity timePlannerActivity;
 
-    public RecyclerListAdapter(ArrayList<Subjects> arrayString, myDbAdapterSubjects myDatabasHelperSubjects) {
+    public RecyclerListAdapter(ArrayList<Subjects> arrayString, myDbAdapterSubjects myDatabasHelperSubjects, TimePlannerActivity t) {
         //Tar bort alla sysslor i listan
         clearItemList();
         //Lägget till alla sysslor i listan från arrayList med sysslor från databasen
         mItems.addAll(arrayString);
         this.myDatabasHelperSubjects = myDatabasHelperSubjects;
+        dialogConfirmDeleteSubject = new DialogConfirmDeleteSubject();
+        this.timePlannerActivity = t;
     }
 
     @Override
@@ -65,10 +71,25 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onItemDismiss(int position) {
+        Log.d(TAG, "onItemDismiss: " + mItems.get(position).getName());
+
+//        Subjects removedSubject = mItems.get(position);
+//
+//        boolean confirmation = dialogConfirmDeleteSubject.showDialogConfirmDelete(timePlannerActivity,
+//                mItems.get(position).getName(),
+//                mItems.get(position).getId());
+
+
+        myDatabasHelperSubjects.deleteById(mItems.get(position).getId());
         mItems.remove(position);
         notifyItemRemoved(position);
 
-        Log.d(TAG, "onItemDismiss: ");
+//        if(!confirmation){
+//            timePlannerActivity.addSubjektToDatabas(removedSubject.getName(), removedSubject.getTime(), position + 1);
+//        }
+
+
+
     }
 
     @Override
@@ -81,9 +102,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         //Log.d(TAG, "onItemMove: " + toPosition + ", " + mItems.get(fromPosition).getName());
         //mItems.get(fromPosition).setPosition(String.valueOf(toPosition));
         //myDatabasHelperSubjects.updatePos(String.valueOf(mItems.get(fromPosition).getId()), String.valueOf(toPosition));
-        Log.d("tag", "moveFromLastPos: " + moveFromLastPos);
-        Log.d("tag", "moveToLastPos: " + moveToLastPos);
-        Log.d(TAG, "onItemMove: " + mItems.get(fromPosition).getName());
+//        Log.d("tag", "moveFromLastPos: " + moveFromLastPos);
+//        Log.d("tag", "moveToLastPos: " + moveToLastPos);
+//        Log.d(TAG, "onItemMove: " + mItems.get(fromPosition).getName());
         //subject.setPosition(String.valueOf(mItems.indexOf(subject)));
     }
 
@@ -119,8 +140,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         public void onItemClear() {
             itemView.setBackgroundColor(0);
 
-            Log.d("tag", "moveFromLastPos: " + moveFromLastPos);
-            Log.d("tag", "moveToLastPos: " + moveToLastPos);
+//            Log.d("tag", "moveFromLastPos: " + moveFromLastPos);
+//            Log.d("tag", "moveToLastPos: " + moveToLastPos);
 
 //          TODO: 2017-08-25
             //ändra i databas också
@@ -136,7 +157,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
                 //myDatabasHelperSubjects.updatePos(String.valueOf(SubjectId), );
 
 
-                Log.d("tag", "onItemClear: for " + subject.getName() + " " + mItems.indexOf(subject));
+                //Log.d("tag", "onItemClear: for " + subject.getName() + " " + mItems.indexOf(subject));
             }
         }
     }

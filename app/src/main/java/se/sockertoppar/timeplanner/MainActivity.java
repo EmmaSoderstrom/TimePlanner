@@ -52,7 +52,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         myDatabasHelper = new myDbAdapter(this);
-        //myDatabasHelperSubjects = new myDbAdapterSubjects(this);
+        myDatabasHelperSubjects = new myDbAdapterSubjects(this);
+
+        // TODO: 2017-09-04
+        //ta bort
+        String data = myDatabasHelperSubjects.getData();
+        Message.message(this,data);
+        //
 
         dialogAddPlanner = new DialogAddPlanner();
         dialogConfirmDelete = new DialogConfirmDelete();
@@ -100,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
     public void deleteObjektInDatabas(int id) {
         Log.d(TAG, "delete: " + id);
         myDatabasHelper.delete(id);
+        myDatabasHelperSubjects.deleteByPointingId(id);
         setUpButtonList();
     }
 
@@ -132,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                     Log.d(TAG, "onItemLongClick: " + arrayListButtonObjekt.get(position).getName()
                             + ", id, " + arrayListButtonObjekt.get(position).getId());
-                    dialogConfirmDelete.showDialogConfirmDelete(context, mainActivity,
+                    dialogConfirmDelete.showDialogConfirmDelete(context,
                             arrayListButtonObjekt.get(position).getName(),
                             arrayListButtonObjekt.get(position).getId());
 

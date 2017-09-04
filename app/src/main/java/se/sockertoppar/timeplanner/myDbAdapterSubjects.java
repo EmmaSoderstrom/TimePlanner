@@ -115,7 +115,14 @@ public class myDbAdapterSubjects {
         return subjectsArrayList;
     }
 
-    public void delete(int id) {
+    public void deleteByPointingId(int id) {
+        SQLiteDatabase db = myhelper.getWritableDatabase();
+        String[] whereArgs ={String.valueOf(id)};
+
+        db.delete(myDbHelper.TABLE_NAME , myDbHelper.POINTINGID +" = ?",whereArgs);
+    }
+
+    public void deleteById(int id) {
         SQLiteDatabase db = myhelper.getWritableDatabase();
         String[] whereArgs ={String.valueOf(id)};
 
