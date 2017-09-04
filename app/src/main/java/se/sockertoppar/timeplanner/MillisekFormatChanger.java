@@ -51,4 +51,19 @@ public class MillisekFormatChanger {
         String timeStr = hour + ":" + minute;
         return timeStr;
     }
+
+    public String getTimeStringMH(){
+        String hourStr = "";
+        String minuteStr = "";
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        if(hour > 0){
+            hourStr = hour + "h";
+        }
+        int minute = cal.get(Calendar.MINUTE);
+        if(minute > 0){
+            minuteStr = minute + "min";
+        }
+        String timeStr = hourStr + " " + minuteStr;
+        return timeStr;
+    }
 }

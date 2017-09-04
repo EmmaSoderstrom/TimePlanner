@@ -18,6 +18,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by User on 2017-08-14.
@@ -52,7 +53,7 @@ public class DialogAddSubject {
         EditText editTextSubjectName = (EditText)diaView.findViewById(R.id.editTextSubjectName);
         editTextSubjectName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
-        TimePicker timePicker = (TimePicker)diaView.findViewById(R.id.timePicker);
+        final TimePicker timePicker = (TimePicker)diaView.findViewById(R.id.timePicker);
         timePicker.setIs24HourView(true);
         timePicker.setCurrentHour(0);
         timePicker.setCurrentMinute(0);
@@ -94,20 +95,24 @@ public class DialogAddSubject {
             public void onClick(View v) {
                 Log.d("tag", "Dialog Klar");
 
-                    EditText editTextSubjectName = (EditText)diaView.findViewById(R.id.editTextSubjectName);
-                    int textLength = editTextSubjectName.getText().length();
+                EditText editTextSubjectName = (EditText)diaView.findViewById(R.id.editTextSubjectName);
+                int textLength = editTextSubjectName.getText().length();
 
-                    if(textLength > 0) {
-                        //String plannerName = editTextSubjectName.getText().toString();
+                if(textLength > 0) {
+                    String subjectName = editTextSubjectName.getText().toString();
 
+                    int subjectTimeH = (int)timePicker.getCurrentHour();
+                    int subjectTimeM = (int)timePicker.getCurrentMinute();
+                    long subjectTimeTotal= TimeUnit.HOURS.toMillis(subjectTimeH) + TimeUnit.MINUTES.toMillis(subjectTimeM);
 
-                        aletAddSubject.dismiss();
+                    timePlannerActivity.addSubjektToDatabas(subjectName, String.valueOf(subjectTimeTotal));
+                    timePlannerActivity.updateRecycleview();
 
-                    }else{
-                        Toast.makeText(context, (R.string.dialog_no_name_message), Toast.LENGTH_LONG).show();
-                    }
+                    aletAddSubject.dismiss();
 
-
+                }else{
+                    Toast.makeText(context, (R.string.dialog_no_name_message), Toast.LENGTH_LONG).show();
+                }
             }
         });
 

@@ -47,35 +47,20 @@ public class TimePlannerActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         thisObjektsId = message;
-        Log.d(TAG, "onCreate: message " + message);
+        //Log.d(TAG, "onCreate: message " + message);
 
         myDatabasHelper = new myDbAdapter(this);
         myDatabasHelperSubjects = new myDbAdapterSubjects(this);
-        //viewdata();
         plannerListObjekt = myDatabasHelper.getObjektById(message);
 
         setUpPage();
+        updateRecycleview();
 
-        /**
-         * Gör arrayList
-         */
+    }
 
-        subjectsArrayList = myDatabasHelperSubjects.getDataToSubjectsList(this, thisObjektsId);
-        seUpRecycleview();
-
-        viewdataSubjects();
-
-
-
-//        subjects.add("Packa det sista");
-//        subjects.add("Kolla passet");
-//        subjects.add("Åka taxi");
-//        subjects.add("Äta lunch");
-
-
-
-
-
+    public void clearSubjectArrayList(){
+        Log.d(TAG, "clearSubjectArrayList: ");
+        subjectsArrayList.clear();
     }
 
     public void setUpPage(){
@@ -87,7 +72,6 @@ public class TimePlannerActivity extends AppCompatActivity {
         objectName.setText(plannerListObjekt.getName());
 
         MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(plannerListObjekt.getDateTimeMillisek());
-
         objectEndtime.setText(millisekFormatChanger.getTimeString());
     }
 
@@ -102,20 +86,25 @@ public class TimePlannerActivity extends AppCompatActivity {
     }
 
     public ArrayList<String> getSubjectsString(){
-
         return subjects;
     }
 
     public void onClickAddSubject(View view){
-//        myDatabasHelperSubjects.insertData(thisObjektsId, "Rulla tummarna", "10min", "7");
-//        myDatabasHelperSubjects.insertData(thisObjektsId, "Titta på fåglarna", "20min", "6");
-//        myDatabasHelperSubjects.insertData(thisObjektsId, "Flyga lite", "1h 45min", "5");
+
         DialogAddSubject dialogAddSubject = new DialogAddSubject();
         dialogAddSubject.showDialogAddSubject(this, this);
-        //viewdataSubjects();
+    }
+
+    public void addSubjektToDatabas(String name, String time){
+        Log.d(TAG, "addSubjektToDatabas: " + name + " , " + time + " , " + String.valueOf(subjectsArrayList.size() + 1));
+        // TODO: 2017-09-04
+        //position till en mer än befintliga sysslor
+        myDatabasHelperSubjects.insertData(thisObjektsId, name, time, String.valueOf(subjectsArrayList.size() + 1));
+        //viewdata();
     }
 
     public void seUpRecycleview(){
+        Log.d(TAG, "seUpRecycleview: " + subjectsArrayList.size());
         RecyclerListAdapter adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -126,5 +115,11 @@ public class TimePlannerActivity extends AppCompatActivity {
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    public void updateRecycleview(){
+        //skapar arrayList
+        subjectsArrayList = myDatabasHelperSubjects.getDataToSubjectsList(this, thisObjektsId);
+        seUpRecycleview();
     }
 }

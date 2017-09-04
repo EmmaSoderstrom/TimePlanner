@@ -30,6 +30,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     static myDbAdapterSubjects myDatabasHelperSubjects;
 
     public RecyclerListAdapter(ArrayList<Subjects> arrayString, myDbAdapterSubjects myDatabasHelperSubjects) {
+        //Tar bort alla sysslor i listan
+        clearItemList();
+        //Lägget till alla sysslor i listan från arrayList med sysslor från databasen
         mItems.addAll(arrayString);
         this.myDatabasHelperSubjects = myDatabasHelperSubjects;
     }
@@ -49,10 +52,15 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         TextView subjectTime = (TextView)holder.linerView.findViewById(R.id.subject_time);
         TextView subjectEndtime = (TextView)holder.linerView.findViewById(R.id.subject_endtime);
         subjectName.setText(mItems.get(position).getName());
-        subjectTime.setText(mItems.get(position).getTime());
+        MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(mItems.get(position).getTime());
+        subjectTime.setText(millisekFormatChanger.getTimeStringMH());
         // TODO: 2017-08-28
         //slut tid för detta syssla
         //subjectEndtime.setText(mItems.get(position).?);
+    }
+
+    public void clearItemList(){
+        mItems.clear();
     }
 
     @Override

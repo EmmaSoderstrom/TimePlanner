@@ -7,6 +7,12 @@
     tools:context="se.sockertoppar.timeplanner.TimePlannerActivity"
     android:id="@+id/relativelayout">
 
+    <DigitalClock
+        android:id="@+id/digital_clock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -51,6 +57,7 @@
                     android:textSize="40sp"
                     android:gravity="center_horizontal"/>
             </LinearLayout>
+
         </RelativeLayout>
 
 
@@ -74,6 +81,8 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp" />
+
+
 
 
 </RelativeLayout>
