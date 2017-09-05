@@ -176,11 +176,8 @@ public class DialogAddPlanner {
                             Log.d(TAG, "error: " + e);
                         }
 
-
-
-
-                        Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate+ ", " + plannerTimeH+ ", " + plannerTimeM+ ", " +
-                                String.valueOf(plannerDateTimeMillisek));
+                        //Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate+ ", " + plannerTimeH+ ", " + plannerTimeM+ ", " +
+                                //String.valueOf(plannerDateTimeMillisek));
                         int objektId = mainActivity.saveNewTimePlannerInt(plannerName, plannerDate, plannerTimeH, plannerTimeM,
                                 String.valueOf(plannerDateTimeMillisek));
                         mainActivity.viewdata();
@@ -190,7 +187,6 @@ public class DialogAddPlanner {
                     }else{
                         Toast.makeText(context, (R.string.dialog_no_name_message), Toast.LENGTH_LONG).show();
                     }
-
                 }
             }
         });

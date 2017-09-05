@@ -13,4 +13,5 @@
 
 
     <string name="dialog_no_name_message">Ange ett namn</string>
+    <string name="dialog_no_name_and_time_message">Ange ett namn och tid</string>
 </resources>

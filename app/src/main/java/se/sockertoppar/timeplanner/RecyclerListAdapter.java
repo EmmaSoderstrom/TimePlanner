@@ -73,24 +73,19 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public void onItemDismiss(int position) {
         Log.d(TAG, "onItemDismiss: " + mItems.get(position).getName());
 
-//        Subjects removedSubject = mItems.get(position);
-//
-//        boolean confirmation = dialogConfirmDeleteSubject.showDialogConfirmDelete(timePlannerActivity,
-//                mItems.get(position).getName(),
-//                mItems.get(position).getId());
+        Subjects removedSubject = mItems.get(position);
 
 
         myDatabasHelperSubjects.deleteById(mItems.get(position).getId());
         mItems.remove(position);
         notifyItemRemoved(position);
 
-//        if(!confirmation){
-//            timePlannerActivity.addSubjektToDatabas(removedSubject.getName(), removedSubject.getTime(), position + 1);
-//        }
+        timePlannerActivity.updateRecycleview();
 
-
+        dialogConfirmDeleteSubject.showDialogConfirmDelete(timePlannerActivity, removedSubject, position);
 
     }
+
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {

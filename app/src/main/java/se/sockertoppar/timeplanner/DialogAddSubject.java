@@ -97,12 +97,11 @@ public class DialogAddSubject {
 
                 EditText editTextSubjectName = (EditText)diaView.findViewById(R.id.editTextSubjectName);
                 int textLength = editTextSubjectName.getText().length();
+                int subjectTimeH = (int)timePicker.getCurrentHour();
+                int subjectTimeM = (int)timePicker.getCurrentMinute();
 
-                if(textLength > 0) {
+                if(textLength > 0 && (subjectTimeH > 0 || subjectTimeM > 0)) {
                     String subjectName = editTextSubjectName.getText().toString();
-
-                    int subjectTimeH = (int)timePicker.getCurrentHour();
-                    int subjectTimeM = (int)timePicker.getCurrentMinute();
                     long subjectTimeTotal= TimeUnit.HOURS.toMillis(subjectTimeH) + TimeUnit.MINUTES.toMillis(subjectTimeM);
 
                     timePlannerActivity.addSubjektToDatabas(subjectName, String.valueOf(subjectTimeTotal));
@@ -111,7 +110,7 @@ public class DialogAddSubject {
                     aletAddSubject.dismiss();
 
                 }else{
-                    Toast.makeText(context, (R.string.dialog_no_name_message), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, (R.string.dialog_no_name_and_time_message), Toast.LENGTH_LONG).show();
                 }
             }
         });

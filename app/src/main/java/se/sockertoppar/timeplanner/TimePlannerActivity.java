@@ -1,31 +1,17 @@
 package se.sockertoppar.timeplanner;
 
 
-import android.app.AlarmManager;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.BroadcastReceiver;
-import android.content.Context;
+
 import android.content.Intent;
-
-
-import android.content.IntentFilter;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import se.sockertoppar.timeplanner.helper.SimpleItemTouchHelperCallback;
 
@@ -60,8 +46,6 @@ public class TimePlannerActivity extends AppCompatActivity {
 
         setUpPage();
         updateRecycleview();
-
-
     }
 
     public void clearSubjectArrayList(){
@@ -96,25 +80,25 @@ public class TimePlannerActivity extends AppCompatActivity {
     }
 
     public void onClickAddSubject(View view){
-
         DialogAddSubject dialogAddSubject = new DialogAddSubject();
         dialogAddSubject.showDialogAddSubject(this, this);
     }
 
     public void addSubjektToDatabas(String name, String time){
-        Log.d(TAG, "addSubjektToDatabas: " + name + " , " + time + " , " + String.valueOf(subjectsArrayList.size() + 1));
-        // TODO: 2017-09-04
-        //position till en mer än befintliga sysslor
+        Log.d(TAG, "addSubjektToDatabas: ");
+        //position till 1 mer än befintliga sysslor i listan
         myDatabasHelperSubjects.insertData(thisObjektsId, name, time, String.valueOf(subjectsArrayList.size() + 1));
-        //viewdata();
     }
 
     public void addSubjektToDatabas(String name, String time, int pos){
-        Log.d(TAG, "addSubjektToDatabas: " + name + " , " + time + " , " + String.valueOf(pos));
-        // TODO: 2017-09-04
-        //position till en mer än befintliga sysslor
+        Log.d(TAG, "addSubjektToDatabas: med pos");
         myDatabasHelperSubjects.insertData(thisObjektsId, name, time, String.valueOf(pos));
-        //viewdata();
+    }
+
+    public void undoRemoveSubject(Subjects removedSubject, int position){
+        Log.d(TAG, "undoRemoveSubject: confirmation + " );
+        addSubjektToDatabas(removedSubject.getName(), removedSubject.getTime(), position + 1);
+        updateRecycleview();
     }
 
     public void seUpRecycleview(){
@@ -136,13 +120,5 @@ public class TimePlannerActivity extends AppCompatActivity {
         subjectsArrayList = myDatabasHelperSubjects.getDataToSubjectsList(this, thisObjektsId);
         seUpRecycleview();
     }
-
-
-//    public void deleteObjektInDatabas(int id) {
-//        Log.d(TAG, "delete: " + id);
-//        //myDatabasHelper.delete(id);
-//        myDatabasHelperSubjects.deleteById(id);
-//        //setUpButtonList();
-//    }
 
 }

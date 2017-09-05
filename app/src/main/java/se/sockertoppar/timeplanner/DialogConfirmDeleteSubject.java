@@ -23,7 +23,7 @@ public class DialogConfirmDeleteSubject {
         super();
     }
 
-    public boolean showDialogConfirmDelete(final Context context, String name, final int objektId) {
+    public void showDialogConfirmDelete(final Context context, final Subjects removedSubjekt, final int position) {
         Log.d(TAG, "showDialogAddPlanner: " + context.getClass().getSimpleName());
 
         timePlannerActivity = (TimePlannerActivity) context;
@@ -34,7 +34,7 @@ public class DialogConfirmDeleteSubject {
 
         String sPart1 = timePlannerActivity.getResources().getString(R.string.dialog_confirm_delete_title_part1);
         String sPart2 = timePlannerActivity.getResources().getString(R.string.dialog_confirm_delete_title_part2);
-        builderConfirm.setTitle(sPart1 + " " + name + " " + sPart2);
+        builderConfirm.setTitle(sPart1 + " " + removedSubjekt.getName() + " " + sPart2);
         //builderConfirm.setCancelable(false);
 
         diaView = View.inflate(context, R.layout.dialog_confirm_delete, null);
@@ -50,7 +50,6 @@ public class DialogConfirmDeleteSubject {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.d("tag", "Dialog ja");
-                        confirmation = true;
                         dialog.cancel();
                     }
                 });
@@ -59,14 +58,12 @@ public class DialogConfirmDeleteSubject {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.d("tag", "Dialog nej");
-                        confirmation = false;
+                        timePlannerActivity.undoRemoveSubject(removedSubjekt, position);
                         dialog.cancel();
                     }
                 });
 
         AlertDialog alertConfirm = builderConfirm.create();
         alertConfirm.show();
-
-        return confirmation;
     }
 }
