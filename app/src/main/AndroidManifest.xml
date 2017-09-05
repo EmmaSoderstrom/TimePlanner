@@ -17,6 +17,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".TimePlannerActivity"></activity>
+
+        <receiver android:name=".AlarmReceiver" />
+
+        <service android:name=".AlarmtonePlayingService"
+            android:enabled="true">
+        </service>
+
     </application>
 
 </manifest>

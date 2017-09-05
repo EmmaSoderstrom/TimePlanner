@@ -7,6 +7,12 @@
     tools:context="se.sockertoppar.timeplanner.TimePlannerActivity"
     android:id="@+id/relativelayout">
 
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="stopAlarm"/>
+
     <DigitalClock
         android:id="@+id/digital_clock"
         android:layout_width="wrap_content"

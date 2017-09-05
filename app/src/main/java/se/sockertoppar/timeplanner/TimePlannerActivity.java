@@ -2,6 +2,9 @@ package se.sockertoppar.timeplanner;
 
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +14,10 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.TimePicker;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import se.sockertoppar.timeplanner.helper.SimpleItemTouchHelperCallback;
 
@@ -27,6 +33,13 @@ public class TimePlannerActivity extends AppCompatActivity {
     private ItemTouchHelper mItemTouchHelper;
     ArrayList<String> subjects = new ArrayList<String>();
     ArrayList<Subjects> subjectsArrayList = new ArrayList<>();
+
+    public Intent myIntent;
+    AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
+    private AlarmReceiver alarm;
+    TimePlannerActivity timplannerActivity;
+    Context context;
 
 
 
@@ -46,6 +59,13 @@ public class TimePlannerActivity extends AppCompatActivity {
 
         setUpPage();
         updateRecycleview();
+
+
+        timplannerActivity = this;
+        myIntent = new Intent(getBaseContext(), AlarmReceiver.class);
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        setAlarm();
+
     }
 
     public void clearSubjectArrayList(){
@@ -119,6 +139,25 @@ public class TimePlannerActivity extends AppCompatActivity {
         //skapar arrayList
         subjectsArrayList = myDatabasHelperSubjects.getDataToSubjectsList(this, thisObjektsId);
         seUpRecycleview();
+    }
+
+    public void setAlarm(){
+        Log.d(TAG, "setAlarm: ");
+
+        myIntent.putExtra("extra", "yes");
+        pendingIntent = PendingIntent.getBroadcast(TimePlannerActivity.this, 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(plannerListObjekt.getDateTimeMillisek()), pendingIntent);
+    }
+
+    public void stopAlarm(View view){
+        Log.d(TAG, "stopAlarm: ");
+
+        myIntent.putExtra("extra", "no");
+        sendBroadcast(myIntent);
+        pendingIntent = PendingIntent.getBroadcast(TimePlannerActivity.this, 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        alarmManager.cancel(pendingIntent);
     }
 
 }
