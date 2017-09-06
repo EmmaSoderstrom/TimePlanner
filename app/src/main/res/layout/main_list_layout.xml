@@ -12,7 +12,8 @@
         android:id="@+id/object_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:textColor="@color/textListName"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +24,8 @@
             android:id="@+id/object_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="4" />
+            android:layout_weight="4"
+            android:textColor="@color/testSub"/>
 
         <TextView
             android:id="@+id/object_time"
@@ -32,7 +34,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:text="--:--"
-            />
+            android:textColor="@color/testSub"/>
 
     </LinearLayout>
 

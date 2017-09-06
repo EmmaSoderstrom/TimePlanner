@@ -32,15 +32,18 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     static myDbAdapterSubjects myDatabasHelperSubjects;
     DialogConfirmDeleteSubject dialogConfirmDeleteSubject;
     TimePlannerActivity timePlannerActivity;
+    PlannerListObjekt plannerListObjekt;
 
-    public RecyclerListAdapter(ArrayList<Subjects> arrayString, myDbAdapterSubjects myDatabasHelperSubjects, TimePlannerActivity t) {
+    public RecyclerListAdapter(ArrayList<Subjects> arrayString, myDbAdapterSubjects myDatabasHelperSubjects,
+                               TimePlannerActivity timePlannerActivity, PlannerListObjekt plannerListObjekt) {
         //Tar bort alla sysslor i listan
         clearItemList();
         //Lägget till alla sysslor i listan från arrayList med sysslor från databasen
         mItems.addAll(arrayString);
         this.myDatabasHelperSubjects = myDatabasHelperSubjects;
         dialogConfirmDeleteSubject = new DialogConfirmDeleteSubject();
-        this.timePlannerActivity = t;
+        this.timePlannerActivity = timePlannerActivity;
+        this.plannerListObjekt = plannerListObjekt;
     }
 
     @Override
@@ -60,9 +63,18 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         subjectName.setText(mItems.get(position).getName());
         MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(mItems.get(position).getTime());
         subjectTime.setText(millisekFormatChanger.getTimeStringMH());
-        // TODO: 2017-08-28
-        //slut tid för detta syssla
-        //subjectEndtime.setText(mItems.get(position).?);
+
+        //skapar starttid till varje syssla
+        String subjectToGiveTimePosition = mItems.get(position).getPosition();
+        long totalTimeToGive = 0;
+        for (Subjects subjectToGetTime : mItems) {
+            if(Integer.valueOf(subjectToGiveTimePosition) < Integer.valueOf(subjectToGetTime.getPosition())){
+                totalTimeToGive = totalTimeToGive + Long.valueOf(subjectToGetTime.getTime());
+            }
+        }
+        long endTime = Long.valueOf(plannerListObjekt.getDateTimeMillisek());
+        long startTimeOnSubject = endTime - totalTimeToGive - Long.valueOf(mItems.get(position).getTime());
+        subjectEndtime.setText(millisekFormatChanger.getTimeString(startTimeOnSubject));
     }
 
     public void clearItemList(){

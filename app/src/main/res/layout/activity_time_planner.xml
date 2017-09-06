@@ -5,19 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="se.sockertoppar.timeplanner.TimePlannerActivity"
-    android:id="@+id/relativelayout">
+    android:id="@+id/relativelayout"
+    android:background="@color/background">
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="stopAlarm"/>
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="stopAlarm"/>-->
 
-    <DigitalClock
-        android:id="@+id/digital_clock"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true" />
+    <!--<DigitalClock-->
+        <!--android:id="@+id/digital_clock"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true" />-->
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,12 +27,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="16dp"
+            >
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="#75104744">
 
             </android.support.v7.widget.RecyclerView>
 
@@ -42,26 +45,34 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_below="@+id/recycler_view"
-                android:paddingTop="10dp">
+                android:paddingTop="10dp"
+                android:layout_marginBottom="30dp"
+                android:paddingBottom="40dp"
+                android:background="#75104744">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/line_divider"/>
+                    android:src="@drawable/line_divider"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"/>
 
 
                 <TextView
                     android:id="@+id/object_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="30sp"/>
+                    android:layout_margin="16dp"
+                    android:textSize="30sp"
+                    android:textColor="#e0e0e0"/>
 
                 <TextView
                     android:id="@+id/object_endtime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="40sp"
-                    android:gravity="center_horizontal"/>
+                    android:gravity="center_horizontal"
+                    android:textColor="#6cb54a"/>
             </LinearLayout>
 
         </RelativeLayout>

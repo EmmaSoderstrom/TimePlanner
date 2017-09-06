@@ -56,8 +56,8 @@ public class myDbAdapter {
     }
 
     public int insertDataInt(MainActivity mainActivity, String name, String date, String time,
-                             String dateTimeMillisek) {
-        Log.d(TAG, "insertData: " + name + ", " + date + ", " + time + ", " + dateTimeMillisek);
+                             String dateTimeMillisek, String alarmTime) {
+        Log.d(TAG, "insertData: " + name + ", " + date + ", " + time + ", " + dateTimeMillisek + ", " + alarmTime);
         SQLiteDatabase dbb = myhelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -66,6 +66,7 @@ public class myDbAdapter {
         contentValues.put(myDbHelper.DATE, date);
         contentValues.put(myDbHelper.TIME, time);
         contentValues.put(myDbHelper.DATETIMEMILLISEK, dateTimeMillisek);
+        contentValues.put(myDbHelper.ALARMTIME, alarmTime);
 
         long id = dbb.insert(myDbHelper.TABLE_NAME, null , contentValues);
 
@@ -79,7 +80,8 @@ public class myDbAdapter {
     public String getData() {
         SQLiteDatabase db = myhelper.getWritableDatabase();
 
-        String[] columns = {myDbHelper.PLANNERID, myDbHelper.NAME, myDbHelper.DATE, myDbHelper.TIME, myDbHelper.DATETIMEMILLISEK};
+        String[] columns = {myDbHelper.PLANNERID, myDbHelper.NAME, myDbHelper.DATE, myDbHelper.TIME,
+                myDbHelper.DATETIMEMILLISEK, myDbHelper.ALARMTIME};
         Cursor cursor = db.query(myDbHelper.TABLE_NAME,columns,null,null,null,null,null);
         StringBuffer buffer = new StringBuffer();
 
@@ -89,7 +91,8 @@ public class myDbAdapter {
             String date = cursor.getString(cursor.getColumnIndex(myDbHelper.DATE));
             String time = cursor.getString(cursor.getColumnIndex(myDbHelper.TIME));
             String dateTimeMillisek = cursor.getString(cursor.getColumnIndex(myDbHelper.DATETIMEMILLISEK));
-            buffer.append(cid + ", " + name + ", " + date + ", " + time + ", "  + dateTimeMillisek + " \n");
+            String alarmTime = cursor.getString(cursor.getColumnIndex(myDbHelper.ALARMTIME));
+            buffer.append(cid + ", " + name + ", " + date + ", " + time + ", "  + dateTimeMillisek + ", " + alarmTime + " \n");
         }
         return buffer.toString();
     }
@@ -103,7 +106,8 @@ public class myDbAdapter {
     public ArrayList<PlannerListObjekt> getDataToButton(MainActivity mainActivity) {
         SQLiteDatabase db = myhelper.getWritableDatabase();
 
-        String[] columns = {myDbHelper.PLANNERID, myDbHelper.NAME, myDbHelper.DATE, myDbHelper.TIME, myDbHelper.DATETIMEMILLISEK};
+        String[] columns = {myDbHelper.PLANNERID, myDbHelper.NAME, myDbHelper.DATE, myDbHelper.TIME,
+                myDbHelper.DATETIMEMILLISEK, myDbHelper.ALARMTIME};
         Cursor cursor = db.query(myDbHelper.TABLE_NAME,columns,null,null,null,null,null);
         StringBuffer buffer = new StringBuffer();
 
@@ -115,9 +119,10 @@ public class myDbAdapter {
             String date = cursor.getString(cursor.getColumnIndex(myDbHelper.DATE));
             String time = cursor.getString(cursor.getColumnIndex(myDbHelper.TIME));
             String dateTimeMillisek = cursor.getString(cursor.getColumnIndex(myDbHelper.DATETIMEMILLISEK));
+            String alarmTime = cursor.getString(cursor.getColumnIndex(myDbHelper.ALARMTIME));
             //buffer.append(cid + ", " + name + ", " + date + ", " + time + " \n");
 
-            plannerListObjekt = new PlannerListObjekt(cid, name, date, time, dateTimeMillisek);
+            plannerListObjekt = new PlannerListObjekt(cid, name, date, time, dateTimeMillisek, alarmTime);
             plannerListObjektArrayList.add(plannerListObjekt);
 
             Collections.sort(plannerListObjektArrayList, new Comparator<PlannerListObjekt>() {
@@ -143,7 +148,8 @@ public class myDbAdapter {
         Log.d(TAG, "id: " + id);
         SQLiteDatabase db = myhelper.getWritableDatabase();
 
-        String[] columns = {myDbHelper.PLANNERID, myDbHelper.NAME, myDbHelper.DATE, myDbHelper.TIME, myDbHelper.DATETIMEMILLISEK};
+        String[] columns = {myDbHelper.PLANNERID, myDbHelper.NAME, myDbHelper.DATE, myDbHelper.TIME,
+                myDbHelper.DATETIMEMILLISEK, myDbHelper.ALARMTIME};
         Cursor cursor = db.query(myDbHelper.TABLE_NAME,columns,myDbHelper.PLANNERID + "=?",new String[]{id},null,null,null);
 
         if (cursor != null)
@@ -151,7 +157,7 @@ public class myDbAdapter {
 
         //String test = cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2);
         PlannerListObjekt plannerListObjekt = new PlannerListObjekt(Integer.valueOf(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
         return plannerListObjekt;
 
     }
@@ -165,6 +171,22 @@ public class myDbAdapter {
         return count;
     }
 
+    public void updateAlarmTime(String plannerId , String newAlarmTime) {
+
+
+        SQLiteDatabase db = myhelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(myDbHelper.ALARMTIME,newAlarmTime);
+        String[] whereArgs= {plannerId};
+        db.update(myDbHelper.TABLE_NAME, contentValues, "_id=?", whereArgs);
+
+        // TODO: 2017-09-06
+        //tabort
+        MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(newAlarmTime);
+        Log.d(TAG, "updateAlarmTime: ++++++++ " + millisekFormatChanger.getTimeString(Long.valueOf(getObjektById(plannerId).getAlarmTime())));
+        //
+    }
+
     static class myDbHelper extends SQLiteOpenHelper {
 
         private static final String DATABASE_NAME = "myDatabase";    // Database Name
@@ -176,12 +198,13 @@ public class myDbAdapter {
         private static final String DATE = "Date";    // Column 3
         private static final String TIME = "Time";    // Column 4
         private static final String DATETIMEMILLISEK = "DateTimeMillisek";    // Column 5
-        //private static final ArrayList<ArrayList<String>> SUBJECTSARRAYLIST = subjectsArrayList ;    // Column 6
+        private static final String ALARMTIME = "AlarmTime";    // Column 6
 
         private static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME
                 + " (" + PLANNERID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + NAME + " VARCHAR(255), " + DATE + " VARCHAR(255), " + TIME + " VARCHAR(255), "
-                + DATETIMEMILLISEK + " VARCHAR(255));";
+                + DATETIMEMILLISEK + " VARCHAR(255), "
+                + ALARMTIME + " VARCHAR(255));";
         private static final String DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         private Context context;
 

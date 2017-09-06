@@ -1,6 +1,8 @@
 package se.sockertoppar.timeplanner;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,6 +20,7 @@ import android.widget.ListView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
@@ -45,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> buttonStringArray = new ArrayList<String>();
     ArrayList<PlannerListObjekt> arrayListButtonObjekt = new ArrayList<PlannerListObjekt>();
 
+    Intent myIntent;
+    AlarmManager alarmManager;
+
 
 
     @Override
@@ -54,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
         myDatabasHelper = new myDbAdapter(this);
         myDatabasHelperSubjects = new myDbAdapterSubjects(this);
 
-        // TODO: 2017-09-04
-        //ta bort
-        String data = myDatabasHelperSubjects.getData();
-        Message.message(this,data);
-        //
+//        // TODO: 2017-09-04
+//        //ta bort
+//        String data = myDatabasHelperSubjects.getData();
+//        Message.message(this,data);
+//        //
 
         dialogAddPlanner = new DialogAddPlanner();
         dialogConfirmDelete = new DialogConfirmDelete();
@@ -66,10 +72,11 @@ public class MainActivity extends AppCompatActivity {
         context = this;
 
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //linearLayoutListContiner = (LinearLayout)findViewById(R.id.linearLayout_list_continer);
-
-        //viewdata();
         setUpButtonList();
+
+        myIntent = new Intent(getBaseContext(), AlarmReceiver.class);
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
     }
 
     public void onClickAddPlanner(View view){
@@ -92,7 +99,11 @@ public class MainActivity extends AppCompatActivity {
                                      String plannerDateTimeMillisek){
         Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate + ", " + plannerTimeH + ":" + plannerTimeM);
         int objektId = myDatabasHelper.insertDataInt(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM),
-                plannerDateTimeMillisek);
+                plannerDateTimeMillisek, plannerDateTimeMillisek);
+
+        PlannerListObjekt plannerListObjekt = myDatabasHelper.getObjektById(String.valueOf(objektId));
+        setAlarm(plannerListObjekt);
+
         setUpButtonList();
 
         return objektId;
@@ -143,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
                             arrayListButtonObjekt.get(position).getName(),
                             arrayListButtonObjekt.get(position).getId());
 
-                    return false;
+                    return true;
                 }
             });
 
@@ -158,6 +169,47 @@ public class MainActivity extends AppCompatActivity {
         String message = String.valueOf(id);
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
+    }
+
+
+    public void setAlarm(PlannerListObjekt plannerListObjekt){
+        Log.d(TAG, "setAlarm: ");
+        Calendar cal = Calendar.getInstance();
+        long toDayMillisek = cal.getTimeInMillis();
+
+        if(Long.parseLong(plannerListObjekt.getAlarmTime()) > toDayMillisek) {
+            myIntent.putExtra("extra", "yes");
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,
+                    plannerListObjekt.getId(), myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            //MillisekFormatChanger mfc = new MillisekFormatChanger(plannerListObjekt.getDateTimeMillisek());
+            alarmManager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(plannerListObjekt.getDateTimeMillisek()), pendingIntent);
+        }
+    }
+
+    //Stoppar de larm som är igång och alla som har en alarmtid som har varit.
+    public void stopAlarm(View view){
+        Log.d(TAG, "stopAlarm: ");
+
+        myIntent.putExtra("extra", "no");
+        sendBroadcast(myIntent);
+        for (int i = 0; i < arrayListButtonObjekt.size(); i++) {
+
+            Calendar cal = Calendar.getInstance();
+            long toDayMillisek = cal.getTimeInMillis();
+            Log.d(TAG, "stopAlarm: " + toDayMillisek);
+
+            long thisPlannerObjectAlarmTime = Long.parseLong(arrayListButtonObjekt.get(i).getAlarmTime());
+
+            if(thisPlannerObjectAlarmTime < toDayMillisek ){
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,
+                        i + 1, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                alarmManager.cancel(pendingIntent);
+            }
+
+        }
+
     }
 
 }

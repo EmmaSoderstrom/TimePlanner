@@ -11,8 +11,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 /**
@@ -27,20 +25,17 @@ public class AlarmtonePlayingService extends Service {
     private int startId;
 
 
-    @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
-        Log.e("MyActivity", "In the Richard service");
+    public IBinder onBind(Intent intent){
+        Log.d("Tag", "AlarmtonePlayingService IBinder");
         return null;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        final NotificationManager mNM = (NotificationManager)
-                getSystemService(NOTIFICATION_SERVICE);
+    public int onStartCommand(Intent intent, int flags, int startId){
+        final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        Intent intent1 = new Intent(this.getApplicationContext(), TimePlannerActivity.class);
+        Intent intent1 = new Intent(this.getApplicationContext(), MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent1, 0);
 
         Notification mNotify  = new Notification.Builder(this)
@@ -53,7 +48,7 @@ public class AlarmtonePlayingService extends Service {
 
         String state = intent.getExtras().getString("extra");
 
-        Log.e("what is going on here  ", state);
+        Log.d("tag", "state  " + state);
 
         assert state != null;
         switch (state) {
@@ -68,32 +63,32 @@ public class AlarmtonePlayingService extends Service {
                 break;
         }
 
-        if(!this.isRunning && startId == 1) {
-            Log.e("if there was not sound ", " and you want start");
+        if(!this.isRunning && startId == 1){
+            Log.d("tag", " alarm yes");
 
             Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
             mMediaPlayer = MediaPlayer.create(getApplicationContext(), notification);
             mMediaPlayer.start();
 
-            mNM.notify(0, mNotify);
+            notificationManager.notify(0, mNotify);
 
             this.isRunning = true;
             this.startId = 0;
 
         }else if (!this.isRunning && startId == 0){
-            Log.e("if there was not sound ", " and you want end");
+            Log.d("tag", " alarm defult");
 
             this.isRunning = false;
             this.startId = 0;
 
         }else if(this.isRunning && startId == 1){
-            Log.e("if there is sound ", " and you want start");
+            Log.d("tag", " alarm sista if");
 
             this.isRunning = true;
             this.startId = 0;
 
         }else{
-            Log.e("if there is sound ", " and you want end");
+            Log.d("tag", " alarm else");
 
             mMediaPlayer.stop();
             mMediaPlayer.reset();
@@ -102,17 +97,14 @@ public class AlarmtonePlayingService extends Service {
             this.startId = 0;
         }
 
-        Log.e("MyActivity", "In the service");
         return START_NOT_STICKY;
     }
 
-
     @Override
-    public void onDestroy() {
-        Log.e("JSLog", "on destroy called");
+    public void onDestroy(){
+        Log.d("tag", "onDestroy: ");
         super.onDestroy();
 
         this.isRunning = false;
     }
-
 }

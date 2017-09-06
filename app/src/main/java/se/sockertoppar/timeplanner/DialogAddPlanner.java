@@ -180,7 +180,7 @@ public class DialogAddPlanner {
                                 //String.valueOf(plannerDateTimeMillisek));
                         int objektId = mainActivity.saveNewTimePlannerInt(plannerName, plannerDate, plannerTimeH, plannerTimeM,
                                 String.valueOf(plannerDateTimeMillisek));
-                        mainActivity.viewdata();
+                        //mainActivity.viewdata();
                         mainActivity.goToTimePlanner(objektId);
                         alertAddPlanner.dismiss();
 

@@ -11,14 +11,16 @@ public class PlannerListObjekt {
     String date;
     String time;
     String dateTimeMillisek;
+    String alarmTime;
 
-    public PlannerListObjekt(int id, String name, String date, String time, String dateTimeMillisek){
+    public PlannerListObjekt(int id, String name, String date, String time, String dateTimeMillisek, String alarmTime){
 
         this.id = id;
         this.name = name;
         this.date = date;
         this.time = time;
         this.dateTimeMillisek = dateTimeMillisek;
+        this.alarmTime = alarmTime;
     }
 
     public int getId() {
@@ -39,6 +41,10 @@ public class PlannerListObjekt {
 
     public String getDateTimeMillisek() {
         return dateTimeMillisek;
+    }
+
+    public String getAlarmTime(){
+        return alarmTime;
     }
 
     public void setId(int id) {

@@ -16,7 +16,7 @@ public class MillisekFormatChanger {
          * Gör om strängen med fullt datum och tid till long och date
          */
         long dateLong = Long.parseLong(millisek);
-        Date date = new Date(dateLong);
+        //Date date = new Date(dateLong);
 
         /**
          * calender, för att kunna hämta datum och tid var för sig
@@ -46,9 +46,32 @@ public class MillisekFormatChanger {
     }
 
     public String getTimeString(){
+        String minuteStr;
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
-        String timeStr = hour + ":" + minute;
+        if(minute <= 9){
+            minuteStr = "0" + minute;
+        }else{
+            minuteStr = String.valueOf(minute);
+        }
+        String timeStr = hour + ":" + minuteStr;
+        return timeStr;
+    }
+
+    public String getTimeString(long newMillisek){
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(newMillisek);
+
+        String minuteStr;
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+        if(minute <= 9){
+            minuteStr = "0" + minute;
+        }else{
+            minuteStr = String.valueOf(minute);
+        }
+        String timeStr = hour + ":" + minuteStr;
         return timeStr;
     }
 
@@ -63,6 +86,7 @@ public class MillisekFormatChanger {
         if(minute > 0){
             minuteStr = minute + "min";
         }
+
         String timeStr = hourStr + " " + minuteStr;
         return timeStr;
     }
