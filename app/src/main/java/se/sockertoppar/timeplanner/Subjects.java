@@ -11,6 +11,7 @@ public class Subjects {
     String name;
     String time;
     String position;
+    String startTimeMillisek;
 
     public Subjects (int id, String pointingId, String name, String time, String position){
 
@@ -41,7 +42,15 @@ public class Subjects {
         return position;
     }
 
+    public String getStartTimeMillisek() {
+        return startTimeMillisek;
+    }
+
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public void setStartTimeMillisek(String startTimeMillisek) {
+        this.startTimeMillisek = startTimeMillisek;
     }
 }

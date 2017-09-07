@@ -128,7 +128,6 @@ public class myDbAdapterSubjects {
     }
 
     public PlannerListObjekt getObjektById(String id) {
-        Log.d(TAG, "id: " + id);
         SQLiteDatabase db = myhelper.getWritableDatabase();
 
         String[] columns = {myDbHelper.SUBJECTSID, myDbHelper.POINTINGID, myDbHelper.NAME, myDbHelper.TIME, myDbHelper.POSITION};

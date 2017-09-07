@@ -1,6 +1,9 @@
 package se.sockertoppar.timeplanner;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,8 +37,14 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     TimePlannerActivity timePlannerActivity;
     PlannerListObjekt plannerListObjekt;
 
+    private static View mRootView;
+
+    Context context;
+
+    ItemViewHolder holder;
+
     public RecyclerListAdapter(ArrayList<Subjects> arrayString, myDbAdapterSubjects myDatabasHelperSubjects,
-                               TimePlannerActivity timePlannerActivity, PlannerListObjekt plannerListObjekt) {
+                               TimePlannerActivity timePlannerActivity, PlannerListObjekt plannerListObjekt, Context context) {
         //Tar bort alla sysslor i listan
         clearItemList();
         //Lägget till alla sysslor i listan från arrayList med sysslor från databasen
@@ -44,19 +53,23 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         dialogConfirmDeleteSubject = new DialogConfirmDeleteSubject();
         this.timePlannerActivity = timePlannerActivity;
         this.plannerListObjekt = plannerListObjekt;
+        this.context = context;
+
+        //mRootView = recyclerView.getRootView();
     }
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.time_planner_item, parent, false);
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_items, parent, false);
         ItemViewHolder itemViewHolder = new ItemViewHolder(view);
+        mRootView = view.getRootView();
         return itemViewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
-
+        this.holder = holder;
+        Log.d(TAG, "onBindViewHolder: ");
         TextView subjectName = (TextView)holder.linerView.findViewById(R.id.subject_name);
         TextView subjectTime = (TextView)holder.linerView.findViewById(R.id.subject_time);
         TextView subjectEndtime = (TextView)holder.linerView.findViewById(R.id.subject_endtime);
@@ -75,6 +88,48 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         long endTime = Long.valueOf(plannerListObjekt.getDateTimeMillisek());
         long startTimeOnSubject = endTime - totalTimeToGive - Long.valueOf(mItems.get(position).getTime());
         subjectEndtime.setText(millisekFormatChanger.getTimeString(startTimeOnSubject));
+        timePlannerActivity.addStartTimeToSubject(position, startTimeOnSubject);
+        boolean ifActiv = timePlannerActivity.checkIfSubjectActiv();
+
+        //ändrar färg på aktivt ojekt
+        if(ifActiv){
+            LinearLayout ll = (LinearLayout)holder.linerView;
+            ll.setBackgroundResource(R.color.divaders);
+            subjectName.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
+        }
+
+    }
+
+    public void changeActivBackgrund(int indexPosition, RecyclerView recycleView){
+        Log.d(TAG, "changeActivBackgrund: " + indexPosition + " , " + holder.linerView.getTag());
+
+        //RecyclerView rc=(RecyclerView)view;
+        LinearLayoutManager lm= (LinearLayoutManager) recycleView.getLayoutManager();
+        //int pos = lm.findFirstVisibleItemPosition();
+        //if(lm.findViewByPosition(pos).getTop()==0 && pos==0)
+        View v = lm.findViewByPosition(indexPosition);
+        Log.d(TAG, "changeActivBackgrund: v " + v);
+
+
+        LinearLayout ll = (LinearLayout)holder.linerView;
+        //holder.getAdapterPosition()
+        ll.setBackgroundResource(R.color.divaders);
+
+
+
+        //v.setBackgroundColor(0xFF00FF00);
+        //recycleView.getLayoutManager().getChildAt(indexPosition);
+        //TextView tt = (TextView) holder.linerView.findViewById(R.id.subject_name);
+//        for (int i = 0; i < recycleView.getChildCount() + 1; i++) {
+//            Log.d(TAG, "changeActivBackgrund: " + i);
+            //View v = recycleView.getChildAt(indexPosition);
+        //v.holder.matchPercentage.setBackgroundResource
+            //LinearLayout ll = (LinearLayout) recycleView.getChildAt(indexPosition).findViewById(R.id.subject_name);
+//
+//        }
+
+
+        //mItems.get(indexPosition).
     }
 
     public void clearItemList(){
@@ -106,17 +161,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         notifyItemMoved(fromPosition, toPosition);
         moveFromLastPos = fromPosition;
         moveToLastPos = toPosition;
-        //Log.d(TAG, "onItemMove: " + toPosition + ", " + mItems.get(fromPosition).getName());
-        //mItems.get(fromPosition).setPosition(String.valueOf(toPosition));
-        //myDatabasHelperSubjects.updatePos(String.valueOf(mItems.get(fromPosition).getId()), String.valueOf(toPosition));
-//        Log.d("tag", "moveFromLastPos: " + moveFromLastPos);
-//        Log.d("tag", "moveToLastPos: " + moveToLastPos);
-//        Log.d(TAG, "onItemMove: " + mItems.get(fromPosition).getName());
-        //subject.setPosition(String.valueOf(mItems.indexOf(subject)));
     }
 
     public void updateList(List<Subjects> data) {
-        //mData = data;
         notifyDataSetChanged();
     }
 
@@ -132,14 +179,12 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
         public ItemViewHolder(View itemView) {
             super(itemView);
-            //linerView = (linerView) itemView;
             linerView = (LinearLayout) itemView;
         }
 
         @Override
         public void onItemSelected() {
             itemView.setBackgroundColor(Color.LTGRAY);
-            //Log.d("tag", "onItemSelected: " + itemView.findViewById(R.id.subject_linerView));
 
         }
 
@@ -147,25 +192,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         public void onItemClear() {
             itemView.setBackgroundColor(0);
 
-//            Log.d("tag", "moveFromLastPos: " + moveFromLastPos);
-//            Log.d("tag", "moveToLastPos: " + moveToLastPos);
-
-//          TODO: 2017-08-25
-            //ändra i databas också
-            for (Subjects subject: mItems) {
-
-//                if(moveFromLastPos < moveToLastPos) {
-//                    Log.d("tag", "if : moveFromLastPos < moveToLastPos");
-//                    subject.setPosition(String.valueOf(mItems.indexOf(subject)));
-//                    int SubjectId = subject.getId();
-//                    myDatabasHelperSubjects.updatePos(String.valueOf(SubjectId), String.valueOf(moveToLastPos));
-//                }
-                //int SubjectId = subject.getId();
-                //myDatabasHelperSubjects.updatePos(String.valueOf(SubjectId), );
-
-
-                //Log.d("tag", "onItemClear: for " + subject.getName() + " " + mItems.indexOf(subject));
-            }
         }
     }
 }

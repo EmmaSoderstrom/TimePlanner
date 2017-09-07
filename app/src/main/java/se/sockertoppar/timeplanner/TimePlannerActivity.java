@@ -6,6 +6,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,11 +14,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import se.sockertoppar.timeplanner.helper.SimpleItemTouchHelperCallback;
 
@@ -42,6 +46,7 @@ public class TimePlannerActivity extends AppCompatActivity {
     TimePlannerActivity timplannerActivity;
     Context context;
 
+    RecyclerListAdapter adapter;
 
 
     @Override
@@ -65,6 +70,74 @@ public class TimePlannerActivity extends AppCompatActivity {
         myIntent = new Intent(getBaseContext(), AlarmReceiver.class);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
+        setMinutsToDelayTimer();
+
+    }
+
+    public void setMinutsToDelayTimer(){
+        Calendar cal = Calendar.getInstance();
+        int sekund = cal.getTime().getSeconds();
+        int millisekToDelay = (60 - sekund) * 1000;
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                Log.d(TAG, "run: posdelay ------>>>>>");
+                setMinutsTimer();
+            }
+        }, millisekToDelay);
+    }
+
+    public void setMinutsTimer(){
+        //körs varja minut
+        Timer timer = new Timer();
+        TimerTask hourlyTask = new TimerTask() {
+            @Override
+            public void run () {
+                Log.d(TAG, "run: kör detta synkat? ++++++>>>>>");
+                checkIfSubjectActiv();
+                //seUpRecycleview();
+                //updateRecycleview();
+            }
+        };
+        timer.schedule(hourlyTask, 0l, 1000 * 1 * 60);   // 1000*1*60 varje minut
+    }
+
+
+    boolean ifActiv;
+    public boolean checkIfSubjectActiv(){
+        Log.d(TAG, "checkIfSubjectActiv: ");
+        Calendar cal = Calendar.getInstance();
+        long toDayMillisek = cal.getTimeInMillis();
+
+        for (int i = 0; i < subjectsArrayList.size(); i++) {
+            Subjects subject = subjectsArrayList.get(i);
+
+        //for (Subjects subject : subjectsArrayList) {
+            Log.d(TAG, "checkIfSubjectActiv: " + subject.getName() + " , " + subject.getStartTimeMillisek());
+
+            if(subject.getStartTimeMillisek() != null && toDayMillisek > Long.valueOf(subject.getStartTimeMillisek())
+                    && toDayMillisek < (Long.valueOf(subject.getStartTimeMillisek()) + Long.valueOf(subject.getTime()))){
+                Log.d(TAG, "checkIfSubjectActiv: " + subject.getName() + " aktiv " + i);
+                // TODO: 2017-09-07
+                //ändra bakgrund
+                ifActiv = true;
+
+                RecyclerView recycleView = (RecyclerView)findViewById(R.id.recycler_view);
+                adapter.changeActivBackgrund(i, recycleView);
+//
+//                View v = recycleView.getLayoutManager().findViewByPosition(i);
+//                Log.d(TAG, "checkIfSubjectActiv: v " + v);
+//                RecyclerView.ViewHolder vh = (RecyclerView.ViewHolder)recycleView.findViewHolderForAdapterPosition(i);
+//                //vh.itemView;
+//                //TextView tv = (TextView) vh.findViewById(R.id.object_name);
+//                Log.d(TAG, "checkIfSubjectActiv: adapter " + vh);
+            }else if(subject.getStartTimeMillisek() != null){
+                ifActiv = false;
+            }
+        }
+
+        return ifActiv;
     }
 
     public void clearSubjectArrayList(){
@@ -98,6 +171,13 @@ public class TimePlannerActivity extends AppCompatActivity {
         return subjects;
     }
 
+
+    /**
+     * Lägga till syssla
+     *
+     * @param view
+     */
+
     public void onClickAddSubject(View view){
         DialogAddSubject dialogAddSubject = new DialogAddSubject();
         dialogAddSubject.showDialogAddSubject(this, this);
@@ -115,21 +195,13 @@ public class TimePlannerActivity extends AppCompatActivity {
         myDatabasHelperSubjects.insertData(thisObjektsId, name, time, String.valueOf(pos));
     }
 
-    public void changeAlarmTime(){
-        Log.d(TAG, "changeAlarmTime: ");
-        //hämtar tid från alla sysslor
-        ArrayList<Subjects> arrayLisSubjects = myDatabasHelperSubjects.getDataToSubjectsList(this, thisObjektsId);
-        long totalTimeToGive = 0;
-        for (Subjects subjectToGetTime : arrayLisSubjects) {
-            totalTimeToGive = totalTimeToGive + Long.valueOf(subjectToGetTime.getTime());
-        }
-        long endTime = Long.valueOf(plannerListObjekt.getDateTimeMillisek());
-        long newAlarmTime = endTime - totalTimeToGive;
 
-        myDatabasHelper.updateAlarmTime(thisObjektsId, String.valueOf(newAlarmTime));
-        plannerListObjekt = myDatabasHelper.getObjektById(thisObjektsId);
-        setAlarm();
-    }
+    /**
+     * Recycleview
+     *
+     * @param removedSubject
+     * @param position
+     */
 
     public void undoRemoveSubject(Subjects removedSubject, int position){
         Log.d(TAG, "undoRemoveSubject: confirmation + " );
@@ -145,7 +217,7 @@ public class TimePlannerActivity extends AppCompatActivity {
 
     public void seUpRecycleview(){
         Log.d(TAG, "seUpRecycleview: ");
-        RecyclerListAdapter adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects, this, plannerListObjekt);
+        adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects, this, plannerListObjekt, this);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         //recyclerView.setHasFixedSize(true);
@@ -155,9 +227,32 @@ public class TimePlannerActivity extends AppCompatActivity {
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
+
     }
 
-    
+    /**
+     * Alarm
+     */
+
+    public void addStartTimeToSubject(int indexInArraylist, long startTimeMillisek){
+        subjectsArrayList.get(indexInArraylist).setStartTimeMillisek(String.valueOf(startTimeMillisek));
+    }
+
+    public void changeAlarmTime(){
+        Log.d(TAG, "changeAlarmTime: ");
+        //hämtar tid från alla sysslor
+        ArrayList<Subjects> arrayLisSubjects = myDatabasHelperSubjects.getDataToSubjectsList(this, thisObjektsId);
+        long totalTimeToGive = 0;
+        for (Subjects subjectToGetTime : arrayLisSubjects) {
+            totalTimeToGive = totalTimeToGive + Long.valueOf(subjectToGetTime.getTime());
+        }
+        long endTime = Long.valueOf(plannerListObjekt.getDateTimeMillisek());
+        long newAlarmTime = endTime - totalTimeToGive;
+
+        myDatabasHelper.updateAlarmTime(thisObjektsId, String.valueOf(newAlarmTime));
+        plannerListObjekt = myDatabasHelper.getObjektById(thisObjektsId);
+        setAlarm();
+    }
 
     public void setAlarm(){
 

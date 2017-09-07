@@ -50,6 +50,7 @@ public class DialogConfirmDeleteSubject {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.d("tag", "Dialog ja");
+                        timePlannerActivity.changeAlarmTime();
                         dialog.cancel();
                     }
                 });
@@ -59,6 +60,7 @@ public class DialogConfirmDeleteSubject {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.d("tag", "Dialog nej");
                         timePlannerActivity.undoRemoveSubject(removedSubjekt, position);
+                        timePlannerActivity.changeAlarmTime();
                         dialog.cancel();
                     }
                 });
