@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -143,13 +144,14 @@ public class TimePlannerActivity extends AppCompatActivity {
         int childCount = recycleView.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View child = recycleView.getChildAt(i);
-
-            Log.d(TAG, "changeActivBackgrund: i " + i);
-
-            if(i == indexPosition) {
-                child.setBackgroundResource(R.color.divaders);
-            }else{
+            TextView subjectName = (TextView) child.findViewById(R.id.subject_name);
+            
+            if (i == indexPosition) {
+                child.setBackgroundResource(R.color.aktivSubject);
+                subjectName.setTextColor(ContextCompat.getColor(this, R.color.aktivSubjectName));
+            }else {
                 child.setBackgroundColor(0);
+                subjectName.setTextColor(ContextCompat.getColor(this, R.color.textListName));
             }
         }
     }
@@ -166,8 +168,6 @@ public class TimePlannerActivity extends AppCompatActivity {
         TextView objectName = (TextView)findViewById(R.id.object_name);
         TextView objectEndtime = (TextView)findViewById(R.id.object_endtime);
         objectName.setText(plannerListObjekt.getName());
-
-
         objectEndtime.setText(millisekFormatChanger.getTimeString());
     }
 
@@ -241,7 +241,6 @@ public class TimePlannerActivity extends AppCompatActivity {
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
-        //checkIfSubjectActiv();
 
     }
 

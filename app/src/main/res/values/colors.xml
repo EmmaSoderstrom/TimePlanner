@@ -13,5 +13,7 @@
     <color name="testSub">#e0e0e0</color>
 
     <color name="divaders">#c06cb54a</color>
+    <color name="aktivSubject">#c06cb54a</color>
+    <color name="aktivSubjectName">#0b2825</color>
 
 </resources>
