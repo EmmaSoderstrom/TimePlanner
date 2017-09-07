@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
             Calendar cal = Calendar.getInstance();
             long toDayMillisek = cal.getTimeInMillis();
-            Log.d(TAG, "stopAlarm: " + toDayMillisek);
+            //Log.d(TAG, "stopAlarm: " + toDayMillisek);
 
             long thisPlannerObjectAlarmTime = Long.parseLong(arrayListButtonObjekt.get(i).getAlarmTime());
 

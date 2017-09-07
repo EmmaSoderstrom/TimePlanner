@@ -87,57 +87,71 @@ public class TimePlannerActivity extends AppCompatActivity {
             }
         }, millisekToDelay);
     }
-
+    
     public void setMinutsTimer(){
-        //körs varja minut
         Timer timer = new Timer();
-        TimerTask hourlyTask = new TimerTask() {
+        
+        timer.schedule(new TimerTask() {
             @Override
-            public void run () {
-                Log.d(TAG, "run: kör detta synkat? ++++++>>>>>");
-                checkIfSubjectActiv();
-                //seUpRecycleview();
-                //updateRecycleview();
+            public void run() {
+
+                // When you need to modify a UI element, do so on the UI thread. 
+                // 'getActivity()' is required as this is being ran from a Fragment.
+                timplannerActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // This code will always run on the UI thread, therefore is safe to modify UI elements.
+                        Log.d(TAG, "run: ------>>>>>>>");
+                        checkIfSubjectActiv();
+                    }
+                });
             }
-        };
-        timer.schedule(hourlyTask, 0l, 1000 * 1 * 60);   // 1000*1*60 varje minut
+        }, 0, 1000 * 1 * 60); //1000 * 1 * 60 = 60sek
     }
 
-
-    boolean ifActiv;
-    public boolean checkIfSubjectActiv(){
-        Log.d(TAG, "checkIfSubjectActiv: ");
+    public void checkIfSubjectActiv(){
+        //Log.d(TAG, "checkIfSubjectActiv: ");
         Calendar cal = Calendar.getInstance();
         long toDayMillisek = cal.getTimeInMillis();
+
+        RecyclerView recycleView = (RecyclerView) findViewById(R.id.recycler_view);
 
         for (int i = 0; i < subjectsArrayList.size(); i++) {
             Subjects subject = subjectsArrayList.get(i);
 
-        //for (Subjects subject : subjectsArrayList) {
-            Log.d(TAG, "checkIfSubjectActiv: " + subject.getName() + " , " + subject.getStartTimeMillisek());
+            if(subject.getStartTimeMillisek() != null) {
 
-            if(subject.getStartTimeMillisek() != null && toDayMillisek > Long.valueOf(subject.getStartTimeMillisek())
-                    && toDayMillisek < (Long.valueOf(subject.getStartTimeMillisek()) + Long.valueOf(subject.getTime()))){
-                Log.d(TAG, "checkIfSubjectActiv: " + subject.getName() + " aktiv " + i);
-                // TODO: 2017-09-07
-                //ändra bakgrund
-                ifActiv = true;
+                //om någon syssla är aktiv
+                if (toDayMillisek > Long.valueOf(subject.getStartTimeMillisek())
+                        && toDayMillisek < (Long.valueOf(subject.getStartTimeMillisek()) + Long.valueOf(subject.getTime()))) {
+                    Log.d(TAG, "checkIfSubjectActiv: aktiv ");
 
-                RecyclerView recycleView = (RecyclerView)findViewById(R.id.recycler_view);
-                adapter.changeActivBackgrund(i, recycleView);
-//
-//                View v = recycleView.getLayoutManager().findViewByPosition(i);
-//                Log.d(TAG, "checkIfSubjectActiv: v " + v);
-//                RecyclerView.ViewHolder vh = (RecyclerView.ViewHolder)recycleView.findViewHolderForAdapterPosition(i);
-//                //vh.itemView;
-//                //TextView tv = (TextView) vh.findViewById(R.id.object_name);
-//                Log.d(TAG, "checkIfSubjectActiv: adapter " + vh);
-            }else if(subject.getStartTimeMillisek() != null){
-                ifActiv = false;
+                    //ändra bakgrund
+                    changeActivBackgrund(i, recycleView);
+
+                }else if(toDayMillisek > Long.valueOf(plannerListObjekt.getDateTimeMillisek())){
+                    Log.d(TAG, "checkIfSubjectActiv: tiden är slut");
+                    changeActivBackgrund(-1, recycleView);
+                }
             }
         }
+    }
 
-        return ifActiv;
+    public void changeActivBackgrund(int indexPosition, RecyclerView recycleView){
+        Log.d(TAG, "changeActivBackgrund: " + indexPosition );
+
+        int childCount = recycleView.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View child = recycleView.getChildAt(i);
+
+            Log.d(TAG, "changeActivBackgrund: i " + i);
+
+            if(i == indexPosition) {
+                child.setBackgroundResource(R.color.divaders);
+            }else{
+                child.setBackgroundColor(0);
+            }
+        }
     }
 
     public void clearSubjectArrayList(){
@@ -227,6 +241,7 @@ public class TimePlannerActivity extends AppCompatActivity {
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
+        //checkIfSubjectActiv();
 
     }
 
@@ -268,10 +283,12 @@ public class TimePlannerActivity extends AppCompatActivity {
             alarmManager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(plannerListObjekt.getAlarmTime()), pendingIntent);
 
             Log.d(TAG, "setAlarm: " + millisekFormatChanger.getTimeString(Long.valueOf(plannerListObjekt.getAlarmTime())));
+        }else{
+            stopAlarm();
         }
     }
 
-    public void stopAlarm(View view){
+    public void stopAlarm(){
         Log.d(TAG, "stopAlarm: ");
 
         myIntent.putExtra("extra", "no");

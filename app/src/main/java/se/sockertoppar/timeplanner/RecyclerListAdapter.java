@@ -69,7 +69,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
         this.holder = holder;
-        Log.d(TAG, "onBindViewHolder: ");
         TextView subjectName = (TextView)holder.linerView.findViewById(R.id.subject_name);
         TextView subjectTime = (TextView)holder.linerView.findViewById(R.id.subject_time);
         TextView subjectEndtime = (TextView)holder.linerView.findViewById(R.id.subject_endtime);
@@ -89,48 +88,18 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         long startTimeOnSubject = endTime - totalTimeToGive - Long.valueOf(mItems.get(position).getTime());
         subjectEndtime.setText(millisekFormatChanger.getTimeString(startTimeOnSubject));
         timePlannerActivity.addStartTimeToSubject(position, startTimeOnSubject);
-        boolean ifActiv = timePlannerActivity.checkIfSubjectActiv();
+        timePlannerActivity.checkIfSubjectActiv();
 
         //ändrar färg på aktivt ojekt
-        if(ifActiv){
-            LinearLayout ll = (LinearLayout)holder.linerView;
-            ll.setBackgroundResource(R.color.divaders);
-            subjectName.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
-        }
-
-    }
-
-    public void changeActivBackgrund(int indexPosition, RecyclerView recycleView){
-        Log.d(TAG, "changeActivBackgrund: " + indexPosition + " , " + holder.linerView.getTag());
-
-        //RecyclerView rc=(RecyclerView)view;
-        LinearLayoutManager lm= (LinearLayoutManager) recycleView.getLayoutManager();
-        //int pos = lm.findFirstVisibleItemPosition();
-        //if(lm.findViewByPosition(pos).getTop()==0 && pos==0)
-        View v = lm.findViewByPosition(indexPosition);
-        Log.d(TAG, "changeActivBackgrund: v " + v);
-
-
-        LinearLayout ll = (LinearLayout)holder.linerView;
-        //holder.getAdapterPosition()
-        ll.setBackgroundResource(R.color.divaders);
-
-
-
-        //v.setBackgroundColor(0xFF00FF00);
-        //recycleView.getLayoutManager().getChildAt(indexPosition);
-        //TextView tt = (TextView) holder.linerView.findViewById(R.id.subject_name);
-//        for (int i = 0; i < recycleView.getChildCount() + 1; i++) {
-//            Log.d(TAG, "changeActivBackgrund: " + i);
-            //View v = recycleView.getChildAt(indexPosition);
-        //v.holder.matchPercentage.setBackgroundResource
-            //LinearLayout ll = (LinearLayout) recycleView.getChildAt(indexPosition).findViewById(R.id.subject_name);
-//
+//        if(ifActiv){
+//            LinearLayout ll = (LinearLayout)holder.linerView;
+//            ll.setBackgroundResource(R.color.divaders);
+//            subjectName.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
 //        }
 
-
-        //mItems.get(indexPosition).
     }
+
+
 
     public void clearItemList(){
         mItems.clear();
