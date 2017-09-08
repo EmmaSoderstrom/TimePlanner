@@ -14,7 +14,6 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String state = intent.getExtras().getString("extra");
-        //Log.d("tag", "AlarmReceiver onReceive " + state);
 
         Intent serviceIntent = new Intent(context, AlarmtonePlayingService.class);
         serviceIntent.putExtra("extra", state);

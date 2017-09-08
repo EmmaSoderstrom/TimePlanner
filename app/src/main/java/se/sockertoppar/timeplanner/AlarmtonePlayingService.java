@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -32,7 +33,6 @@ public class AlarmtonePlayingService extends Service {
 
     @Override
     public IBinder onBind(Intent intent){
-        Log.d("Tag", "AlarmtonePlayingService IBinder");
         return null;
     }
 
@@ -95,6 +95,17 @@ public class AlarmtonePlayingService extends Service {
             this.isRunning = true;
             this.startId = 0;
 
+            // TODO: 2017-09-08
+            // ändra till 1 minut
+            int millisekToDelay = 10 * 1000; //1 minut
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    stopAlarm();
+                }
+            }, millisekToDelay);
+
         }else if (!this.isRunning && startId == 0){
             Log.d("tag", " alarm defult");
 
@@ -118,6 +129,14 @@ public class AlarmtonePlayingService extends Service {
         }
 
         return START_NOT_STICKY;
+    }
+
+    public void stopAlarm(){
+        mMediaPlayer.stop();
+        mMediaPlayer.reset();
+
+        this.isRunning = false;
+        this.startId = 0;
     }
 
     @Override

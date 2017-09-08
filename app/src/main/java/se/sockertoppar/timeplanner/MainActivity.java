@@ -61,12 +61,6 @@ public class MainActivity extends AppCompatActivity {
         myDatabasHelper = new myDbAdapter(this);
         myDatabasHelperSubjects = new myDbAdapterSubjects(this);
 
-//        // TODO: 2017-09-04
-//        //ta bort
-//        String data = myDatabasHelperSubjects.getData();
-//        Message.message(this,data);
-//        //
-
         dialogAddPlanner = new DialogAddPlanner();
         dialogConfirmDelete = new DialogConfirmDelete();
         mainActivity = this;
@@ -79,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         stopAlarm(this.getWindow().getDecorView().findViewById(android.R.id.content));
-
     }
 
     public void onClickAddPlanner(View view){
@@ -129,8 +122,6 @@ public class MainActivity extends AppCompatActivity {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    Log.d(TAG, "onItemClick: " + arrayListButtonObjekt.get(position).getName()
-//                            + ", id, " + arrayListButtonObjekt.get(position).getId());
                     goToTimePlanner(arrayListButtonObjekt.get(position).getId());
                 }
             });
@@ -138,8 +129,6 @@ public class MainActivity extends AppCompatActivity {
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                    Log.d(TAG, "onItemLongClick: " + arrayListButtonObjekt.get(position).getName()
-//                            + ", id, " + arrayListButtonObjekt.get(position).getId());
                     dialogConfirmDelete.showDialogConfirmDelete(context,
                             arrayListButtonObjekt.get(position).getName(),
                             arrayListButtonObjekt.get(position).getId());
@@ -162,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setAlarm(PlannerListObjekt plannerListObjekt){
-        Log.d(TAG, "setAlarm: ");
         Calendar cal = Calendar.getInstance();
         long toDayMillisek = cal.getTimeInMillis();
 
@@ -171,28 +159,13 @@ public class MainActivity extends AppCompatActivity {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,
                     plannerListObjekt.getId(), myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            //MillisekFormatChanger mfc = new MillisekFormatChanger(plannerListObjekt.getDateTimeMillisek());
             alarmManager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(plannerListObjekt.getDateTimeMillisek()), pendingIntent);
-            //delayStoptime();
+
         }
-    }
-
-    public void delayStoptime(){
-        Log.d(TAG, "delayStoptime: ");
-        int millisekToDelay = 10 * 1000; //1 minut
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                stopAlarm(mainActivity.getWindow().getDecorView().findViewById(android.R.id.content));
-            }
-        }, millisekToDelay);
     }
 
     //Stoppar de larm som är igång och alla som har en alarmtid som har varit.
     public void stopAlarm(View view){
-        Log.d(TAG, "stopAlarm: ");
-
         myIntent.putExtra("extra", "no"+ ":" + "-");
         sendBroadcast(myIntent);
         for (int i = 0; i < arrayListButtonObjekt.size(); i++) {
