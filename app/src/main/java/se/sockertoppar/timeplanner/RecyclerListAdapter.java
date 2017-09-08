@@ -37,38 +37,29 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     TimePlannerActivity timePlannerActivity;
     PlannerListObjekt plannerListObjekt;
 
-    private static View mRootView;
-
-    Context context;
-
-    ItemViewHolder holder;
 
     public RecyclerListAdapter(ArrayList<Subjects> arrayString, myDbAdapterSubjects myDatabasHelperSubjects,
-                               TimePlannerActivity timePlannerActivity, PlannerListObjekt plannerListObjekt, Context context) {
+                               TimePlannerActivity timePlannerActivity, PlannerListObjekt plannerListObjekt) {
         //Tar bort alla sysslor i listan
         clearItemList();
         //Lägget till alla sysslor i listan från arrayList med sysslor från databasen
         mItems.addAll(arrayString);
+
         this.myDatabasHelperSubjects = myDatabasHelperSubjects;
         dialogConfirmDeleteSubject = new DialogConfirmDeleteSubject();
         this.timePlannerActivity = timePlannerActivity;
         this.plannerListObjekt = plannerListObjekt;
-        this.context = context;
-
-        //mRootView = recyclerView.getRootView();
     }
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_items, parent, false);
         ItemViewHolder itemViewHolder = new ItemViewHolder(view);
-        mRootView = view.getRootView();
         return itemViewHolder;
     }
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
-        this.holder = holder;
         TextView subjectName = (TextView)holder.linerView.findViewById(R.id.subject_name);
         TextView subjectTime = (TextView)holder.linerView.findViewById(R.id.subject_time);
         TextView subjectEndtime = (TextView)holder.linerView.findViewById(R.id.subject_endtime);
@@ -90,16 +81,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         timePlannerActivity.addStartTimeToSubject(position, startTimeOnSubject);
         timePlannerActivity.checkIfSubjectActiv();
 
-        //ändrar färg på aktivt ojekt
-//        if(ifActiv){
-//            LinearLayout ll = (LinearLayout)holder.linerView;
-//            ll.setBackgroundResource(R.color.divaders);
-//            subjectName.setTextColor(ContextCompat.getColor(context, R.color.colorPrimaryDark));
-//        }
-
     }
-
-
 
     public void clearItemList(){
         mItems.clear();
@@ -111,17 +93,13 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
         Subjects removedSubject = mItems.get(position);
 
-
         myDatabasHelperSubjects.deleteById(mItems.get(position).getId());
         mItems.remove(position);
         notifyItemRemoved(position);
 
-        timePlannerActivity.updateRecycleview();
-
+        timePlannerActivity.updateArrayListToRecycleview();
         dialogConfirmDeleteSubject.showDialogConfirmDelete(timePlannerActivity, removedSubject, position);
-
     }
-
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
@@ -154,13 +132,11 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         @Override
         public void onItemSelected() {
             itemView.setBackgroundColor(Color.LTGRAY);
-
         }
 
         @Override
         public void onItemClear() {
             itemView.setBackgroundColor(0);
-
         }
     }
 }

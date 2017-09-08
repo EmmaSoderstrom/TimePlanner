@@ -24,6 +24,12 @@ public class AlarmtonePlayingService extends Service {
     MediaPlayer mMediaPlayer;
     private int startId;
 
+    String plannerObjectId;
+    PlannerListObjekt plannerListObjekt;
+    String name = "";
+    MillisekFormatChanger millisekFormatCanger;
+    String endsInString;
+
 
     @Override
     public IBinder onBind(Intent intent){
@@ -38,17 +44,30 @@ public class AlarmtonePlayingService extends Service {
         Intent intent1 = new Intent(this.getApplicationContext(), MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent1, 0);
 
+        String state = intent.getExtras().getString("extra");
+
+        String CurrentString = state;
+        String[] separated = CurrentString.split(":");
+        state = separated[0]; // get state
+        plannerObjectId = separated[1]; // get id
+
+        myDbAdapter myDatabasHelper = new myDbAdapter(this);
+        if(state.equals("yes")) {
+            plannerListObjekt = myDatabasHelper.getObjektById(plannerObjectId);
+            name = plannerListObjekt.getName();
+            millisekFormatCanger = new MillisekFormatChanger(plannerListObjekt.getDateTimeMillisek());
+            long endsInMillisek = Long.valueOf(plannerListObjekt.getDateTimeMillisek()) - Long.valueOf(plannerListObjekt.getAlarmTime());
+            endsInString = millisekFormatCanger.getTimeStringMH(endsInMillisek);
+        }
+
+
         Notification mNotify  = new Notification.Builder(this)
-                .setContentTitle("Nu startar alarmet" + "!")
-                .setContentText("Tryck på mig!")
+                .setContentTitle("Nu startar " + name + "!")
+                .setContentText(name + " slutar om " + endsInString + ".")
                 .setSmallIcon(R.drawable.ic_android_black_24dp)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)
                 .build();
-
-        String state = intent.getExtras().getString("extra");
-
-        Log.d("tag", "state  " + state);
 
         assert state != null;
         switch (state) {

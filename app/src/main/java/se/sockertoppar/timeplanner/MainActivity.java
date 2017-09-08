@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         long toDayMillisek = cal.getTimeInMillis();
 
         if(Long.parseLong(plannerListObjekt.getAlarmTime()) > toDayMillisek) {
-            myIntent.putExtra("extra", "yes");
+            myIntent.putExtra("extra", "yes" + ":" +  plannerListObjekt.getId());
             PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this,
                     plannerListObjekt.getId(), myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
     public void stopAlarm(View view){
         Log.d(TAG, "stopAlarm: ");
 
-        myIntent.putExtra("extra", "no");
+        myIntent.putExtra("extra", "no"+ ":" + "-");
         sendBroadcast(myIntent);
         for (int i = 0; i < arrayListButtonObjekt.size(); i++) {
 

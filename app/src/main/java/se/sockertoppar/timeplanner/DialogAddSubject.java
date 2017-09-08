@@ -105,7 +105,7 @@ public class DialogAddSubject {
                     long subjectTimeTotal= TimeUnit.HOURS.toMillis(subjectTimeH) + TimeUnit.MINUTES.toMillis(subjectTimeM);
 
                     timePlannerActivity.addSubjektToDatabas(subjectName, String.valueOf(subjectTimeTotal));
-                    timePlannerActivity.updateRecycleview();
+                    timePlannerActivity.updateArrayListToRecycleview();
 
                     aletAddSubject.dismiss();
 

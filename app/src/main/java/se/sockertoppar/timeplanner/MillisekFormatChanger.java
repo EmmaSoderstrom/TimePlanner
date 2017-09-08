@@ -90,4 +90,24 @@ public class MillisekFormatChanger {
         String timeStr = hourStr + " " + minuteStr;
         return timeStr;
     }
+
+    public String getTimeStringMH(long newMillisek){
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(newMillisek);
+
+        String hourStr = "";
+        String minuteStr = "";
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        if(hour > 0){
+            hourStr = hour + "h";
+        }
+        int minute = cal.get(Calendar.MINUTE);
+        if(minute > 0){
+            minuteStr = minute + "min";
+        }
+
+        String timeStr = hourStr + " " + minuteStr;
+        return timeStr;
+    }
 }

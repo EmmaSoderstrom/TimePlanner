@@ -65,14 +65,13 @@ public class TimePlannerActivity extends AppCompatActivity {
 
         millisekFormatChanger = new MillisekFormatChanger(plannerListObjekt.getDateTimeMillisek());
         setUpPage();
-        updateRecycleview();
+        updateArrayListToRecycleview();
 
         timplannerActivity = this;
         myIntent = new Intent(getBaseContext(), AlarmReceiver.class);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         setMinutsToDelayTimer();
-
     }
 
     public void setMinutsToDelayTimer(){
@@ -83,7 +82,6 @@ public class TimePlannerActivity extends AppCompatActivity {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                Log.d(TAG, "run: posdelay ------>>>>>");
                 setMinutsTimer();
             }
         }, millisekToDelay);
@@ -102,7 +100,6 @@ public class TimePlannerActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         // This code will always run on the UI thread, therefore is safe to modify UI elements.
-                        Log.d(TAG, "run: ------>>>>>>>");
                         checkIfSubjectActiv();
                     }
                 });
@@ -145,7 +142,7 @@ public class TimePlannerActivity extends AppCompatActivity {
         for (int i = 0; i < childCount; i++) {
             View child = recycleView.getChildAt(i);
             TextView subjectName = (TextView) child.findViewById(R.id.subject_name);
-            
+
             if (i == indexPosition) {
                 child.setBackgroundResource(R.color.aktivSubject);
                 subjectName.setTextColor(ContextCompat.getColor(this, R.color.aktivSubjectName));
@@ -220,10 +217,10 @@ public class TimePlannerActivity extends AppCompatActivity {
     public void undoRemoveSubject(Subjects removedSubject, int position){
         Log.d(TAG, "undoRemoveSubject: confirmation + " );
         addSubjektToDatabas(removedSubject.getName(), removedSubject.getTime(), position + 1);
-        updateRecycleview();
+        updateArrayListToRecycleview();
     }
 
-    public void updateRecycleview(){
+    public void updateArrayListToRecycleview(){
         //skapar arrayList
         subjectsArrayList = myDatabasHelperSubjects.getDataToSubjectsList(this, thisObjektsId);
         seUpRecycleview();
@@ -231,7 +228,7 @@ public class TimePlannerActivity extends AppCompatActivity {
 
     public void seUpRecycleview(){
         Log.d(TAG, "seUpRecycleview: ");
-        adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects, this, plannerListObjekt, this);
+        adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects, this, plannerListObjekt);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         //recyclerView.setHasFixedSize(true);
@@ -269,12 +266,13 @@ public class TimePlannerActivity extends AppCompatActivity {
     }
 
     public void setAlarm(){
+        Log.d(TAG, "setAlarm: ");
 
         Calendar cal = Calendar.getInstance();
         long toDayMillisek = cal.getTimeInMillis();
 
         if(Long.parseLong(plannerListObjekt.getAlarmTime()) > toDayMillisek) {
-            myIntent.putExtra("extra", "yes");
+            myIntent.putExtra("extra", "yes" + ":" +  thisObjektsId);
             pendingIntent = PendingIntent.getBroadcast(TimePlannerActivity.this, Integer.valueOf(thisObjektsId),
                     myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -290,7 +288,7 @@ public class TimePlannerActivity extends AppCompatActivity {
     public void stopAlarm(){
         Log.d(TAG, "stopAlarm: ");
 
-        myIntent.putExtra("extra", "no");
+        myIntent.putExtra("extra", "no"+ ":" + "-");
         sendBroadcast(myIntent);
         pendingIntent = PendingIntent.getBroadcast(TimePlannerActivity.this, Integer.valueOf(thisObjektsId), myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
