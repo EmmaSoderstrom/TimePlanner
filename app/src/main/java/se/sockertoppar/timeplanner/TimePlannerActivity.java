@@ -122,13 +122,10 @@ public class TimePlannerActivity extends AppCompatActivity {
                 //om någon syssla är aktiv
                 if (toDayMillisek > Long.valueOf(subject.getStartTimeMillisek())
                         && toDayMillisek < (Long.valueOf(subject.getStartTimeMillisek()) + Long.valueOf(subject.getTime()))) {
-                    Log.d(TAG, "checkIfSubjectActiv: aktiv ");
-
                     //ändra bakgrund
                     changeActivBackgrund(i, recycleView);
 
                 }else if(toDayMillisek > Long.valueOf(plannerListObjekt.getDateTimeMillisek())){
-                    Log.d(TAG, "checkIfSubjectActiv: tiden är slut");
                     changeActivBackgrund(-1, recycleView);
                 }
             }
@@ -136,8 +133,6 @@ public class TimePlannerActivity extends AppCompatActivity {
     }
 
     public void changeActivBackgrund(int indexPosition, RecyclerView recycleView){
-        Log.d(TAG, "changeActivBackgrund: " + indexPosition );
-
         int childCount = recycleView.getChildCount();
         for (int i = 0; i < childCount; i++) {
             View child = recycleView.getChildAt(i);
@@ -154,7 +149,6 @@ public class TimePlannerActivity extends AppCompatActivity {
     }
 
     public void clearSubjectArrayList(){
-        Log.d(TAG, "clearSubjectArrayList: ");
         subjectsArrayList.clear();
     }
 
@@ -195,14 +189,12 @@ public class TimePlannerActivity extends AppCompatActivity {
     }
 
     public void addSubjektToDatabas(String name, String time){
-        Log.d(TAG, "addSubjektToDatabas: ");
         //position till 1 mer än befintliga sysslor i listan
         myDatabasHelperSubjects.insertData(thisObjektsId, name, time, String.valueOf(subjectsArrayList.size() + 1));
         changeAlarmTime();
     }
 
     public void addSubjektToDatabas(String name, String time, int pos){
-        Log.d(TAG, "addSubjektToDatabas: med pos");
         myDatabasHelperSubjects.insertData(thisObjektsId, name, time, String.valueOf(pos));
     }
 
@@ -215,7 +207,6 @@ public class TimePlannerActivity extends AppCompatActivity {
      */
 
     public void undoRemoveSubject(Subjects removedSubject, int position){
-        Log.d(TAG, "undoRemoveSubject: confirmation + " );
         addSubjektToDatabas(removedSubject.getName(), removedSubject.getTime(), position + 1);
         updateArrayListToRecycleview();
     }
@@ -227,7 +218,6 @@ public class TimePlannerActivity extends AppCompatActivity {
     }
 
     public void seUpRecycleview(){
-        Log.d(TAG, "seUpRecycleview: ");
         adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects, this, plannerListObjekt);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -238,7 +228,6 @@ public class TimePlannerActivity extends AppCompatActivity {
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
         mItemTouchHelper.attachToRecyclerView(recyclerView);
-
     }
 
     /**
@@ -250,7 +239,6 @@ public class TimePlannerActivity extends AppCompatActivity {
     }
 
     public void changeAlarmTime(){
-        Log.d(TAG, "changeAlarmTime: ");
         //hämtar tid från alla sysslor
         ArrayList<Subjects> arrayLisSubjects = myDatabasHelperSubjects.getDataToSubjectsList(this, thisObjektsId);
         long totalTimeToGive = 0;
@@ -276,10 +264,10 @@ public class TimePlannerActivity extends AppCompatActivity {
             pendingIntent = PendingIntent.getBroadcast(TimePlannerActivity.this, Integer.valueOf(thisObjektsId),
                     myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            //MillisekFormatChanger mfc = new MillisekFormatChanger(plannerListObjekt.getAlarmTime());
             alarmManager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(plannerListObjekt.getAlarmTime()), pendingIntent);
+            MainActivity mainActivity = new MainActivity();
+            //mainActivity.delayStoptime();
 
-            Log.d(TAG, "setAlarm: " + millisekFormatChanger.getTimeString(Long.valueOf(plannerListObjekt.getAlarmTime())));
         }else{
             stopAlarm();
         }
@@ -290,7 +278,8 @@ public class TimePlannerActivity extends AppCompatActivity {
 
         myIntent.putExtra("extra", "no"+ ":" + "-");
         sendBroadcast(myIntent);
-        pendingIntent = PendingIntent.getBroadcast(TimePlannerActivity.this, Integer.valueOf(thisObjektsId), myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        pendingIntent = PendingIntent.getBroadcast(TimePlannerActivity.this, Integer.valueOf(thisObjektsId),
+                myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         alarmManager.cancel(pendingIntent);
     }

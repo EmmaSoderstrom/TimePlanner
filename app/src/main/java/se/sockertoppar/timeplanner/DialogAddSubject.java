@@ -28,11 +28,6 @@ public class DialogAddSubject {
 
     String TAG = "tag";
     View diaView;
-    TextView textDate;
-
-    int day;
-    int month;
-    int year;
 
 
     public DialogAddSubject(){
@@ -40,7 +35,6 @@ public class DialogAddSubject {
     }
 
     public void showDialogAddSubject(final Context context, final TimePlannerActivity timePlannerActivity) {
-        Log.d(TAG, "showDialogAddPlanner: ");
 
         AlertDialog.Builder builderAddPlanner = new AlertDialog.Builder(context);
         //builder1.setMessage(R.string.dialog_add_planner_message);
@@ -57,16 +51,6 @@ public class DialogAddSubject {
         timePicker.setIs24HourView(true);
         timePicker.setCurrentHour(0);
         timePicker.setCurrentMinute(0);
-
-//        NumberPicker numberPickerHour = (NumberPicker)diaView.findViewById(R.id.num_picker_hour);
-//        numberPickerHour.setMaxValue(23);
-//        numberPickerHour.setMinValue(0);
-//        //numberPickerHour.setDisplayedValues(numbers);
-//        NumberPicker numberPickerMinuts = (NumberPicker)diaView.findViewById(R.id.num_picker_minuts);
-//        numberPickerMinuts.setMaxValue(59);
-//        numberPickerMinuts.setMinValue(0);
-
-
 
         /**
          * Knappar på dialog

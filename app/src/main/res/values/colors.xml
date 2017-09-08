@@ -15,5 +15,7 @@
     <color name="divaders">#c06cb54a</color>
     <color name="aktivSubject">#c06cb54a</color>
     <color name="aktivSubjectName">#0b2825</color>
+    <color name="removeSubject">#57104744</color>
+
 
 </resources>

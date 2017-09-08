@@ -87,30 +87,6 @@ public class ButtonListContiner extends ArrayAdapter<PlannerListObjekt> {
         MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(plannerListObjekt.get(position).getDateTimeMillisek());
         objectDate.setText(millisekFormatChanger.getDateString());
         objectTime.setText(millisekFormatChanger.getTimeString());
-                //+ millisekFormatChanger.getDateString() + ", "
-                //+ millisekFormatChanger.getTimeString() + ", "
-                //+ plannerListObjekt.get(position).getDateTimeMillisek() + ", "
-                //+ date
-                //);
-
-
-
-//        TextView button = (TextView)rowView.findViewById(R.id.mainListObjektText);
-//        button.setText(plannerListObjekt.get(position).getName() + ", "
-//                + plannerListObjekt.get(position).getDate() + ", "
-//                + plannerListObjekt.get(position).getTime() + ", "
-//                + plannerListObjekt.get(position).getDateTimeMillisek() + ", "
-//                + date);
-
-
-
-
-
-
-
-
-
-
 
         return rowView;
     }

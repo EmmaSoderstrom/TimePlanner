@@ -16,7 +16,6 @@ public class DialogConfirmDeleteSubject {
     String TAG = "tag";
     TimePlannerActivity timePlannerActivity;
     View diaView;
-    boolean confirmation = false;
 
 
     public DialogConfirmDeleteSubject(){
@@ -24,10 +23,7 @@ public class DialogConfirmDeleteSubject {
     }
 
     public void showDialogConfirmDelete(final Context context, final Subjects removedSubjekt, final int position) {
-        Log.d(TAG, "showDialogAddPlanner: " + context.getClass().getSimpleName());
-
         timePlannerActivity = (TimePlannerActivity) context;
-        //context.getApplicationContext();
 
         AlertDialog.Builder builderConfirm = new AlertDialog.Builder(context);
         //builder1.setMessage(R.string.dialog_add_planner_message);

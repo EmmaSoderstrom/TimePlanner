@@ -24,10 +24,8 @@ public class DialogConfirmDelete {
     }
 
     public void showDialogConfirmDelete(final Context context, String name, final int objektId) {
-        Log.d(TAG, "showDialogAddPlanner: " + context.getClass().getSimpleName());
 
         mainActivity = (MainActivity) context;
-        //context.getApplicationContext();
 
         AlertDialog.Builder builderConfirm = new AlertDialog.Builder(context);
         //builder1.setMessage(R.string.dialog_add_planner_message);

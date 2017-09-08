@@ -50,7 +50,6 @@ public class DialogAddPlanner {
     }
 
     public void showDialogAddPlanner(final Context context, final MainActivity mainActivity) {
-        Log.d(TAG, "showDialogAddPlanner: ");
 
         AlertDialog.Builder builderAddPlanner = new AlertDialog.Builder(context);
         //builder1.setMessage(R.string.dialog_add_planner_message);
@@ -136,9 +135,7 @@ public class DialogAddPlanner {
 
         alertAddPlanner.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Log.d("tag", "Dialog Klar");
-                // TODO: 2017-08-14
+            public void onClick(View v) {// TODO: 2017-08-14
                 //repitition av LLCalendarView
                 LinearLayout LLCalendarView = (LinearLayout) diaView.findViewById(R.id.LinerCalendarView);
                 boolean visibility = getVisibilityCalender(LLCalendarView);
@@ -158,7 +155,6 @@ public class DialogAddPlanner {
 
                         String strDate= year + "-" + month + "-" + day + " "
                                 + plannerTimeH + ":" + plannerTimeM + ":" + "00";               // tex. "2017-01-07 10:11:23"
-                        Log.d(TAG, "strDate: " + strDate);
                         //String test = Locale.getDefault().getLanguage();
                         //Locale l = new Locale ( "sv" , "SV" );
                         //Log.d(TAG, "test: " + test);
@@ -176,11 +172,9 @@ public class DialogAddPlanner {
                             Log.d(TAG, "error: " + e);
                         }
 
-                        //Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate+ ", " + plannerTimeH+ ", " + plannerTimeM+ ", " +
-                                //String.valueOf(plannerDateTimeMillisek));
                         int objektId = mainActivity.saveNewTimePlannerInt(plannerName, plannerDate, plannerTimeH, plannerTimeM,
                                 String.valueOf(plannerDateTimeMillisek));
-                        //mainActivity.viewdata();
+
                         mainActivity.goToTimePlanner(objektId);
                         alertAddPlanner.dismiss();
 
@@ -211,13 +205,11 @@ public class DialogAddPlanner {
     }
     
     public void showCalendar(){
-        Log.d(TAG, "showCalendar: ");
         LinearLayout LLCalendarView = (LinearLayout) diaView.findViewById(R.id.LinerCalendarView);
         boolean visibility = getVisibilityCalender(LLCalendarView);
 
         if(visibility) {
             LLCalendarView.setVisibility(View.GONE);
-            Log.d(TAG, "showCalendar: true " + visibility);
         }else{
             LLCalendarView.setVisibility(View.VISIBLE);
         }
@@ -233,6 +225,4 @@ public class DialogAddPlanner {
         }
         return visibility;
     }
-
-
 }

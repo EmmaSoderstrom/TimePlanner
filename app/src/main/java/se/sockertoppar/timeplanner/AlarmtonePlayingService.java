@@ -20,7 +20,6 @@ import android.util.Log;
 public class AlarmtonePlayingService extends Service {
 
     private boolean isRunning;
-    private Context context;
     MediaPlayer mMediaPlayer;
     private int startId;
 
@@ -60,10 +59,12 @@ public class AlarmtonePlayingService extends Service {
             endsInString = millisekFormatCanger.getTimeStringMH(endsInMillisek);
         }
 
+        String title = this.getString(R.string.noti_title);
+        String subtext = this.getString(R.string.noti_subtext);
 
         Notification mNotify  = new Notification.Builder(this)
-                .setContentTitle("Nu startar " + name + "!")
-                .setContentText(name + " slutar om " + endsInString + ".")
+                .setContentTitle(title + " " + name + "!")
+                .setContentText(name + " " + subtext + endsInString)
                 .setSmallIcon(R.drawable.ic_android_black_24dp)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)

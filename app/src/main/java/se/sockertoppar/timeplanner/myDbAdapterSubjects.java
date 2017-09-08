@@ -76,12 +76,10 @@ public class myDbAdapterSubjects {
      * @return
      */
     public ArrayList<Subjects> getDataToSubjectsList(TimePlannerActivity timePlannerActivity, String thisObjektId) {
-        //Log.d(TAG, "getDataToSubjectsList: " + thisObjektId);
         SQLiteDatabase db = myhelper.getWritableDatabase();
 
         String[] columns = {myDbHelper.SUBJECTSID, myDbHelper.POINTINGID, myDbHelper.NAME, myDbHelper.TIME, myDbHelper.POSITION};
         Cursor cursor = db.query(myDbHelper.TABLE_NAME,columns,null,null,null,null,null);
-        StringBuffer buffer = new StringBuffer();
 
         //tar bort sysslor i arraylist innan det läggs till nya ned rätt pointingID
         timePlannerActivity.clearSubjectArrayList();
@@ -92,10 +90,8 @@ public class myDbAdapterSubjects {
             String name = cursor.getString(cursor.getColumnIndex(myDbHelper.NAME));
             String time = cursor.getString(cursor.getColumnIndex(myDbHelper.TIME));
             String position = cursor.getString(cursor.getColumnIndex(myDbHelper.POSITION));
-            //buffer.append(cid + ", " + name + ", " + date + ", " + time + " \n");
 
             if(thisObjektId.equals(pointingId)) {
-                //Log.d(TAG, "getDataToSubjectsList: " + thisObjektId + " , " + pointingId);
                 SubjectsListObjekt = new Subjects(cid, pointingId, name, time, position);
                 subjectsArrayList.add(SubjectsListObjekt);
             }
@@ -136,7 +132,6 @@ public class myDbAdapterSubjects {
         if (cursor != null)
             cursor.moveToFirst();
 
-        //String test = cursor.getString(0) + ", " + cursor.getString(1) + ", " + cursor.getString(2);
         PlannerListObjekt plannerListObjekt = new PlannerListObjekt(Integer.valueOf(cursor.getString(0)),
                 cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
         return plannerListObjekt;

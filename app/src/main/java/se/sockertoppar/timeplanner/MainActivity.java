@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
 import android.support.v4.view.ScrollingView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -77,33 +78,25 @@ public class MainActivity extends AppCompatActivity {
         myIntent = new Intent(getBaseContext(), AlarmReceiver.class);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
+        stopAlarm(this.getWindow().getDecorView().findViewById(android.R.id.content));
+
     }
 
     public void onClickAddPlanner(View view){
-        Log.d(TAG, "onClickAddPlanner: ");
         dialogAddPlanner.showDialogAddPlanner(this, this);
     }
 
     public void onClickTextDate(View view){
-        Log.d(TAG, "onClickTextDate: ");
         dialogAddPlanner.showCalendar();
     }
 
-//    public void saveNewTimePlanner(String plannerName, String plannerDate, int plannerTimeH, int plannerTimeM, String plannerDateTimeMillisek){
-//        Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate + ", " + plannerTimeH + ":" + plannerTimeM);
-//        myDatabasHelper.insertData(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM), plannerDateTimeMillisek);
-//        setUpButtonList();
-//    }
-
     public int saveNewTimePlannerInt(String plannerName, String plannerDate, int plannerTimeH, int plannerTimeM,
                                      String plannerDateTimeMillisek){
-        Log.d(TAG, "saveNewTimePlanner: " + plannerName + ", " + plannerDate + ", " + plannerTimeH + ":" + plannerTimeM);
         int objektId = myDatabasHelper.insertDataInt(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM),
                 plannerDateTimeMillisek, plannerDateTimeMillisek);
 
         PlannerListObjekt plannerListObjekt = myDatabasHelper.getObjektById(String.valueOf(objektId));
         setAlarm(plannerListObjekt);
-
         setUpButtonList();
 
         return objektId;
@@ -115,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deleteObjektInDatabas(int id) {
-        Log.d(TAG, "delete: " + id);
         myDatabasHelper.delete(id);
         myDatabasHelperSubjects.deleteByPointingId(id);
         setUpButtonList();
@@ -126,9 +118,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setUpButtonList(){
-
         arrayListButtonObjekt = myDatabasHelper.getDataToButton(this);
-        Log.d(TAG, "setUpButtonList: " + arrayListButtonObjekt);
 
         if (adapter == null) {
             adapter = new ButtonListContiner(this, arrayListButtonObjekt);
@@ -139,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Log.d(TAG, "onItemClick: " + arrayListButtonObjekt.get(position).getName()
-                            + ", id, " + arrayListButtonObjekt.get(position).getId());
+//                    Log.d(TAG, "onItemClick: " + arrayListButtonObjekt.get(position).getName()
+//                            + ", id, " + arrayListButtonObjekt.get(position).getId());
                     goToTimePlanner(arrayListButtonObjekt.get(position).getId());
                 }
             });
@@ -148,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
             listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    Log.d(TAG, "onItemLongClick: " + arrayListButtonObjekt.get(position).getName()
-                            + ", id, " + arrayListButtonObjekt.get(position).getId());
+//                    Log.d(TAG, "onItemLongClick: " + arrayListButtonObjekt.get(position).getName()
+//                            + ", id, " + arrayListButtonObjekt.get(position).getId());
                     dialogConfirmDelete.showDialogConfirmDelete(context,
                             arrayListButtonObjekt.get(position).getName(),
                             arrayListButtonObjekt.get(position).getId());
@@ -159,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
             });
 
         }else {
-            Log.d("tag", "notifyDataSetChanged");
             adapter.notifyDataSetChanged();
         }
     }
@@ -184,7 +173,20 @@ public class MainActivity extends AppCompatActivity {
 
             //MillisekFormatChanger mfc = new MillisekFormatChanger(plannerListObjekt.getDateTimeMillisek());
             alarmManager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(plannerListObjekt.getDateTimeMillisek()), pendingIntent);
+            //delayStoptime();
         }
+    }
+
+    public void delayStoptime(){
+        Log.d(TAG, "delayStoptime: ");
+        int millisekToDelay = 10 * 1000; //1 minut
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                stopAlarm(mainActivity.getWindow().getDecorView().findViewById(android.R.id.content));
+            }
+        }, millisekToDelay);
     }
 
     //Stoppar de larm som är igång och alla som har en alarmtid som har varit.
@@ -197,8 +199,6 @@ public class MainActivity extends AppCompatActivity {
 
             Calendar cal = Calendar.getInstance();
             long toDayMillisek = cal.getTimeInMillis();
-            //Log.d(TAG, "stopAlarm: " + toDayMillisek);
-
             long thisPlannerObjectAlarmTime = Long.parseLong(arrayListButtonObjekt.get(i).getAlarmTime());
 
             if(thisPlannerObjectAlarmTime < toDayMillisek ){
@@ -207,9 +207,6 @@ public class MainActivity extends AppCompatActivity {
 
                 alarmManager.cancel(pendingIntent);
             }
-
         }
-
     }
-
 }

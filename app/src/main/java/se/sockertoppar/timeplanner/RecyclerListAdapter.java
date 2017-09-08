@@ -80,7 +80,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         subjectEndtime.setText(millisekFormatChanger.getTimeString(startTimeOnSubject));
         timePlannerActivity.addStartTimeToSubject(position, startTimeOnSubject);
         timePlannerActivity.checkIfSubjectActiv();
-
     }
 
     public void clearItemList(){
@@ -89,8 +88,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onItemDismiss(int position) {
-        Log.d(TAG, "onItemDismiss: " + mItems.get(position).getName());
-
         Subjects removedSubject = mItems.get(position);
 
         myDatabasHelperSubjects.deleteById(mItems.get(position).getId());
@@ -131,7 +128,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
         @Override
         public void onItemSelected() {
-            itemView.setBackgroundColor(Color.LTGRAY);
+            itemView.setBackgroundResource(R.color.removeSubject);
         }
 
         @Override
