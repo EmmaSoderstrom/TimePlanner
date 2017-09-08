@@ -133,7 +133,7 @@ public class TimePlannerActivity extends AppCompatActivity {
                     //kollar om larmet går igång och gör knapp synlig
                     if(millisekFormatChanger.getTimeString(toDayMillisek)
                             .equals(millisekFormatChanger.getTimeString(Long.valueOf(plannerListObjekt.getAlarmTime())))){
-                        FloatingActionButton turnOfAlarmButtom = (FloatingActionButton)findViewById(R.id.turn_of_alarm);
+                        Button turnOfAlarmButtom = (Button)findViewById(R.id.turn_of_alarm);
                         turnOfAlarmButtom.setVisibility(View.VISIBLE);
                     }
 
@@ -145,7 +145,7 @@ public class TimePlannerActivity extends AppCompatActivity {
     }
 
     public void onClickOfAlarm(View view){
-        FloatingActionButton turnOfAlarmButtom = (FloatingActionButton)findViewById(R.id.turn_of_alarm);
+        Button turnOfAlarmButtom = (Button)findViewById(R.id.turn_of_alarm);
         turnOfAlarmButtom.setVisibility(View.INVISIBLE);
         stopAlarm();
     }

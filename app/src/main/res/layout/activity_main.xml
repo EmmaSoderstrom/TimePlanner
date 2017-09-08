@@ -19,10 +19,31 @@
         android:paddingLeft="16dp"
         android:paddingBottom="80dp"
         android:clipToPadding="false"
-        android:scrollbarStyle="outsideOverlay">
+        android:scrollbarStyle="outsideOverlay"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp">
 
     </ListView>
 
+    <Button
+        android:id="@+id/turn_of_alarm"
+        android:onClick="onClickOfAlarm"
+        android:visibility="invisible"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:text="@string/turn_of_alarm_button"
+        android:textColor="#ffffff"
+        android:drawableLeft="@drawable/ic_notifications_active_black_24dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/list_view_button"
+        />
 
     <android.support.design.widget.FloatingActionButton
         android:onClick="onClickAddPlanner"
@@ -40,22 +61,19 @@
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/turn_of_alarm"
-        android:visibility="invisible"
-        android:onClick="onClickOfAlarm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:src="@drawable/ic_notifications_active_black_24dp"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="16dp"
-        android:layout_marginRight="16dp" />
+
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/turn_of_alarm"-->
+        <!--android:onClick="onClickOfAlarm"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:src="@drawable/ic_notifications_active_black_24dp"-->
+        <!--tools:layout_constraintRight_creator="1"-->
+        <!--tools:layout_constraintBottom_creator="1"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--android:layout_marginBottom="16dp"-->
+        <!--/>-->
 
 </android.support.constraint.ConstraintLayout>

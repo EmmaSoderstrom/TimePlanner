@@ -28,6 +28,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         myIntent = new Intent(getBaseContext(), AlarmReceiver.class);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-        checkIfSubjectActiv();
+        setMinutsToDelayTimer();
         stopAlarm();
     }
 
@@ -116,11 +118,47 @@ public class MainActivity extends AppCompatActivity {
         arrayListButtonObjekt.clear();
     }
 
+
+
+    public void setMinutsToDelayTimer(){
+        Calendar cal = Calendar.getInstance();
+        int sekund = cal.getTime().getSeconds();
+        int millisekToDelay = (60 - sekund) * 1000;
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                setMinutsTimer();
+            }
+        }, millisekToDelay);
+    }
+
+    public void setMinutsTimer(){
+        Timer timer = new Timer();
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                // When you need to modify a UI element, do so on the UI thread.
+                // 'getActivity()' is required as this is being ran from a Fragment.
+                mainActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // This code will always run on the UI thread, therefore is safe to modify UI elements.
+                        Log.d(TAG, "run: setMinutsTimer");
+                        setUpButtonList();
+                    }
+                });
+            }
+        }, 0, 1000 * 1 * 60); //1000 * 1 * 60 = 60sek
+    }
+
     public void setUpButtonList(){
         arrayListButtonObjekt = myDatabasHelper.getDataToButton(this);
 
         if (adapter == null) {
-            adapter = new ButtonListContiner(this, arrayListButtonObjekt);
+            adapter = new ButtonListContiner(this, arrayListButtonObjekt, this);
 
             listView = (ListView) findViewById(R.id.list_view_button);
             listView.setAdapter(adapter);
@@ -155,93 +193,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
-
-    public void checkIfSubjectActiv(){
-        Log.d(TAG, "checkIfSubjectActiv: ");
-        Calendar cal = Calendar.getInstance();
-        long toDayMillisek = cal.getTimeInMillis();
-
-        //ListView listView = (ListView) findViewById(R.id.list_view_button);
-
-        for (int i = 0; i < arrayListButtonObjekt.size(); i++) {
-
-            PlannerListObjekt object = arrayListButtonObjekt.get(i);
-
-            if(object.getAlarmTime() != null) {
-
-                //om någon object är aktiv
-                if (toDayMillisek > Long.valueOf(object.getAlarmTime())
-                        && toDayMillisek < (Long.valueOf(object.getDateTimeMillisek()) )) {
-
-                    Log.d(TAG, "checkIfSubjectActiv: aktivt ");
-
-                    //ändra bakgrund
-                    changeActivBackgrund(i, listView);
-
-                    MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(String.valueOf(toDayMillisek));
-                    //kollar om larmet går igång och gör knapp synlig
-                    if(millisekFormatChanger.getTimeString(toDayMillisek)
-                            .equals(millisekFormatChanger.getTimeString(Long.valueOf(object.getAlarmTime())))){
-                        FloatingActionButton turnOfAlarmButtom = (FloatingActionButton)findViewById(R.id.turn_of_alarm);
-                        turnOfAlarmButtom.setVisibility(View.VISIBLE);
-                    }
-
-                }else if(toDayMillisek > Long.valueOf(object.getDateTimeMillisek())){
-                    //changeActivBackgrund(-1, listView);
-                }
-            }
-        }
-    }
-
-    public void changeActivBackgrund(int pos, ListView lv){
-        View test;
-        test = listView.getAdapter().getView(pos, null, listView);
-
-        Log.d(TAG, "changeActivBackgrund: " + pos);
-        //listView.getChildAt(pos).setBackgroundColor(Color.parseColor("#00743D"));
-
-//        final int firstListItemPosition = listView.getFirstVisiblePosition();
-//        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
-//
-//        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
-//             test = listView.getAdapter().getView(pos, null, listView);
-//            Log.d(TAG, "changeActivBackgrund: detta ");
-//        } else {
-//            final int childIndex = pos - firstListItemPosition;
-//             test = listView.getChildAt(childIndex);
-//            Log.d(TAG, "changeActivBackgrund: detta eller detta");
-//        }
-        Log.d(TAG, "changeActivBackgrund: test " + test.getTag());
-        //test.setBackgroundResource(R.color.aktivSubject);
-        //test.setBackgroundColor(0x45f6400);
-        LinearLayout ll = (LinearLayout) test.findViewById(R.id.main_list_ll);
-        Log.d(TAG, "changeActivBackgrund: test " + ll.getTag());
-        ll.setBackgroundResource(R.color.aktivSubject);
-        //Log.d(TAG, "changeActivBackgrund: " + listView.getChildAt(indexPosition));
-
-        //listView.setBackgroundResource(R.color.colorAccent);
-        int childCount = listView.getChildCount();
-//
-        Log.d(TAG, "changeActivBackgrund:  childCount " + childCount);
-        for (int i = 0; i < childCount; i++) {
-            View child = listView.getChildAt(i);
-            Log.d(TAG, "changeActivBackgrund: child " + child);
-            //TextView subjectName = (TextView) child.findViewById(R.id.subject_name);
-
-            if (i == pos) {
-                child.setBackgroundResource(R.color.aktivSubject);
-                //subjectName.setTextColor(ContextCompat.getColor(this, R.color.aktivSubjectName));
-            }else {
-                child.setBackgroundColor(0);
-                //subjectName.setTextColor(ContextCompat.getColor(this, R.color.textListName));
-            }
-        }
-    }
-
-
     public void onClickOfAlarm(View view){
-        FloatingActionButton turnOfAlarmButtom = (FloatingActionButton)findViewById(R.id.turn_of_alarm);
+        Button turnOfAlarmButtom = (Button)findViewById(R.id.turn_of_alarm);
         turnOfAlarmButtom.setVisibility(View.INVISIBLE);
         stopAlarm();
     }

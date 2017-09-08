@@ -16,5 +16,6 @@
 
     <string name="noti_title">Nu startar </string>
     <string name="noti_subtext"> slutar om </string>
+    <string name="turn_of_alarm_button">Stäng av alarm!</string>
 
 </resources>

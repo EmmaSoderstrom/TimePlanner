@@ -1,16 +1,20 @@
 package se.sockertoppar.timeplanner;
 
 import android.content.Context;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -21,14 +25,17 @@ public class ButtonListContiner extends ArrayAdapter<PlannerListObjekt> {
 
     private final Context context;
     private ArrayList<PlannerListObjekt> plannerListObjekt;
+    MainActivity mainActivity;
 
 
 
-    public ButtonListContiner(Context context, ArrayList<PlannerListObjekt> startPerson) {
+    public ButtonListContiner(Context context, ArrayList<PlannerListObjekt> startPerson, MainActivity mainActivity) {
         super(context, 0, startPerson);
 
         this.context = context;
         plannerListObjekt = startPerson;
+        this.mainActivity = mainActivity;
+
 
     }
 
@@ -78,6 +85,34 @@ public class ButtonListContiner extends ArrayAdapter<PlannerListObjekt> {
 //        //om på engelska ändra timmarna till 12timmars klocka
 //        int hour = cal.get(Calendar.HOUR_OF_DAY);
 //        int minute = cal.get(Calendar.MINUTE);
+
+        Calendar cal = Calendar.getInstance();
+        long toDayMillisek = cal.getTimeInMillis();
+        PlannerListObjekt object = plannerListObjekt.get(position);
+        TextView name = (TextView) rowView.findViewById(R.id.object_name);
+
+        //om någon object är aktiv
+        if (toDayMillisek > Long.valueOf(object.getAlarmTime())
+                && toDayMillisek < (Long.valueOf(object.getDateTimeMillisek()) )) {
+
+            //ändra bakgrund
+            rowView.setBackgroundResource(R.color.aktivSubject);
+
+            name.setTextColor(ContextCompat.getColor(context, R.color.aktivSubjectName));
+
+            MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(String.valueOf(toDayMillisek));
+            //kollar om larmet går igång och gör knapp synlig
+            if(millisekFormatChanger.getTimeString(toDayMillisek)
+                    .equals(millisekFormatChanger.getTimeString(Long.valueOf(object.getAlarmTime())))){
+                Button turnOfAlarmButtom = (Button)mainActivity.findViewById(R.id.turn_of_alarm);
+                turnOfAlarmButtom.setVisibility(View.VISIBLE);
+            }
+
+        }else if(toDayMillisek > Long.valueOf(object.getDateTimeMillisek())){
+            rowView.setBackgroundResource(0);
+            name.setTextColor(ContextCompat.getColor(context, R.color.textListName));
+        }
+
 
 
         TextView objectName = (TextView)rowView.findViewById(R.id.object_name);
