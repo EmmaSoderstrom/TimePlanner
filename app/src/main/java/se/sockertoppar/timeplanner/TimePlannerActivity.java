@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -72,6 +74,8 @@ public class TimePlannerActivity extends AppCompatActivity {
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         setMinutsToDelayTimer();
+
+        stopAlarm();
     }
 
     public void setMinutsToDelayTimer(){
@@ -122,14 +126,28 @@ public class TimePlannerActivity extends AppCompatActivity {
                 //om någon syssla är aktiv
                 if (toDayMillisek > Long.valueOf(subject.getStartTimeMillisek())
                         && toDayMillisek < (Long.valueOf(subject.getStartTimeMillisek()) + Long.valueOf(subject.getTime()))) {
+
                     //ändra bakgrund
                     changeActivBackgrund(i, recycleView);
+
+                    //kollar om larmet går igång och gör knapp synlig
+                    if(millisekFormatChanger.getTimeString(toDayMillisek)
+                            .equals(millisekFormatChanger.getTimeString(Long.valueOf(plannerListObjekt.getAlarmTime())))){
+                        FloatingActionButton turnOfAlarmButtom = (FloatingActionButton)findViewById(R.id.turn_of_alarm);
+                        turnOfAlarmButtom.setVisibility(View.VISIBLE);
+                    }
 
                 }else if(toDayMillisek > Long.valueOf(plannerListObjekt.getDateTimeMillisek())){
                     changeActivBackgrund(-1, recycleView);
                 }
             }
         }
+    }
+
+    public void onClickOfAlarm(View view){
+        FloatingActionButton turnOfAlarmButtom = (FloatingActionButton)findViewById(R.id.turn_of_alarm);
+        turnOfAlarmButtom.setVisibility(View.INVISIBLE);
+        stopAlarm();
     }
 
     public void changeActivBackgrund(int indexPosition, RecyclerView recycleView){
@@ -265,8 +283,6 @@ public class TimePlannerActivity extends AppCompatActivity {
                     myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             alarmManager.set(AlarmManager.RTC_WAKEUP, Long.parseLong(plannerListObjekt.getAlarmTime()), pendingIntent);
-            MainActivity mainActivity = new MainActivity();
-            //mainActivity.delayStoptime();
 
         }else{
             stopAlarm();

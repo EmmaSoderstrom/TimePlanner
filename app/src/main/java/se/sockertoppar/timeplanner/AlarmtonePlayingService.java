@@ -40,6 +40,9 @@ public class AlarmtonePlayingService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId){
         final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
+
+
+
         Intent intent1 = new Intent(this.getApplicationContext(), MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent1, 0);
 
@@ -97,7 +100,7 @@ public class AlarmtonePlayingService extends Service {
 
             // TODO: 2017-09-08
             // ändra till 1 minut
-            int millisekToDelay = 10 * 1000; //1 minut
+            int millisekToDelay = 30 * 1000; //1 minut
 
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
