@@ -1,6 +1,7 @@
 package se.sockertoppar.timeplanner;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     DialogConfirmDeleteSubject dialogConfirmDeleteSubject;
     TimePlannerActivity timePlannerActivity;
     PlannerObjekt plannerListObjekt;
+    MillisekFormatChanger millisekFormatChanger;
 
 
     public RecyclerListAdapter(ArrayList<Subjects> arrayString, myDbAdapterSubjects myDatabasHelperSubjects,
@@ -41,6 +43,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         dialogConfirmDeleteSubject = new DialogConfirmDeleteSubject();
         this.timePlannerActivity = timePlannerActivity;
         this.plannerListObjekt = plannerListObjekt;
+
+        millisekFormatChanger = new MillisekFormatChanger();
     }
 
     @Override
@@ -55,8 +59,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         TextView subjectName = (TextView)holder.linerView.findViewById(R.id.subject_name);
         TextView subjectTime = (TextView)holder.linerView.findViewById(R.id.subject_time);
         TextView subjectEndtime = (TextView)holder.linerView.findViewById(R.id.subject_endtime);
+
         subjectName.setText(mItems.get(position).getName());
-        MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger();
         subjectTime.setText(millisekFormatChanger.getTimeStringMH(Long.valueOf(mItems.get(position).getTime())));
 
         //skapar starttid till varje syssla
@@ -71,7 +75,6 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         long startTimeOnSubject = endTime - totalTimeToGive - Long.valueOf(mItems.get(position).getTime());
         subjectEndtime.setText(millisekFormatChanger.getTimeString(startTimeOnSubject));
         timePlannerActivity.addStartTimeToSubject(position, startTimeOnSubject);
-        timePlannerActivity.checkIfSubjectActiv();
     }
 
     public void clearItemList(){

@@ -3,43 +3,57 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
+    <LinearLayout
+        android:id="@+id/time_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:id="@+id/editTextPlannerName"
-        android:hint="@string/dialog_add_planner_layout_name"
-        android:imeOptions="actionDone"
-        android:singleLine="true"/>
+        android:orientation="vertical">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:id="@+id/editTextPlannerName"
+            android:hint="@string/dialog_add_planner_layout_name"
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="4dp"
+            android:id="@+id/textDate"
+            android:text="--/--/----"
+            android:layout_gravity="center_horizontal"
+            android:textSize="24sp"
+            android:onClick="onClickTextDate"/>
+
+        <TextView
+            android:id="@+id/text_timepicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/dialog_add_planner_picker_time"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="-20dp"/>
 
 
-    <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="18dp"
-    android:layout_marginBottom="4dp"
-    android:id="@+id/textDate"
-    android:text="--/--/----"
-    android:layout_gravity="center_horizontal"
-    android:textSize="24sp"
-    android:onClick="onClickTextDate"/>
+        <TimePicker
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/timePicker"
+            android:timePickerMode="spinner"></TimePicker>
+    </LinearLayout>
 
-
-
-            <TimePicker
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/timePicker"
-                android:timePickerMode="spinner"></TimePicker>
-
-            <DatePicker
-                android:visibility="gone"
-                android:id="@+id/calendarView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+    <DatePicker
+        android:visibility="gone"
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
 
 

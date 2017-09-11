@@ -47,6 +47,7 @@ public class TimePlannerActivity extends AppCompatActivity {
     Context context;
 
     RecyclerListAdapter adapter;
+    RecyclerView recycleView;
 
 
     @Override
@@ -62,17 +63,71 @@ public class TimePlannerActivity extends AppCompatActivity {
         myDatabasHelperSubjects = new myDbAdapterSubjects(this);
         plannerListObjekt = myDatabasHelper.getObjektById(message);
 
+        recycleView = (RecyclerView) findViewById(R.id.recycler_view);
+
         millisekFormatChanger = new MillisekFormatChanger();
         setUpPage();
         updateArrayListToRecycleview();
+
 
         timplannerActivity = this;
         myIntent = new Intent(getBaseContext(), AlarmReceiver.class);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
+        setMinutsToDelayTimerCheckIfSubjectActiv();
         setMinutsToDelayTimer();
 
         stopAlarm();
+    }
+
+
+    /**
+     * Recycleview
+     *
+     * @param removedSubject
+     * @param position
+     */
+
+    public void undoRemoveSubject(Subjects removedSubject, int position){
+        addSubjektToDatabas(removedSubject.getName(), removedSubject.getTime(), position + 1);
+        updateArrayListToRecycleview();
+    }
+
+    public void updateArrayListToRecycleview(){
+        //skapar arrayList
+        subjectsArrayList = myDatabasHelperSubjects.getDataToSubjectsList(this, thisObjektsId);
+        seUpRecycleview();
+    }
+
+    public void seUpRecycleview(){
+        adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects, this, plannerListObjekt);
+
+        //recyclerView.setHasFixedSize(true);
+        recycleView.setAdapter(adapter);
+        recycleView.setLayoutManager(new LinearLayoutManager(this));
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(recycleView);
+
+        checkIfSubjectActiv();
+    }
+
+
+    //då recycleview i metoden checkIfSubjectActiv() är av någon anledning en kort när man start denna vy.
+    //gör jag en fördröjning med 10 millisekunder och den då blir rätt längd på recycleview
+    //typ get metoder tid att göras klart!?!
+    public void setMinutsToDelayTimerCheckIfSubjectActiv(){
+        Calendar cal = Calendar.getInstance();
+        int sekund = cal.getTime().getSeconds();
+        int millisekToDelay =  10;
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                setMinutsTimer();
+            }
+        }, millisekToDelay);
     }
 
     public void setMinutsToDelayTimer(){
@@ -109,11 +164,8 @@ public class TimePlannerActivity extends AppCompatActivity {
     }
 
     public void checkIfSubjectActiv(){
-        //Log.d(TAG, "checkIfSubjectActiv: ");
         Calendar cal = Calendar.getInstance();
         long toDayMillisek = cal.getTimeInMillis();
-
-        RecyclerView recycleView = (RecyclerView) findViewById(R.id.recycler_view);
 
         for (int i = 0; i < subjectsArrayList.size(); i++) {
             Subjects subject = subjectsArrayList.get(i);
@@ -125,7 +177,7 @@ public class TimePlannerActivity extends AppCompatActivity {
                         && toDayMillisek < (Long.valueOf(subject.getStartTimeMillisek()) + Long.valueOf(subject.getTime()))) {
 
                     //ändra bakgrund
-                    changeActivBackgrund(i, recycleView);
+                    changeActivBackgrund(i);
 
                     //kollar om larmet går igång och gör knapp synlig
                     if(millisekFormatChanger.getTimeString(toDayMillisek)
@@ -134,26 +186,25 @@ public class TimePlannerActivity extends AppCompatActivity {
                         turnOfAlarmButtom.setVisibility(View.VISIBLE);
                     }
 
-                }else if(toDayMillisek > Long.valueOf(plannerListObjekt.getDateTimeMillisek())){
-                    changeActivBackgrund(-1, recycleView);
+                    //break då endast ett objekt kan vara aktivt
+                    break;
+
+                }else {
+                    changeActivBackgrund(-1);
                 }
             }
         }
     }
 
-    public void onClickOfAlarm(View view){
-        Button turnOfAlarmButtom = (Button)findViewById(R.id.turn_of_alarm);
-        turnOfAlarmButtom.setVisibility(View.INVISIBLE);
-        stopAlarm();
-    }
+    public void changeActivBackgrund(int indexPosition){
 
-    public void changeActivBackgrund(int indexPosition, RecyclerView recycleView){
         int childCount = recycleView.getChildCount();
+
         for (int i = 0; i < childCount; i++) {
             View child = recycleView.getChildAt(i);
             TextView subjectName = (TextView) child.findViewById(R.id.subject_name);
 
-            if (i == indexPosition) {
+            if (indexPosition == i) {
                 child.setBackgroundResource(R.color.aktivSubject);
                 subjectName.setTextColor(ContextCompat.getColor(this, R.color.aktivSubjectName));
             }else {
@@ -207,53 +258,31 @@ public class TimePlannerActivity extends AppCompatActivity {
     }
 
     public void addSubjektToDatabas(String name, String time){
-        //position till 1 mer än befintliga sysslor i listan
-        myDatabasHelperSubjects.insertData(thisObjektsId, name, time, String.valueOf(subjectsArrayList.size() + 1));
+        //position i listan ska vara en 1 mer än befintliga sysslor i listan
+        long id = myDatabasHelperSubjects.insertData(thisObjektsId, name, time, String.valueOf(subjectsArrayList.size() + 1));
+        updateArrayListToRecycleview();
+        setMinutsToDelayTimerCheckIfSubjectActiv();
         changeAlarmTime();
+
     }
 
     public void addSubjektToDatabas(String name, String time, int pos){
         myDatabasHelperSubjects.insertData(thisObjektsId, name, time, String.valueOf(pos));
     }
 
-
-    /**
-     * Recycleview
-     *
-     * @param removedSubject
-     * @param position
-     */
-
-    public void undoRemoveSubject(Subjects removedSubject, int position){
-        addSubjektToDatabas(removedSubject.getName(), removedSubject.getTime(), position + 1);
-        updateArrayListToRecycleview();
+    public void addStartTimeToSubject(int indexInArraylist, long startTimeMillisek){
+        subjectsArrayList.get(indexInArraylist).setStartTimeMillisek(String.valueOf(startTimeMillisek));
     }
 
-    public void updateArrayListToRecycleview(){
-        //skapar arrayList
-        subjectsArrayList = myDatabasHelperSubjects.getDataToSubjectsList(this, thisObjektsId);
-        seUpRecycleview();
-    }
-
-    public void seUpRecycleview(){
-        adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects, this, plannerListObjekt);
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        //recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(recyclerView);
-    }
 
     /**
      * Alarm
      */
 
-    public void addStartTimeToSubject(int indexInArraylist, long startTimeMillisek){
-        subjectsArrayList.get(indexInArraylist).setStartTimeMillisek(String.valueOf(startTimeMillisek));
+    public void onClickOfAlarm(View view){
+        Button turnOfAlarmButtom = (Button)findViewById(R.id.turn_of_alarm);
+        turnOfAlarmButtom.setVisibility(View.INVISIBLE);
+        stopAlarm();
     }
 
     public void changeAlarmTime(){
@@ -288,7 +317,6 @@ public class TimePlannerActivity extends AppCompatActivity {
             stopAlarm();
         }
     }
-
     public void stopAlarm(){
         Log.d(TAG, "stopAlarm: ");
 
@@ -299,5 +327,19 @@ public class TimePlannerActivity extends AppCompatActivity {
 
         alarmManager.cancel(pendingIntent);
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        Log.i(TAG, "On Resume .....");
+//
+//    }
+//
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        Log.i(TAG, "On Start .....");
+//
+//    }
 
 }

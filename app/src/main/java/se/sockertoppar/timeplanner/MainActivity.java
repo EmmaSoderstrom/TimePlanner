@@ -81,10 +81,6 @@ public class MainActivity extends AppCompatActivity {
         dialogAddPlanner.showDialogAddPlanner(this, this);
     }
 
-    public void onClickTextDate(View view){
-        dialogAddPlanner.showCalendar();
-    }
-
     public int saveNewTimePlannerInt(String plannerName, String plannerDate, int plannerTimeH, int plannerTimeM,
                                      String plannerDateTimeMillisek){
         int objektId = myDatabasHelper.insertDataInt(this, plannerName, plannerDate, (plannerTimeH + ":" + plannerTimeM),
@@ -140,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         // This code will always run on the UI thread, therefore is safe to modify UI elements.
-                        Log.d(TAG, "run: setMinutsTimer");
                         setUpButtonList();
                     }
                 });
@@ -152,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
         arrayListButtonObjekt = myDatabasHelper.getDataToButton(this);
 
         if (adapter == null) {
-            Log.d(TAG, "adapter null: ");
             adapter = new PlannerListContiner(this, arrayListButtonObjekt, this);
 
             listView = (ListView) findViewById(R.id.list_view_button);
@@ -177,11 +171,10 @@ public class MainActivity extends AppCompatActivity {
             });
 
         }else {
-            Log.d(TAG, "notifyDataSetChanged: ");
             adapter.notifyDataSetChanged();
         }
 
-        //overridar för att kunna sätta bakgrund på aktivt objekt
+        //overrid för att kunna sätta bakgrund på aktivt objekt
         //för detta måste hela layouten för varje rad defineras
         listView.setAdapter(new ArrayAdapter<PlannerObjekt>(this, R.layout.main_list_layout, R.id.object_name, arrayListButtonObjekt){
 
@@ -281,14 +274,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i(TAG, "On Resume .....");
         setUpButtonList();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG, "On Start .....");
         setUpButtonList();
     }
 }

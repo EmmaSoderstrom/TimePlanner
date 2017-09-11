@@ -37,8 +37,9 @@ public class DialogAddSubject {
     public void showDialogAddSubject(final Context context, final TimePlannerActivity timePlannerActivity) {
 
         AlertDialog.Builder builderAddPlanner = new AlertDialog.Builder(context);
-        //builder1.setMessage(R.string.dialog_add_planner_message);
+
         builderAddPlanner.setTitle(R.string.dialog_add_subject_title);
+        builderAddPlanner.setMessage(R.string.dialog_add_subject_subtext);
         //builderAddPlanner.setCancelable(false);
 
         diaView = View.inflate(context, R.layout.dialog_add_subject, null);
@@ -82,15 +83,21 @@ public class DialogAddSubject {
                 EditText editTextSubjectName = (EditText)diaView.findViewById(R.id.editTextSubjectName);
                 int textLength = editTextSubjectName.getText().length();
                 int subjectTimeH = (int)timePicker.getCurrentHour();
+                Log.d(TAG, "subjectTimeH: " + subjectTimeH);
+
                 int subjectTimeM = (int)timePicker.getCurrentMinute();
 
                 if(textLength > 0 && (subjectTimeH > 0 || subjectTimeM > 0)) {
                     String subjectName = editTextSubjectName.getText().toString();
-                    long subjectTimeTotal= TimeUnit.HOURS.toMillis(subjectTimeH) + TimeUnit.MINUTES.toMillis(subjectTimeM);
+//                    long subjectTimeTotal= TimeUnit.HOURS.toMillis(subjectTimeH) + TimeUnit.MINUTES.toMillis(subjectTimeM);
+                    long subjectTimeTotal = (subjectTimeH * 60 * 60 * 1000) + (subjectTimeM * 60 * 1000);
+                    MillisekFormatChanger millisek = new MillisekFormatChanger();
+                    Log.d(TAG, "onClick: " + subjectTimeTotal);
+                    Log.d(TAG, "onClick: " + millisek.getTimeStringMH(subjectTimeTotal));
 
                     timePlannerActivity.addSubjektToDatabas(subjectName, String.valueOf(subjectTimeTotal));
                     timePlannerActivity.updateArrayListToRecycleview();
-
+                    //timePlannerActivity.checkIfSubjectActiv();
                     aletAddSubject.dismiss();
 
                 }else{

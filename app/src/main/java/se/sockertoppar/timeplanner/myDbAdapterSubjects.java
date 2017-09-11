@@ -34,8 +34,7 @@ public class myDbAdapterSubjects {
      * @param time
      * @param position
      */
-    public void insertData(String pointingId, String name, String time, String position) {
-        Log.d(TAG, "insertData: " + pointingId + ", " + name + ", " + time + ", " + position);
+    public long insertData(String pointingId, String name, String time, String position) {
         SQLiteDatabase dbb = myhelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
@@ -44,7 +43,9 @@ public class myDbAdapterSubjects {
         contentValues.put(myDbHelper.TIME, time);
         contentValues.put(myDbHelper.POSITION, position);
 
-        dbb.insert(myDbHelper.TABLE_NAME, null , contentValues);
+        long id = dbb.insert(myDbHelper.TABLE_NAME, null , contentValues);
+
+        return id;
     }
 
 

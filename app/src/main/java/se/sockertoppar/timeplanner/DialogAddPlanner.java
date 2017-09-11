@@ -12,10 +12,12 @@ import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputType;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewParent;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -42,6 +44,7 @@ public class DialogAddPlanner {
 
     String TAG = "tag";
     View diaView;
+    LinearLayout linearLayoutTime;
     EditText editTextPlannerName;
     TextView textDate;
 
@@ -58,13 +61,14 @@ public class DialogAddPlanner {
     public void showDialogAddPlanner(final Context context, final MainActivity mainActivity) {
 
         AlertDialog.Builder builderAddPlanner = new AlertDialog.Builder(context);
-        //builder1.setMessage(R.string.dialog_add_planner_message);
         builderAddPlanner.setTitle(R.string.dialog_add_planner_title);
+        //builderAddPlanner.setMessage(R.string.dialog_add_planner_message);
         //builderAddPlanner.setCancelable(false);
 
         diaView = View.inflate(context, R.layout.dialog_add_planner, null);
         builderAddPlanner.setView(diaView);
 
+        linearLayoutTime = (LinearLayout)diaView.findViewById(R.id.time_layout);
         editTextPlannerName = (EditText)diaView.findViewById(R.id.editTextPlannerName);
         editTextPlannerName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
@@ -72,9 +76,18 @@ public class DialogAddPlanner {
 
 
         /**
-         * Val av datum
+         * Datums text
          */
         textDate = (TextView) diaView.findViewById(R.id.textDate);
+        textDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: ");
+                showCalendar();
+                InputMethodManager imm = (InputMethodManager)mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
+        });
 
         /**
          * Hämtar dagens datum och sätter datumstexten till datumet
@@ -125,7 +138,6 @@ public class DialogAddPlanner {
             public void onClick(View v) {
                 // TODO: 2017-08-14
                 //repitition av LLCalendarView
-                //LinearLayout LLCalendarView = (LinearLayout) diaView.findViewById(R.id.LinerCalendarView);
                 boolean visibility = getVisibilityCalender(datePicker);
                 if(visibility) {
                     showCalendar();
@@ -136,7 +148,6 @@ public class DialogAddPlanner {
 
                     if(textLength > 0) {
                         String plannerName = editTextPlannerName.getText().toString();
-                        //String plannerDate = (String) textDate.getText();
                         int plannerTimeH = (int)timePicker.getCurrentHour();
                         int plannerTimeM = (int)timePicker.getCurrentMinute();
 
@@ -196,14 +207,10 @@ public class DialogAddPlanner {
     }
     
     public void showCalendar(){
-        TimePicker timePicker = (TimePicker)diaView.findViewById(R.id.timePicker);
-
         boolean visibility = getVisibilityCalender(datePicker);
         if(visibility) {
             datePicker.setVisibility(View.GONE);
-            editTextPlannerName.setVisibility(View.VISIBLE);
-            textDate.setVisibility(View.VISIBLE);
-            timePicker.setVisibility(View.VISIBLE);
+            linearLayoutTime.setVisibility(View.VISIBLE);
 
             day = datePicker.getDayOfMonth();
             month = datePicker.getMonth() + 1;
@@ -212,9 +219,7 @@ public class DialogAddPlanner {
             textDate.setText(day + "/" + month + "/" + year);
         }else{
             datePicker.setVisibility(View.VISIBLE);
-            editTextPlannerName.setVisibility(View.GONE);
-            textDate.setVisibility(View.GONE);
-            timePicker.setVisibility(View.GONE);
+            linearLayoutTime.setVisibility(View.GONE);
         }
     }
 

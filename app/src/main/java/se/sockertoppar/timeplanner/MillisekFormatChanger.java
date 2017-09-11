@@ -1,5 +1,7 @@
 package se.sockertoppar.timeplanner;
 
+import android.util.Log;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -115,11 +117,18 @@ public class MillisekFormatChanger {
 
         String hourStr = "";
         String minuteStr = "";
-        int hour = cal.get(Calendar.HOUR_OF_DAY);
+
+        //räknar manuelt pga cal.get(Calendar.HOUR) inte fungerar på samsung s4
+        long allMinuts = newMillisek / 60000;
+        long minute = allMinuts % 60;
+        long hourInMinuts = allMinuts - minute;
+        long hour = hourInMinuts / 60;
+
+        //int hour = cal.get(Calendar.HOUR);
+        //int minute = cal.get(Calendar.MINUTE);
         if(hour > 0){
             hourStr = hour + "h";
         }
-        int minute = cal.get(Calendar.MINUTE);
         if(minute > 0){
             minuteStr = minute + "min";
         }

@@ -11,8 +11,18 @@
   <component name="ChangeListManager">
     <list default="true" id="4aefc48e-a3d8-4e7f-8120-39255558bde0" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogAddPlanner.java" afterPath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogAddPlanner.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogAddSubject.java" afterPath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogAddSubject.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/PlannerListContiner.java" afterPath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/PlannerListContiner.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/MillisekFormatChanger.java" afterPath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/MillisekFormatChanger.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/RecyclerListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/RecyclerListAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/TimePlannerActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/TimePlannerActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/myDbAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/myDbAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/myDbAdapterSubjects.java" afterPath="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/myDbAdapterSubjects.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_time_planner.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_time_planner.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_add_planner.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_add_planner.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/dialog_add_subject.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/dialog_add_subject.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
     </list>
     <ignored path="TimePlanner.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -44,41 +54,57 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="184" column="63" selection-start-line="184" selection-start-column="63" selection-end-line="184" selection-end-column="63" />
+            <state relative-caret-position="1870">
+              <caret line="137" column="111" selection-start-line="137" selection-start-column="111" selection-end-line="137" selection-end-column="111" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2537#2538#0" expanded="true" />
-                <element signature="e#2584#2585#0" expanded="true" />
-                <element signature="e#5152#5430#0" expanded="true" />
-                <element signature="e#5429#5430#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main_list_layout.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/main_list_layout.xml">
-          <provider editor-type-id="android-designer2">
-            <state />
-          </provider>
+      <file leaf-file-name="TimePlannerActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/TimePlannerActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="132">
-              <caret line="12" column="36" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="36" />
-              <folding />
+            <state relative-caret-position="1705">
+              <caret line="101" column="34" selection-start-line="101" selection-start-column="34" selection-end-line="101" selection-end-column="34" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#4051#4157#0" expanded="true" />
+                <element signature="e#4156#4157#0" expanded="true" />
+                <element signature="e#8384#8385#0" expanded="true" />
+                <element signature="e#8415#8416#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlannerListContiner.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/PlannerListContiner.java">
+      <file leaf-file-name="dialog_add_planner.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_add_planner.xml">
+          <provider editor-type-id="android-designer2">
+            <state />
+          </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="220">
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+              <folding>
+                <element signature="e#1515#1555#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RecyclerListAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/RecyclerListAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -1923,7 +1949,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/RecyclerListFragment.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/millisekFormatChanger.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/dialog_add_subject.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/helper/ItemTouchHelperViewHolder.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/helper/ItemTouchHelperAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/helper/SimpleItemTouchHelperCallback.java" />
@@ -1932,11 +1957,8 @@
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/line_divider.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/Subjects.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/recyclerview_items.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/myDbAdapterSubjects.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/myDbAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogConfirmDeleteSubject.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogConfirmDelete.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogAddSubject.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/AlarmReceiver.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/Helper.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
@@ -1944,19 +1966,23 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/buttom_radius.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/buttom_radius2.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_notifications_active_black_24dp.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/MillisekFormatChanger.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/AlarmtonePlayingService.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/RecyclerListAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/main_list_layout.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/ButtonListContiner.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogAddPlanner.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/dialog_add_planner.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/TimePlannerActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_time_planner.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/PlannerListContiner.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_time_planner.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/MillisekFormatChanger.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogAddSubject.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/dialog_add_subject.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/dialog_add_planner.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/RecyclerListAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogAddPlanner.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/myDbAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/myDbAdapterSubjects.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/TimePlannerActivity.java" />
       </list>
     </option>
   </component>
@@ -2507,8 +2533,8 @@
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37187126" sideWeight="0.08766234" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.59128386" sideWeight="0.91233766" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.53710246" sideWeight="0.091299675" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.409894" sideWeight="0.90870035" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286219" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.10600707" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2583,10 +2609,6 @@
           <caret line="31" column="30" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2537#2538#0" expanded="true" />
-            <element signature="e#2584#2585#0" expanded="true" />
-            <element signature="e#5152#5430#0" expanded="true" />
-            <element signature="e#5429#5430#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2624,17 +2646,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/RecyclerListFragment.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_main.xml" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_add_subject.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="21" column="40" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_add_black_24dp.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
@@ -2670,35 +2681,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/Subjects.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="538">
-          <caret line="45" column="8" selection-start-line="45" selection-start-column="8" selection-end-line="45" selection-end-column="33" />
-          <folding>
-            <element signature="e#817#818#0" expanded="true" />
-            <element signature="e#857#858#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/myDbAdapterSubjects.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="81" column="89" selection-start-line="81" selection-start-column="89" selection-end-line="81" selection-end-column="89" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/myDbAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="597">
-          <caret line="45" column="8" selection-start-line="45" selection-start-column="8" selection-end-line="45" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogConfirmDeleteSubject.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="156">
@@ -2718,14 +2700,6 @@
             <element signature="e#421#422#0" expanded="true" />
             <element signature="e#444#445#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogAddSubject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="79">
-          <caret line="29" column="17" selection-start-line="29" selection-start-column="17" selection-end-line="29" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2817,14 +2791,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="18" column="38" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Desktop/Chatapp.apk">
       <provider selected="true" editor-type-id="apk-viewer">
         <state />
@@ -2860,41 +2826,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/MillisekFormatChanger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="110" column="27" selection-start-line="110" selection-start-column="27" selection-end-line="110" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/RecyclerListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
-          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DatePickerDialog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="6" column="29" selection-start-line="6" selection-start-column="29" selection-end-line="6" selection-end-column="29" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/TimePlannerActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="488">
-          <caret line="181" column="0" selection-start-line="181" selection-start-column="0" selection-end-line="181" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2919,36 +2855,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_time_planner.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="178">
-          <caret line="9" column="4" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_add_planner.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="62" column="4" selection-start-line="62" selection-start-column="8" selection-end-line="75" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogAddPlanner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="209" column="40" selection-start-line="209" selection-start-column="40" selection-end-line="209" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/main_list_layout.xml">
       <provider editor-type-id="android-designer2">
         <state />
@@ -2962,22 +2868,150 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/PlannerListContiner.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
+        <state relative-caret-position="894">
           <caret line="91" column="0" selection-start-line="91" selection-start-column="0" selection-end-line="91" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/Subjects.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="184" column="63" selection-start-line="184" selection-start-column="63" selection-end-line="184" selection-end-column="63" />
+        <state relative-caret-position="444">
+          <caret line="52" column="36" selection-start-line="52" selection-start-column="16" selection-end-line="52" selection-end-column="36" />
+          <folding>
+            <element signature="e#817#818#0" expanded="true" />
+            <element signature="e#857#858#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_time_planner.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-878">
+          <caret line="18" column="34" selection-start-line="18" selection-start-column="34" selection-end-line="18" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_add_subject.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="35" selection-end-column="19" />
+          <folding>
+            <element signature="e#479#519#0" expanded="true" />
+            <element signature="e#1009#1049#0" expanded="true" />
+            <element signature="e#1310#1352#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogAddSubject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+          <folding>
+            <element signature="e#1027#1060#0" expanded="true" />
+            <element signature="e#1100#1135#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/MillisekFormatChanger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1302">
+          <caret line="66" column="0" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2537#2538#0" expanded="true" />
-            <element signature="e#2584#2585#0" expanded="true" />
-            <element signature="e#5152#5430#0" expanded="true" />
-            <element signature="e#5429#5430#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1870">
+          <caret line="137" column="111" selection-start-line="137" selection-start-column="111" selection-end-line="137" selection-end-column="111" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/DialogAddPlanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="439">
+          <caret line="64" column="76" selection-start-line="64" selection-start-column="76" selection-end-line="64" selection-end-column="76" />
+          <folding>
+            <element signature="e#2441#2820#0" expanded="true" />
+            <element signature="e#2819#2820#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/myDbAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2398">
+          <caret line="135" column="51" selection-start-line="135" selection-start-column="51" selection-end-line="135" selection-end-column="51" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/myDbAdapterSubjects.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="36" column="90" selection-start-line="36" selection-start-column="90" selection-end-line="36" selection-end-column="90" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="10" column="48" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_add_planner.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding>
+            <element signature="e#1515#1555#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/RecyclerListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/se/sockertoppar/timeplanner/TimePlannerActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1705">
+          <caret line="101" column="34" selection-start-line="101" selection-start-column="34" selection-end-line="101" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4051#4157#0" expanded="true" />
+            <element signature="e#4156#4157#0" expanded="true" />
+            <element signature="e#8384#8385#0" expanded="true" />
+            <element signature="e#8415#8416#0" expanded="true" />
           </folding>
         </state>
       </provider>
