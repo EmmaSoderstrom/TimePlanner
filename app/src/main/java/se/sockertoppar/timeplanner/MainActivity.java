@@ -4,16 +4,21 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     DialogConfirmDelete dialogConfirmDelete;
     MainActivity mainActivity;
     Context context;
+    MillisekFormatChanger millisekFormatChanger;
 
     LayoutInflater inflater;
     LinearLayout linearLayoutListContiner;
@@ -59,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         dialogConfirmDelete = new DialogConfirmDelete();
         mainActivity = this;
         context = this;
+        millisekFormatChanger = new MillisekFormatChanger();
 
         inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         setUpButtonList();
@@ -145,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
         arrayListButtonObjekt = myDatabasHelper.getDataToButton(this);
 
         if (adapter == null) {
+            Log.d(TAG, "adapter null: ");
             adapter = new PlannerListContiner(this, arrayListButtonObjekt, this);
 
             listView = (ListView) findViewById(R.id.list_view_button);
@@ -169,8 +177,59 @@ public class MainActivity extends AppCompatActivity {
             });
 
         }else {
+            Log.d(TAG, "notifyDataSetChanged: ");
             adapter.notifyDataSetChanged();
         }
+
+        //overridar för att kunna sätta bakgrund på aktivt objekt
+        //för detta måste hela layouten för varje rad defineras
+        listView.setAdapter(new ArrayAdapter<PlannerObjekt>(this, R.layout.main_list_layout, R.id.object_name, arrayListButtonObjekt){
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View row = super.getView(position, convertView, parent);
+
+                PlannerObjekt rowObject = arrayListButtonObjekt.get(position);
+
+                TextView objectName = (TextView)row.findViewById(R.id.object_name);
+                TextView objectStart = (TextView)row.findViewById(R.id.object_start);
+                TextView objectEnd = (TextView)row.findViewById(R.id.object_end);
+                objectName.setText(arrayListButtonObjekt.get(position).getName());
+
+                String startTime = millisekFormatChanger.getTimeString(rowObject.getAlarmTime());
+                String startDate = millisekFormatChanger.getDateString(rowObject.getAlarmTime());
+                String endTime = millisekFormatChanger.getTimeString(rowObject.getDateTimeMillisek());
+                String endDate = millisekFormatChanger.getDateString(rowObject.getDateTimeMillisek());
+
+                if(startTime.equals(endTime) && startDate.equals(endDate)) {
+                    objectStart.setText("");
+                }else{
+                    objectStart.setText(millisekFormatChanger.getTimeString(rowObject.getAlarmTime())
+                            + ", "
+                            + millisekFormatChanger.getDateString(rowObject.getAlarmTime()));
+                }
+                objectEnd.setText(millisekFormatChanger.getTimeString(rowObject.getDateTimeMillisek())
+                        + ", "
+                        + millisekFormatChanger.getDateString(rowObject.getDateTimeMillisek()));
+
+
+                Calendar cal = Calendar.getInstance();
+                long toDayMillisek = cal.getTimeInMillis();
+
+                if (toDayMillisek > Long.valueOf(rowObject.getAlarmTime())
+                            && toDayMillisek < (Long.valueOf(rowObject.getDateTimeMillisek()) )) {
+                    //färg aktivt objekt
+                    row.setBackgroundColor (ContextCompat.getColor(context, R.color.aktivSubject));
+                    objectName.setTextColor(ContextCompat.getColor(context, R.color.aktivSubjectName));
+                }else{
+                    //färg ej aktivt objeckt
+                    row.setBackgroundColor (0);
+                    objectName.setTextColor(ContextCompat.getColor(context, R.color.textListName));
+                }
+
+                return row;
+            }
+        });
     }
 
     public void goToTimePlanner(int id){

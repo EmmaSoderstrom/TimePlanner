@@ -2,6 +2,7 @@ package se.sockertoppar.timeplanner;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,41 +84,11 @@ public class PlannerListContiner extends ArrayAdapter<PlannerObjekt> {
 //        int hour = cal.get(Calendar.HOUR_OF_DAY);
 //        int minute = cal.get(Calendar.MINUTE);
 
-        Calendar cal = Calendar.getInstance();
-        long toDayMillisek = cal.getTimeInMillis();
-        PlannerObjekt object = plannerListObjekt.get(position);
-        TextView name = (TextView) rowView.findViewById(R.id.object_name);
-
-        //om någon object är aktiv
-        if (toDayMillisek > Long.valueOf(object.getAlarmTime())
-                && toDayMillisek < (Long.valueOf(object.getDateTimeMillisek()) )) {
-
-            //ändra bakgrund
-            rowView.setBackgroundResource(R.color.aktivSubject);
-
-            name.setTextColor(ContextCompat.getColor(context, R.color.aktivSubjectName));
-
-            millisekFormatChanger.getDateString(String.valueOf(toDayMillisek));
-            //kollar om larmet går igång och gör knapp synlig
-            if(millisekFormatChanger.getTimeString(toDayMillisek)
-                    .equals(millisekFormatChanger.getTimeString(Long.valueOf(object.getAlarmTime())))){
-                Button turnOfAlarmButtom = (Button)mainActivity.findViewById(R.id.turn_of_alarm);
-                turnOfAlarmButtom.setVisibility(View.VISIBLE);
-            }
-
-        }else if(toDayMillisek > Long.valueOf(object.getDateTimeMillisek())){
-            rowView.setBackgroundResource(0);
-            name.setTextColor(ContextCompat.getColor(context, R.color.textListName));
-        }
-
-
 
         TextView objectName = (TextView)rowView.findViewById(R.id.object_name);
         TextView objectStart = (TextView)rowView.findViewById(R.id.object_start);
         TextView objectEnd = (TextView)rowView.findViewById(R.id.object_end);
         objectName.setText(plannerListObjekt.get(position).getName());
-        //MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(plannerListObjekt.get(position).getDateTimeMillisek());
-        //MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(plannerListObjekt.get(position).getDateTimeMillisek());
 
         String startTime = millisekFormatChanger.getTimeString(plannerListObjekt.get(position).getAlarmTime());
         String startDate = millisekFormatChanger.getDateString(plannerListObjekt.get(position).getAlarmTime());
