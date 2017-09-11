@@ -4,12 +4,10 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -25,7 +23,7 @@ public class AlarmtonePlayingService extends Service {
     private int startId;
 
     String plannerObjectId;
-    PlannerListObjekt plannerListObjekt;
+    PlannerObjekt plannerListObjekt;
     String name = "";
     MillisekFormatChanger millisekFormatCanger;
     String endsInString;
@@ -57,7 +55,7 @@ public class AlarmtonePlayingService extends Service {
         if(state.equals("yes")) {
             plannerListObjekt = myDatabasHelper.getObjektById(plannerObjectId);
             name = plannerListObjekt.getName();
-            millisekFormatCanger = new MillisekFormatChanger(plannerListObjekt.getDateTimeMillisek());
+            millisekFormatCanger = new MillisekFormatChanger();
             long endsInMillisek = Long.valueOf(plannerListObjekt.getDateTimeMillisek()) - Long.valueOf(plannerListObjekt.getAlarmTime());
             endsInString = millisekFormatCanger.getTimeStringMH(endsInMillisek);
         }

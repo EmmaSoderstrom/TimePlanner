@@ -1,22 +1,14 @@
 package se.sockertoppar.timeplanner;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.security.auth.Subject;
 
 import se.sockertoppar.timeplanner.helper.ItemTouchHelperAdapter;
 import se.sockertoppar.timeplanner.helper.ItemTouchHelperViewHolder;
@@ -35,11 +27,11 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     static myDbAdapterSubjects myDatabasHelperSubjects;
     DialogConfirmDeleteSubject dialogConfirmDeleteSubject;
     TimePlannerActivity timePlannerActivity;
-    PlannerListObjekt plannerListObjekt;
+    PlannerObjekt plannerListObjekt;
 
 
     public RecyclerListAdapter(ArrayList<Subjects> arrayString, myDbAdapterSubjects myDatabasHelperSubjects,
-                               TimePlannerActivity timePlannerActivity, PlannerListObjekt plannerListObjekt) {
+                               TimePlannerActivity timePlannerActivity, PlannerObjekt plannerListObjekt) {
         //Tar bort alla sysslor i listan
         clearItemList();
         //Lägget till alla sysslor i listan från arrayList med sysslor från databasen
@@ -64,8 +56,8 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         TextView subjectTime = (TextView)holder.linerView.findViewById(R.id.subject_time);
         TextView subjectEndtime = (TextView)holder.linerView.findViewById(R.id.subject_endtime);
         subjectName.setText(mItems.get(position).getName());
-        MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(mItems.get(position).getTime());
-        subjectTime.setText(millisekFormatChanger.getTimeStringMH());
+        MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger();
+        subjectTime.setText(millisekFormatChanger.getTimeStringMH(Long.valueOf(mItems.get(position).getTime())));
 
         //skapar starttid till varje syssla
         String subjectToGiveTimePosition = mItems.get(position).getPosition();

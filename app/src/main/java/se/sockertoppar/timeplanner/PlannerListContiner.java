@@ -1,9 +1,7 @@
 package se.sockertoppar.timeplanner;
 
 import android.content.Context;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,30 +9,29 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by User on 2017-08-18.
  */
 
-public class ButtonListContiner extends ArrayAdapter<PlannerListObjekt> {
+public class PlannerListContiner extends ArrayAdapter<PlannerObjekt> {
 
     private final Context context;
-    private ArrayList<PlannerListObjekt> plannerListObjekt;
+    private ArrayList<PlannerObjekt> plannerListObjekt;
     MainActivity mainActivity;
+    MillisekFormatChanger millisekFormatChanger;
 
 
 
-    public ButtonListContiner(Context context, ArrayList<PlannerListObjekt> startPerson, MainActivity mainActivity) {
+    public PlannerListContiner(Context context, ArrayList<PlannerObjekt> startPerson, MainActivity mainActivity) {
         super(context, 0, startPerson);
 
         this.context = context;
         plannerListObjekt = startPerson;
         this.mainActivity = mainActivity;
+        millisekFormatChanger = new MillisekFormatChanger();
 
 
     }
@@ -45,7 +42,7 @@ public class ButtonListContiner extends ArrayAdapter<PlannerListObjekt> {
     }
 
     @Override
-    public PlannerListObjekt getItem(int position) {
+    public PlannerObjekt getItem(int position) {
         return plannerListObjekt.get(position);
     }
 
@@ -88,7 +85,7 @@ public class ButtonListContiner extends ArrayAdapter<PlannerListObjekt> {
 
         Calendar cal = Calendar.getInstance();
         long toDayMillisek = cal.getTimeInMillis();
-        PlannerListObjekt object = plannerListObjekt.get(position);
+        PlannerObjekt object = plannerListObjekt.get(position);
         TextView name = (TextView) rowView.findViewById(R.id.object_name);
 
         //om någon object är aktiv
@@ -100,7 +97,7 @@ public class ButtonListContiner extends ArrayAdapter<PlannerListObjekt> {
 
             name.setTextColor(ContextCompat.getColor(context, R.color.aktivSubjectName));
 
-            MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(String.valueOf(toDayMillisek));
+            millisekFormatChanger.getDateString(String.valueOf(toDayMillisek));
             //kollar om larmet går igång och gör knapp synlig
             if(millisekFormatChanger.getTimeString(toDayMillisek)
                     .equals(millisekFormatChanger.getTimeString(Long.valueOf(object.getAlarmTime())))){
@@ -116,12 +113,27 @@ public class ButtonListContiner extends ArrayAdapter<PlannerListObjekt> {
 
 
         TextView objectName = (TextView)rowView.findViewById(R.id.object_name);
-        TextView objectDate = (TextView)rowView.findViewById(R.id.object_date);
-        TextView objectTime = (TextView)rowView.findViewById(R.id.object_time);
+        TextView objectStart = (TextView)rowView.findViewById(R.id.object_start);
+        TextView objectEnd = (TextView)rowView.findViewById(R.id.object_end);
         objectName.setText(plannerListObjekt.get(position).getName());
-        MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(plannerListObjekt.get(position).getDateTimeMillisek());
-        objectDate.setText(millisekFormatChanger.getDateString());
-        objectTime.setText(millisekFormatChanger.getTimeString());
+        //MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(plannerListObjekt.get(position).getDateTimeMillisek());
+        //MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger(plannerListObjekt.get(position).getDateTimeMillisek());
+
+        String startTime = millisekFormatChanger.getTimeString(plannerListObjekt.get(position).getAlarmTime());
+        String startDate = millisekFormatChanger.getDateString(plannerListObjekt.get(position).getAlarmTime());
+        String endTime = millisekFormatChanger.getTimeString(plannerListObjekt.get(position).getDateTimeMillisek());
+        String endDate = millisekFormatChanger.getDateString(plannerListObjekt.get(position).getDateTimeMillisek());
+
+        if(startTime.equals(endTime) && startDate.equals(endDate)) {
+            objectStart.setText("");
+        }else{
+            objectStart.setText(millisekFormatChanger.getTimeString(plannerListObjekt.get(position).getAlarmTime())
+                    + ", "
+                    + millisekFormatChanger.getDateString(plannerListObjekt.get(position).getAlarmTime()));
+        }
+        objectEnd.setText(millisekFormatChanger.getTimeString(plannerListObjekt.get(position).getDateTimeMillisek())
+                + ", "
+                + millisekFormatChanger.getDateString(plannerListObjekt.get(position).getDateTimeMillisek()));
 
         return rowView;
     }

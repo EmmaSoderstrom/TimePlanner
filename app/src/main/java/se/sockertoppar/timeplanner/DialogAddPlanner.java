@@ -1,5 +1,6 @@
 package se.sockertoppar.timeplanner;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
@@ -12,8 +13,11 @@ import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.InputType;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewParent;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,8 +42,10 @@ public class DialogAddPlanner {
 
     String TAG = "tag";
     View diaView;
+    EditText editTextPlannerName;
     TextView textDate;
 
+    DatePicker datePicker;
     int day;
     int month;
     int year;
@@ -59,8 +65,10 @@ public class DialogAddPlanner {
         diaView = View.inflate(context, R.layout.dialog_add_planner, null);
         builderAddPlanner.setView(diaView);
 
-        EditText editTextPlannerName = (EditText)diaView.findViewById(R.id.editTextPlannerName);
+        editTextPlannerName = (EditText)diaView.findViewById(R.id.editTextPlannerName);
         editTextPlannerName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+
+        datePicker = (DatePicker) diaView.findViewById(R.id.calendarView);
 
 
         /**
@@ -73,32 +81,12 @@ public class DialogAddPlanner {
          */
         Calendar cal = Calendar.getInstance();
         day = cal.get(Calendar.DATE);
-        // TODO: 2017-08-14
-        //Varför + 1 på månad
         month = cal.get(Calendar.MONTH) + 1;
         year = cal.get(Calendar.YEAR);
 
 
         final String date = day + "/" + month + "/" + year;
         textDate.setText(date);
-
-        /**
-         * Calender, ändrar text när man klickar på ett nytt datum
-         */
-        CalendarView calendarView = (CalendarView) diaView.findViewById(R.id.calendarView);
-        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-
-            @Override
-            public void onSelectedDayChange(CalendarView view, int sYear, int sMonth, int sDay) {
-                day = sDay;
-                month = sMonth + 1;
-                year = sYear;
-
-                String newDate = day + "/" + (month + 1) + "/" + year;
-                textDate.setText(newDate);
-            }
-        });
-
 
         /**
          * Val av tid
@@ -108,7 +96,6 @@ public class DialogAddPlanner {
         //KOlla vilken inställning tellefonen her och set rätt format på am/pm
         timePicker.setIs24HourView(true); // to set 24 hours mode
         //timePicker.setIs24HourView(false); // to set 12 hours mode
-
 
 
         /**
@@ -135,10 +122,11 @@ public class DialogAddPlanner {
 
         alertAddPlanner.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {// TODO: 2017-08-14
+            public void onClick(View v) {
+                // TODO: 2017-08-14
                 //repitition av LLCalendarView
-                LinearLayout LLCalendarView = (LinearLayout) diaView.findViewById(R.id.LinerCalendarView);
-                boolean visibility = getVisibilityCalender(LLCalendarView);
+                //LinearLayout LLCalendarView = (LinearLayout) diaView.findViewById(R.id.LinerCalendarView);
+                boolean visibility = getVisibilityCalender(datePicker);
                 if(visibility) {
                     showCalendar();
                 }else{
@@ -148,12 +136,16 @@ public class DialogAddPlanner {
 
                     if(textLength > 0) {
                         String plannerName = editTextPlannerName.getText().toString();
-                        String plannerDate = (String) textDate.getText();
+                        //String plannerDate = (String) textDate.getText();
                         int plannerTimeH = (int)timePicker.getCurrentHour();
                         int plannerTimeM = (int)timePicker.getCurrentMinute();
 
 
-                        String strDate= year + "-" + month + "-" + day + " "
+                        day = datePicker.getDayOfMonth();
+                        month = datePicker.getMonth() + 1;
+                        year = datePicker.getYear();
+
+                        String strDate = year + "-" + month + "-" + day + " "
                                 + plannerTimeH + ":" + plannerTimeM + ":" + "00";               // tex. "2017-01-07 10:11:23"
                         //String test = Locale.getDefault().getLanguage();
                         //Locale l = new Locale ( "sv" , "SV" );
@@ -172,10 +164,9 @@ public class DialogAddPlanner {
                             Log.d(TAG, "error: " + e);
                         }
 
-                        int objektId = mainActivity.saveNewTimePlannerInt(plannerName, plannerDate, plannerTimeH, plannerTimeM,
+                        int objektId = mainActivity.saveNewTimePlannerInt(plannerName, strDate, plannerTimeH, plannerTimeM,
                                 String.valueOf(plannerDateTimeMillisek));
 
-                        mainActivity.goToTimePlanner(objektId);
                         alertAddPlanner.dismiss();
 
                     }else{
@@ -205,19 +196,31 @@ public class DialogAddPlanner {
     }
     
     public void showCalendar(){
-        LinearLayout LLCalendarView = (LinearLayout) diaView.findViewById(R.id.LinerCalendarView);
-        boolean visibility = getVisibilityCalender(LLCalendarView);
+        TimePicker timePicker = (TimePicker)diaView.findViewById(R.id.timePicker);
 
+        boolean visibility = getVisibilityCalender(datePicker);
         if(visibility) {
-            LLCalendarView.setVisibility(View.GONE);
+            datePicker.setVisibility(View.GONE);
+            editTextPlannerName.setVisibility(View.VISIBLE);
+            textDate.setVisibility(View.VISIBLE);
+            timePicker.setVisibility(View.VISIBLE);
+
+            day = datePicker.getDayOfMonth();
+            month = datePicker.getMonth() + 1;
+            year = datePicker.getYear();
+
+            textDate.setText(day + "/" + month + "/" + year);
         }else{
-            LLCalendarView.setVisibility(View.VISIBLE);
+            datePicker.setVisibility(View.VISIBLE);
+            editTextPlannerName.setVisibility(View.GONE);
+            textDate.setVisibility(View.GONE);
+            timePicker.setVisibility(View.GONE);
         }
     }
 
-    public boolean getVisibilityCalender(LinearLayout LLCalendarView){
+    public boolean getVisibilityCalender(DatePicker dp){
         boolean visibility;
-        int calendarVisibility = LLCalendarView.getVisibility();
+        int calendarVisibility = dp.getVisibility();
         if(calendarVisibility == 0) {
             visibility = true;
         }else{
@@ -225,4 +228,6 @@ public class DialogAddPlanner {
         }
         return visibility;
     }
+
+
 }

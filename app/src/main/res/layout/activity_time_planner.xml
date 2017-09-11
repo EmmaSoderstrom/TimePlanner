@@ -9,17 +9,6 @@
     android:background="@color/background">
 
 
-    <!--<Button-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:onClick="stopAlarm"/>-->
-
-    <!--<DigitalClock-->
-        <!--android:id="@+id/digital_clock"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentRight="true" />-->
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -73,7 +62,14 @@
                     android:layout_height="wrap_content"
                     android:textSize="40sp"
                     android:gravity="center_horizontal"
-                    android:textColor="#6cb54a"/>
+                    android:textColor="@color/textListName"/>
+
+                <TextView
+                    android:id="@+id/object_enddate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/testSub"/>
             </LinearLayout>
 
         </RelativeLayout>

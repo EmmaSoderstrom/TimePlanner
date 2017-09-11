@@ -14,14 +14,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/list_view_button"
-
         android:paddingRight="16dp"
         android:paddingLeft="16dp"
         android:paddingBottom="80dp"
         android:clipToPadding="false"
-        android:scrollbarStyle="outsideOverlay"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp">
+        android:scrollbarStyle="outsideOverlay">
 
     </ListView>
 
@@ -42,7 +39,7 @@
         android:layout_marginRight="0dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/list_view_button"
+
         />
 
     <android.support.design.widget.FloatingActionButton

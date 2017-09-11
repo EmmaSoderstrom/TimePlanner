@@ -4,7 +4,7 @@ package se.sockertoppar.timeplanner;
  * Created by User on 2017-08-18.
  */
 
-public class PlannerListObjekt {
+public class PlannerObjekt {
 
     int id;
     String name;
@@ -13,7 +13,7 @@ public class PlannerListObjekt {
     String dateTimeMillisek;
     String alarmTime;
 
-    public PlannerListObjekt(int id, String name, String date, String time, String dateTimeMillisek, String alarmTime){
+    public PlannerObjekt(int id, String name, String date, String time, String dateTimeMillisek, String alarmTime){
 
         this.id = id;
         this.name = name;

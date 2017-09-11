@@ -5,16 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.SyncStateContract;
 import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
-
-import static android.R.id.list;
 
 /**
  * Created by User on 2017-08-15.
@@ -25,8 +20,8 @@ public class myDbAdapter {
     String TAG = "tag";
     myDbHelper myhelper;
 
-    PlannerListObjekt plannerListObjekt;
-    ArrayList<PlannerListObjekt> plannerListObjektArrayList = new ArrayList<PlannerListObjekt>();
+    PlannerObjekt plannerListObjekt;
+    ArrayList<PlannerObjekt> plannerListObjektArrayList = new ArrayList<PlannerObjekt>();
 
     public myDbAdapter(Context context) {
         myhelper = new myDbHelper(context);
@@ -99,7 +94,7 @@ public class myDbAdapter {
      * @param mainActivity
      * @return
      */
-    public ArrayList<PlannerListObjekt> getDataToButton(MainActivity mainActivity) {
+    public ArrayList<PlannerObjekt> getDataToButton(MainActivity mainActivity) {
         SQLiteDatabase db = myhelper.getWritableDatabase();
 
         String[] columns = {myDbHelper.PLANNERID, myDbHelper.NAME, myDbHelper.DATE, myDbHelper.TIME,
@@ -116,11 +111,11 @@ public class myDbAdapter {
             String dateTimeMillisek = cursor.getString(cursor.getColumnIndex(myDbHelper.DATETIMEMILLISEK));
             String alarmTime = cursor.getString(cursor.getColumnIndex(myDbHelper.ALARMTIME));
 
-            plannerListObjekt = new PlannerListObjekt(cid, name, date, time, dateTimeMillisek, alarmTime);
+            plannerListObjekt = new PlannerObjekt(cid, name, date, time, dateTimeMillisek, alarmTime);
             plannerListObjektArrayList.add(plannerListObjekt);
 
-            Collections.sort(plannerListObjektArrayList, new Comparator<PlannerListObjekt>() {
-                public int compare(PlannerListObjekt o1, PlannerListObjekt o2) {
+            Collections.sort(plannerListObjektArrayList, new Comparator<PlannerObjekt>() {
+                public int compare(PlannerObjekt o1, PlannerObjekt o2) {
                     Double a = Double.valueOf(o1.getDateTimeMillisek());
                     Double b = Double.valueOf(o2.getDateTimeMillisek());
 
@@ -138,7 +133,7 @@ public class myDbAdapter {
         db.delete(myDbHelper.TABLE_NAME ,myDbHelper.PLANNERID +" = ?",whereArgs);
     }
 
-    public PlannerListObjekt getObjektById(String id) {
+    public PlannerObjekt getObjektById(String id) {
         Log.d(TAG, "id: " + id);
         SQLiteDatabase db = myhelper.getWritableDatabase();
 
@@ -149,7 +144,7 @@ public class myDbAdapter {
         if (cursor != null)
             cursor.moveToFirst();
 
-        PlannerListObjekt plannerListObjekt = new PlannerListObjekt(Integer.valueOf(cursor.getString(0)),
+        PlannerObjekt plannerListObjekt = new PlannerObjekt(Integer.valueOf(cursor.getString(0)),
                 cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
         return plannerListObjekt;
     }

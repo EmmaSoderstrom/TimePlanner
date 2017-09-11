@@ -7,7 +7,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,10 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,7 +32,7 @@ public class TimePlannerActivity extends AppCompatActivity {
 
     myDbAdapter myDatabasHelper;
     myDbAdapterSubjects myDatabasHelperSubjects;
-    PlannerListObjekt plannerListObjekt;
+    PlannerObjekt plannerListObjekt;
     MillisekFormatChanger millisekFormatChanger;
 
     private ItemTouchHelper mItemTouchHelper;
@@ -65,7 +62,7 @@ public class TimePlannerActivity extends AppCompatActivity {
         myDatabasHelperSubjects = new myDbAdapterSubjects(this);
         plannerListObjekt = myDatabasHelper.getObjektById(message);
 
-        millisekFormatChanger = new MillisekFormatChanger(plannerListObjekt.getDateTimeMillisek());
+        millisekFormatChanger = new MillisekFormatChanger();
         setUpPage();
         updateArrayListToRecycleview();
 
@@ -176,8 +173,11 @@ public class TimePlannerActivity extends AppCompatActivity {
         //subtitle med datum och ev. tid
         TextView objectName = (TextView)findViewById(R.id.object_name);
         TextView objectEndtime = (TextView)findViewById(R.id.object_endtime);
+        TextView objectEnddate = (TextView)findViewById(R.id.object_enddate);
+
         objectName.setText(plannerListObjekt.getName());
-        objectEndtime.setText(millisekFormatChanger.getTimeString());
+        objectEndtime.setText(millisekFormatChanger.getTimeString(plannerListObjekt.getDateTimeMillisek()));
+        objectEnddate.setText(millisekFormatChanger.getDateString(plannerListObjekt.getDateTimeMillisek()));
     }
 
     public void viewdata(){
