@@ -4,12 +4,13 @@
     <string name="dialog_add_planner_title">Lägg till en ny tidsplannerare</string>
     <string name="dialog_confirm_delete_title_part1">Vill du ta bort</string>
     <string name="dialog_confirm_delete_title_part2">\?</string>
+    <string name="dialog_confirm_delete_subtext_part1">Du kommer att fölora allt innerhåll i</string>
+    <string name="dialog_confirm_delete_subtext_part2">. Är du säker?</string>
 
     <string name="dialog_add_planner_layout_subtext">Skapa en ny tidsplannerare</string>
     <string name="dialog_add_planner_layout_name">Namn</string>
     <string name="dialog_add_planner_layout_tid">Tid</string>
     <string name="dialog_add_planner_picker_time">Klockslag</string>
-
 
     <string name="dialog_add_subject_title">Lägg till en ny syssla</string>
     <string name="dialog_add_subject_subtext">Välj sysslans namn och varaktighet</string>

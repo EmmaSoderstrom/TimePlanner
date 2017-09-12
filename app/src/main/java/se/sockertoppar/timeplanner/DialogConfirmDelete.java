@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 
 /**
@@ -28,16 +29,20 @@ public class DialogConfirmDelete {
         mainActivity = (MainActivity) context;
 
         AlertDialog.Builder builderConfirm = new AlertDialog.Builder(context);
-        //builder1.setMessage(R.string.dialog_add_planner_message);
 
         String sPart1 = mainActivity.getResources().getString(R.string.dialog_confirm_delete_title_part1);
         String sPart2 = mainActivity.getResources().getString(R.string.dialog_confirm_delete_title_part2);
-        builderConfirm.setTitle(sPart1 + " " + name + " " + sPart2);
+        builderConfirm.setTitle(sPart1 + " " + name + sPart2);
+        String subPart1 = mainActivity.getResources().getString(R.string.dialog_confirm_delete_subtext_part1);
+        String subPart2 = mainActivity.getResources().getString(R.string.dialog_confirm_delete_subtext_part2);
+//        builderConfirm.setMessage(subPart1 + " " + name + " " + subPart2);
         //builderConfirm.setCancelable(false);
 
         diaView = View.inflate(context, R.layout.dialog_confirm_delete, null);
         builderConfirm.setView(diaView);
 
+        TextView contentText = (TextView) diaView.findViewById(R.id.content_text);
+        contentText.setText(subPart1 + " " + name + subPart2);
 
         /**
          * Knappar på dialog

@@ -40,7 +40,6 @@
             android:layout_marginTop="40dp"
             android:layout_marginBottom="-20dp"/>
 
-
         <TimePicker
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,51 +47,12 @@
             android:timePickerMode="spinner"></TimePicker>
     </LinearLayout>
 
+
     <DatePicker
         android:visibility="gone"
         android:id="@+id/calendarView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center" />
-
-
-
-
-
-
-
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="18dp"-->
-        <!--android:layout_marginBottom="4dp"-->
-        <!--android:id="@+id/textDate"-->
-        <!--android:text="&#45;&#45;/&#45;&#45;/&#45;&#45;&#45;&#45;"-->
-        <!--android:layout_gravity="center_horizontal"-->
-        <!--android:textSize="24sp"-->
-        <!--android:onClick="onClickTextDate"/>-->
-
-
-
-    <!--<LinearLayout-->
-        <!--android:visibility="gone"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/LinerCalendarView"-->
-        <!--android:orientation="vertical">-->
-
-        <!--&lt;!&ndash;<CalendarView&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:id="@+id/calendarView"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_gravity="center"></CalendarView>&ndash;&gt;-->
-    <!--</LinearLayout>-->
-
-
-    <!--<TimePicker-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/timePicker"-->
-        <!--android:timePickerMode="spinner"></TimePicker>-->
+        android:layout_gravity="center"/>
 
 </LinearLayout>
