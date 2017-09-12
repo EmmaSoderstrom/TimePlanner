@@ -214,6 +214,13 @@ public class MainActivity extends AppCompatActivity {
                     //färg aktivt objekt
                     row.setBackgroundColor (ContextCompat.getColor(context, R.color.aktivSubject));
                     objectName.setTextColor(ContextCompat.getColor(context, R.color.aktivSubjectName));
+
+                    //kollar om larmet går igång och gör knapp synlig
+                    if(millisekFormatChanger.getTimeString(toDayMillisek)
+                            .equals(millisekFormatChanger.getTimeString(Long.valueOf(rowObject.getAlarmTime())))){
+                        Button turnOfAlarmButtom = (Button)findViewById(R.id.turn_of_alarm);
+                        turnOfAlarmButtom.setVisibility(View.VISIBLE);
+                    }
                 }else{
                     //färg ej aktivt objeckt
                     row.setBackgroundColor (0);

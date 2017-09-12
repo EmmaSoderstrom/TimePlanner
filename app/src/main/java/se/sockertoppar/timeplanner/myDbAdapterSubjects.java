@@ -124,7 +124,7 @@ public class myDbAdapterSubjects {
         db.delete(myDbHelper.TABLE_NAME , myDbHelper.SUBJECTSID +" = ?",whereArgs);
     }
 
-    public PlannerObjekt getObjektById(String id) {
+    public Subjects getSubjectById(String id) {
         SQLiteDatabase db = myhelper.getWritableDatabase();
 
         String[] columns = {myDbHelper.SUBJECTSID, myDbHelper.POINTINGID, myDbHelper.NAME, myDbHelper.TIME, myDbHelper.POSITION};
@@ -133,9 +133,9 @@ public class myDbAdapterSubjects {
         if (cursor != null)
             cursor.moveToFirst();
 
-        PlannerObjekt plannerListObjekt = new PlannerObjekt(Integer.valueOf(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5));
-        return plannerListObjekt;
+        Subjects subjects = new Subjects(Integer.valueOf(cursor.getString(0)),
+                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+        return subjects;
 
     }
 

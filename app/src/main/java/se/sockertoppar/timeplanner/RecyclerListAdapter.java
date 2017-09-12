@@ -81,6 +81,11 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         mItems.clear();
     }
 
+    public void upDateItemList(){
+        clearItemList();
+        mItems.addAll(myDatabasHelperSubjects.getDataToSubjectsList(timePlannerActivity, String.valueOf(plannerListObjekt.getId())));
+    }
+
     @Override
     public void onItemDismiss(int position) {
         Subjects removedSubject = mItems.get(position);
@@ -95,11 +100,25 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
+        Log.d(TAG, "onItemMove: " + fromPosition + " to " + toPosition);
         Subjects prev = mItems.remove(fromPosition);
         mItems.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
         notifyItemMoved(fromPosition, toPosition);
         moveFromLastPos = fromPosition;
         moveToLastPos = toPosition;
+
+        //ändrar positioner på sysslorna som flyttas i databasen
+        if(fromPosition < toPosition) {
+            myDatabasHelperSubjects.updatePos(String.valueOf(mItems.get(fromPosition).getId()), String.valueOf((toPosition + 1)));
+            myDatabasHelperSubjects.updatePos(String.valueOf(mItems.get(toPosition).getId()), String.valueOf((fromPosition + 1)));
+
+            upDateItemList();
+        }else{
+            myDatabasHelperSubjects.updatePos(String.valueOf(mItems.get(fromPosition).getId()), String.valueOf((fromPosition + 1)));
+            myDatabasHelperSubjects.updatePos(String.valueOf(mItems.get(toPosition).getId()), String.valueOf((toPosition + 1)));
+
+            upDateItemList();
+        }
     }
 
     public void updateList(List<Subjects> data) {
