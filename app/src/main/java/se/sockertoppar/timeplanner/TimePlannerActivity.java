@@ -70,7 +70,8 @@ public class TimePlannerActivity extends AppCompatActivity {
 
         setUpPage();
         updateArrayListToRecycleview();
-        
+        seUpRecycleview();
+
         myIntent = new Intent(getBaseContext(), AlarmReceiver.class);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
@@ -123,15 +124,18 @@ public class TimePlannerActivity extends AppCompatActivity {
     }
 
     public void seUpRecycleview(){
-        adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects, this, plannerListObjekt);
+        if(adapter == null) {
+            adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects, this, plannerListObjekt, recycleView);
+            //recyclerView.setHasFixedSize(true);
+            recycleView.setAdapter(adapter);
+            recycleView.setLayoutManager(new LinearLayoutManager(this));
 
-        //recyclerView.setHasFixedSize(true);
-        recycleView.setAdapter(adapter);
-        recycleView.setLayoutManager(new LinearLayoutManager(this));
-
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(recycleView);
+            ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+            mItemTouchHelper = new ItemTouchHelper(callback);
+            mItemTouchHelper.attachToRecyclerView(recycleView);
+        }else{
+            adapter.updateList(subjectsArrayList);
+        }
 
         checkIfSubjectActiv();
     }
@@ -142,13 +146,12 @@ public class TimePlannerActivity extends AppCompatActivity {
     //typ get metoder tid att göras klart!?!
     public void setMinutsToDelayTimerCheckIfSubjectActiv(){
         Calendar cal = Calendar.getInstance();
-        int sekund = cal.getTime().getSeconds();
-        int millisekToDelay =  10;
+        int millisekToDelay =  1;
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                setMinutsTimer();
+                checkIfSubjectActiv();
             }
         }, millisekToDelay);
     }
@@ -277,7 +280,8 @@ public class TimePlannerActivity extends AppCompatActivity {
     public void addSubjektToDatabas(String name, String time){
         //position i listan ska vara en 1 mer än befintliga sysslor i listan
         long id = myDatabasHelperSubjects.insertData(thisObjektsId, name, time, String.valueOf(subjectsArrayList.size() + 1));
-        updateArrayListToRecycleview();
+        //updateArrayListToRecycleview();
+        adapter.updateItemList();
         setMinutsToDelayTimerCheckIfSubjectActiv();
         changeAlarmTime();
 

@@ -83,7 +83,6 @@ public class DialogAddSubject {
                 EditText editTextSubjectName = (EditText)diaView.findViewById(R.id.editTextSubjectName);
                 int textLength = editTextSubjectName.getText().length();
                 int subjectTimeH = (int)timePicker.getCurrentHour();
-                Log.d(TAG, "subjectTimeH: " + subjectTimeH);
 
                 int subjectTimeM = (int)timePicker.getCurrentMinute();
 
@@ -92,8 +91,6 @@ public class DialogAddSubject {
 //                    long subjectTimeTotal= TimeUnit.HOURS.toMillis(subjectTimeH) + TimeUnit.MINUTES.toMillis(subjectTimeM);
                     long subjectTimeTotal = (subjectTimeH * 60 * 60 * 1000) + (subjectTimeM * 60 * 1000);
                     MillisekFormatChanger millisek = new MillisekFormatChanger();
-                    Log.d(TAG, "onClick: " + subjectTimeTotal);
-                    Log.d(TAG, "onClick: " + millisek.getTimeStringMH(subjectTimeTotal));
 
                     timePlannerActivity.addSubjektToDatabas(subjectName, String.valueOf(subjectTimeTotal));
                     timePlannerActivity.updateArrayListToRecycleview();

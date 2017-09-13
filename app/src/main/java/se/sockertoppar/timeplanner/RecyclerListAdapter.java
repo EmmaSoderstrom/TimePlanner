@@ -1,11 +1,13 @@
 package se.sockertoppar.timeplanner;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,13 +29,16 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
     public static List<Subjects> mItems = new ArrayList<>();
     static myDbAdapterSubjects myDatabasHelperSubjects;
     DialogConfirmDeleteSubject dialogConfirmDeleteSubject;
-    TimePlannerActivity timePlannerActivity;
+    static TimePlannerActivity timePlannerActivity;
     PlannerObjekt plannerListObjekt;
     MillisekFormatChanger millisekFormatChanger;
+    static RecyclerView recycleView;
+
+    static RecyclerListAdapter recyclerListAdapter;
 
 
     public RecyclerListAdapter(ArrayList<Subjects> arrayString, myDbAdapterSubjects myDatabasHelperSubjects,
-                               TimePlannerActivity timePlannerActivity, PlannerObjekt plannerListObjekt) {
+                               TimePlannerActivity timePlannerActivity, PlannerObjekt plannerListObjekt, RecyclerView recycleView) {
         //Tar bort alla sysslor i listan
         clearItemList();
         //Lägget till alla sysslor i listan från arrayList med sysslor från databasen
@@ -43,6 +48,9 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         dialogConfirmDeleteSubject = new DialogConfirmDeleteSubject();
         this.timePlannerActivity = timePlannerActivity;
         this.plannerListObjekt = plannerListObjekt;
+        this.recycleView = recycleView;
+
+        recyclerListAdapter = this;
 
         millisekFormatChanger = new MillisekFormatChanger();
     }
@@ -81,7 +89,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         mItems.clear();
     }
 
-    public void upDateItemList(){
+    public void updateItemList(){
         clearItemList();
         mItems.addAll(myDatabasHelperSubjects.getDataToSubjectsList(timePlannerActivity, String.valueOf(plannerListObjekt.getId())));
     }
@@ -111,18 +119,17 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         if(fromPosition < toPosition) {
             myDatabasHelperSubjects.updatePos(String.valueOf(mItems.get(fromPosition).getId()), String.valueOf((toPosition + 1)));
             myDatabasHelperSubjects.updatePos(String.valueOf(mItems.get(toPosition).getId()), String.valueOf((fromPosition + 1)));
-
-            upDateItemList();
         }else{
             myDatabasHelperSubjects.updatePos(String.valueOf(mItems.get(fromPosition).getId()), String.valueOf((fromPosition + 1)));
             myDatabasHelperSubjects.updatePos(String.valueOf(mItems.get(toPosition).getId()), String.valueOf((toPosition + 1)));
-
-            upDateItemList();
         }
+
+        updateItemList();
     }
 
     public void updateList(List<Subjects> data) {
         notifyDataSetChanged();
+        timePlannerActivity.setMinutsToDelayTimerCheckIfSubjectActiv();
     }
 
     @Override
@@ -142,12 +149,34 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
         @Override
         public void onItemSelected() {
+
+            // TODO: 2017-09-13
+            //Det var en nöd lösning då de gröna färgen på den markrade sysslan blikar
+            // å fladrar konstigt när man flyttat klart syssor
+            int childCount = recycleView.getChildCount();
+            for (int i = 0; i < childCount; i++) {
+                View child = recycleView.getChildAt(i);
+                TextView subjectName = (TextView) child.findViewById(R.id.subject_name);
+
+                    child.setBackgroundColor(0);
+                    subjectName.setTextColor(ContextCompat.getColor(timePlannerActivity, R.color.textListName));
+
+            }
+
             itemView.setBackgroundResource(R.color.removeSubject);
+            TextView nameText = (TextView)itemView.findViewById(R.id.subject_name);
+            nameText.setTextColor(ContextCompat.getColor(timePlannerActivity, (R.color.textListName)));
         }
 
         @Override
         public void onItemClear() {
             itemView.setBackgroundColor(0);
+            try {
+                recyclerListAdapter.updateList(mItems);
+            }catch (Exception e){
+                Log.d("tag", "onItemClear: Exception ERROR " + e);
+            }
+
         }
     }
 }
