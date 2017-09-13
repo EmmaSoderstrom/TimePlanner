@@ -59,18 +59,18 @@ public class TimePlannerActivity extends AppCompatActivity {
         String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         thisObjektsId = message;
 
+        timplannerActivity = this;
         myDatabasHelper = new myDbAdapter(this);
         myDatabasHelperSubjects = new myDbAdapterSubjects(this);
+        millisekFormatChanger = new MillisekFormatChanger();
+
         plannerListObjekt = myDatabasHelper.getObjektById(message);
 
         recycleView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        millisekFormatChanger = new MillisekFormatChanger();
         setUpPage();
         updateArrayListToRecycleview();
-
-
-        timplannerActivity = this;
+        
         myIntent = new Intent(getBaseContext(), AlarmReceiver.class);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
@@ -78,6 +78,29 @@ public class TimePlannerActivity extends AppCompatActivity {
         setMinutsToDelayTimer();
 
         stopAlarm();
+    }
+
+    public void setUpPage(){
+        setTitle(plannerListObjekt.getName());
+        // TODO: 2017-08-24
+        //subtitle med datum och ev. tid
+        TextView objectName = (TextView)findViewById(R.id.object_name);
+        TextView objectEndtime = (TextView)findViewById(R.id.object_endtime);
+        TextView objectEnddate = (TextView)findViewById(R.id.object_enddate);
+
+        objectName.setText(plannerListObjekt.getName());
+        objectEndtime.setText(millisekFormatChanger.getTimeString(plannerListObjekt.getDateTimeMillisek()));
+        objectEnddate.setText(millisekFormatChanger.getDateString(plannerListObjekt.getDateTimeMillisek()));
+    }
+
+    public void upDatePage(String id){
+        plannerListObjekt = myDatabasHelper.getObjektById(id);
+
+        setUpPage();
+        updateArrayListToRecycleview();
+
+        setMinutsToDelayTimerCheckIfSubjectActiv();
+        setMinutsToDelayTimer();
     }
 
 
@@ -218,17 +241,11 @@ public class TimePlannerActivity extends AppCompatActivity {
         subjectsArrayList.clear();
     }
 
-    public void setUpPage(){
-        setTitle(plannerListObjekt.getName());
-        // TODO: 2017-08-24
-        //subtitle med datum och ev. tid
-        TextView objectName = (TextView)findViewById(R.id.object_name);
-        TextView objectEndtime = (TextView)findViewById(R.id.object_endtime);
-        TextView objectEnddate = (TextView)findViewById(R.id.object_enddate);
-
-        objectName.setText(plannerListObjekt.getName());
-        objectEndtime.setText(millisekFormatChanger.getTimeString(plannerListObjekt.getDateTimeMillisek()));
-        objectEnddate.setText(millisekFormatChanger.getDateString(plannerListObjekt.getDateTimeMillisek()));
+    public void onCklickChangEndTime(View view){
+        Log.d(TAG, "onCklickChangEndTime: ");
+        DialogChangePlanner  dialogChangePlanner = new DialogChangePlanner();
+        dialogChangePlanner.showDialogChangePlanner(this, this, plannerListObjekt);
+        //myDatabasHelper.updateEndTime(thisObjektsId, );
     }
 
     public void viewdata(){

@@ -1,24 +1,12 @@
 package se.sockertoppar.timeplanner;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-
-import java.text.SimpleDateFormat;
-
-import android.content.Intent;
-import android.content.res.Resources;
-import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.format.Time;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewParent;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -27,22 +15,18 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParseException;
-import java.text.ParsePosition;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
-import java.text.SimpleDateFormat;
 
 /**
  * Created by User on 2017-08-14.
  */
 
-public class DialogAddPlanner {
+public class DialogChangePlanner {
 
     String TAG = "tag";
+    //final PlannerObjekt plannerObjekt;
     View diaView;
     LinearLayout linearLayoutTime;
     EditText editTextPlannerName;
@@ -54,18 +38,22 @@ public class DialogAddPlanner {
     int year;
 
 
-    public DialogAddPlanner(){
+
+    public DialogChangePlanner(){
         super();
     }
 
-    public void showDialogAddPlanner(final Context context, final MainActivity mainActivity) {
+    public void showDialogChangePlanner(final Context context, final TimePlannerActivity timePlannerActivity,
+                                        final PlannerObjekt plannerObjekt) {
 
         AlertDialog.Builder builderAddPlanner = new AlertDialog.Builder(context);
-        builderAddPlanner.setTitle(R.string.dialog_add_planner_title);
+        builderAddPlanner.setTitle(R.string.dialog_change_planner_title);
         //builderAddPlanner.setMessage(R.string.dialog_add_planner_message);
         //builderAddPlanner.setCancelable(false);
 
-        diaView = View.inflate(context, R.layout.dialog_add_planner, null);
+        //this.plannerObjekt = plannerObjekt;
+
+        diaView = View.inflate(context, R.layout.dialog_change_planner, null);
         builderAddPlanner.setView(diaView);
 
         linearLayoutTime = (LinearLayout)diaView.findViewById(R.id.time_layout);
@@ -74,6 +62,10 @@ public class DialogAddPlanner {
 
         datePicker = (DatePicker) diaView.findViewById(R.id.calendarView);
 
+        /**
+         * Sätta edit text till plannerarens namn
+         */
+        editTextPlannerName.setText(plannerObjekt.getName());
 
         /**
          * Datums text
@@ -84,7 +76,7 @@ public class DialogAddPlanner {
             public void onClick(View v) {
                 Log.d(TAG, "onClick: ");
                 showCalendar();
-                InputMethodManager imm = (InputMethodManager)mainActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager)timePlannerActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             }
         });
@@ -93,22 +85,29 @@ public class DialogAddPlanner {
          * Hämtar dagens datum och sätter datumstexten till datumet
          */
         Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(Long.valueOf(plannerObjekt.dateTimeMillisek));
         day = cal.get(Calendar.DATE);
         month = cal.get(Calendar.MONTH) + 1;
         year = cal.get(Calendar.YEAR);
 
-
         final String date = day + "/" + month + "/" + year;
         textDate.setText(date);
 
+        //Datum på datePicker
+        datePicker.init(year, month - 1, day, null);
+
         /**
-         * Val av tid
+         * Sätter tid
          */
         final TimePicker timePicker = (TimePicker) diaView.findViewById(R.id.timePicker);
         // TODO: 2017-08-14
         //KOlla vilken inställning tellefonen her och set rätt format på am/pm
         timePicker.setIs24HourView(true); // to set 24 hours mode
         //timePicker.setIs24HourView(false); // to set 12 hours mode
+        MillisekFormatChanger millisekFormatChanger = new MillisekFormatChanger();
+
+        timePicker.setCurrentHour(millisekFormatChanger.getTimeStringIntHour(Long.valueOf(plannerObjekt.getDateTimeMillisek())));
+        timePicker.setCurrentMinute(millisekFormatChanger.getTimeStringIntMin(Long.valueOf(plannerObjekt.getDateTimeMillisek())));
 
 
         /**
@@ -156,11 +155,7 @@ public class DialogAddPlanner {
 
                         String strDate = year + "-" + month + "-" + day + " "
                                 + plannerTimeH + ":" + plannerTimeM + ":" + "00";               // tex. "2017-01-07 10:11:23"
-                        //String test = Locale.getDefault().getLanguage();
-                        //Locale l = new Locale ( "sv" , "SV" );
-                        //Log.d(TAG, "test: " + test);
-                        // TODO: 2017-08-23
-                        //språk
+
                         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
                         Date date = null;
@@ -173,9 +168,11 @@ public class DialogAddPlanner {
                             Log.d(TAG, "error: " + e);
                         }
 
-                        int objektId = mainActivity.saveNewTimePlannerInt(plannerName, strDate, plannerTimeH, plannerTimeM,
-                                String.valueOf(plannerDateTimeMillisek));
+                        myDbAdapter myDatabasHelper = new myDbAdapter(timePlannerActivity);
+                        myDatabasHelper.updateNameTimeDate(String.valueOf(plannerObjekt.getId()),
+                                plannerName, String.valueOf(plannerDateTimeMillisek));
 
+                        timePlannerActivity.upDatePage(String.valueOf(plannerObjekt.getId()));
                         alertAddPlanner.dismiss();
 
                     }else{

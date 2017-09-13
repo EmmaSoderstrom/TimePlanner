@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:textSize="20sp"
-            android:textColor="@color/testSub"/>
+            android:textColor="@color/textListSub"/>
 
         <TextView
             android:id="@+id/subject_endtime"
@@ -37,7 +37,7 @@
             android:textSize="20sp"
             android:gravity="right"
             android:text="--:--"
-            android:textColor="@color/testSub"/>
+            android:textColor="@color/textListSub"/>
 
     </LinearLayout>
 

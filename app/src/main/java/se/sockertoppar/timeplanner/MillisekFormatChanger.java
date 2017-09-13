@@ -38,9 +38,9 @@ public class MillisekFormatChanger {
         /**
          * calender, för att kunna hämta datum och tid var för sig
          */
-        Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(dateLong);
-        this.cal = cal;
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTimeInMillis(dateLong);
+//        this.cal = cal;
 
         int day = cal.get(Calendar.DAY_OF_MONTH);
         int month = cal.get(Calendar.MONTH) + 1;
@@ -135,5 +135,40 @@ public class MillisekFormatChanger {
 
         String timeStr = hourStr + " " + minuteStr;
         return timeStr;
+    }
+
+    public int getTimeStringIntMin(long newMillisek){
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(newMillisek);
+
+        int minute = cal.get(Calendar.MINUTE);
+
+        //räknar manuelt pga cal.get(Calendar.HOUR) inte fungerar på samsung s4
+//        long allMinuts = newMillisek / 60000;
+//        long minute = allMinuts % 60;
+//        long hourInMinuts = allMinuts - minute;
+//        long hour = hourInMinuts / 60;
+
+
+        return minute;
+    }
+
+    public int getTimeStringIntHour(long newMillisek){
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(newMillisek);
+
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+
+        //räknar manuelt pga cal.get(Calendar.HOUR) inte fungerar på samsung s4
+//        long allMinuts = newMillisek / 60000;
+//        long minute = allMinuts % 60;
+//        long hourInMinuts = allMinuts - minute;
+//        long hour = hourInMinuts / 60;
+//
+//        Log.d("tag", "getTimeStringIntHour: " + hour);
+
+        return hour;
     }
 }

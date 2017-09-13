@@ -23,10 +23,9 @@
                 android:tag="recycler_view_tag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#75104744">
+                android:background="@color/subjectContanerBackgrund">
 
             </android.support.v7.widget.RecyclerView>
-
 
 
             <LinearLayout
@@ -37,7 +36,7 @@
                 android:paddingTop="10dp"
                 android:layout_marginBottom="30dp"
                 android:paddingBottom="40dp"
-                android:background="#75104744">
+                android:background="@color/subjectContanerBackgrund">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -49,26 +48,31 @@
 
                 <TextView
                     android:id="@+id/object_name"
-                    android:layout_width="match_parent"
+                    android:onClick="onCklickChangEndTime"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
                     android:textSize="30sp"
-                    android:textColor="#e0e0e0"/>
+                    android:textColor="@color/textNameTimePlannerBottomContainer"/>
 
                 <TextView
                     android:id="@+id/object_endtime"
-                    android:layout_width="match_parent"
+                    android:onClick="onCklickChangEndTime"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="40sp"
                     android:gravity="center_horizontal"
-                    android:textColor="@color/textListName"/>
+                    android:layout_gravity="center"
+                    android:textColor="@color/textsubTimePlannerBottomContainer"/>
 
                 <TextView
                     android:id="@+id/object_enddate"
-                    android:layout_width="match_parent"
+                    android:onClick="onCklickChangEndTime"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:textColor="@color/testSub"/>
+                    android:layout_gravity="center"
+                    android:textColor="@color/textNameTimePlannerBottomContainer"/>
             </LinearLayout>
 
         </RelativeLayout>

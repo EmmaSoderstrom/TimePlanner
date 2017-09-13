@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="4"
-            android:textColor="@color/testSub"/>
+            android:textColor="@color/textListSub"/>
 
         <TextView
             android:id="@+id/object_end"
@@ -35,7 +35,7 @@
             android:layout_weight="1"
             android:gravity="right"
             android:text="--:--"
-            android:textColor="@color/testSub"/>
+            android:textColor="@color/textListSub"/>
 
     </LinearLayout>
 

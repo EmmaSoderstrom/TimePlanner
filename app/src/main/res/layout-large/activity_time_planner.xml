@@ -59,6 +59,7 @@
 
                 <TextView
                     android:id="@+id/object_endtime"
+                    android:onClick="onCklickChangEndTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="48sp"
@@ -71,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
                     android:gravity="center_horizontal"
-                    android:textColor="@color/testSub"/>
+                    android:textColor="@color/textListSub"/>
             </LinearLayout>
 
         </RelativeLayout>

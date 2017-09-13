@@ -157,10 +157,31 @@ public class myDbAdapter {
         return count;
     }
 
+    public void updateNameTimeDate(String plannerId , String newName, String newEndDateTime) {
+        SQLiteDatabase db = myhelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(myDbHelper.NAME,newName);
+        String[] whereArgs = {plannerId};
+        db.update(myDbHelper.TABLE_NAME, contentValues, "_id=?", whereArgs);
+
+        ContentValues contentValues2 = new ContentValues();
+        contentValues2.put(myDbHelper.DATETIMEMILLISEK,newEndDateTime);
+        String[] whereArgs2 = {plannerId};
+        db.update(myDbHelper.TABLE_NAME, contentValues2, "_id=?", whereArgs2);
+    }
+
     public void updateAlarmTime(String plannerId , String newAlarmTime) {
         SQLiteDatabase db = myhelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(myDbHelper.ALARMTIME,newAlarmTime);
+        String[] whereArgs= {plannerId};
+        db.update(myDbHelper.TABLE_NAME, contentValues, "_id=?", whereArgs);
+    }
+
+    public void updateEndTime(String plannerId , String newEndTime) {
+        SQLiteDatabase db = myhelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(myDbHelper.DATETIMEMILLISEK,newEndTime);
         String[] whereArgs= {plannerId};
         db.update(myDbHelper.TABLE_NAME, contentValues, "_id=?", whereArgs);
     }

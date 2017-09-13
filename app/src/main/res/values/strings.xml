@@ -17,6 +17,9 @@
     <string name="dialog_add_subject_picker_hour">Timmar</string>
     <string name="dialog_add_subject_picker_minuts">Minuter</string>
 
+
+    <string name="dialog_change_planner_title">Ändra namn och sluttid</string>
+
     <string name="dialog_no_name_message">Ange ett namn</string>
     <string name="dialog_no_name_and_time_message">Ange ett namn och tid</string>
 
