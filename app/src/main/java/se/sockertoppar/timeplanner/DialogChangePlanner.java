@@ -172,7 +172,7 @@ public class DialogChangePlanner {
                         myDatabasHelper.updateNameTimeDate(String.valueOf(plannerObjekt.getId()),
                                 plannerName, String.valueOf(plannerDateTimeMillisek));
 
-                        timePlannerActivity.upDatePage(String.valueOf(plannerObjekt.getId()));
+                        timePlannerActivity.updatePage(String.valueOf(plannerObjekt.getId()));
                         alertAddPlanner.dismiss();
 
                     }else{

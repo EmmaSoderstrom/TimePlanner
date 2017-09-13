@@ -48,6 +48,7 @@
 
                 <TextView
                     android:id="@+id/object_name"
+                    android:onClick="onCklickChangPlannerObject"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -59,7 +60,7 @@
 
                 <TextView
                     android:id="@+id/object_endtime"
-                    android:onClick="onCklickChangEndTime"
+                    android:onClick="onCklickChangPlannerObject"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="48sp"
@@ -68,6 +69,7 @@
 
                 <TextView
                     android:id="@+id/object_enddate"
+                    android:onClick="onCklickChangPlannerObject"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"

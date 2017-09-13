@@ -64,6 +64,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onBindViewHolder(final ItemViewHolder holder, int position) {
+        Log.d(TAG, "onBindViewHolder: ");
         TextView subjectName = (TextView)holder.linerView.findViewById(R.id.subject_name);
         TextView subjectTime = (TextView)holder.linerView.findViewById(R.id.subject_time);
         TextView subjectEndtime = (TextView)holder.linerView.findViewById(R.id.subject_endtime);
@@ -83,6 +84,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
         long startTimeOnSubject = endTime - totalTimeToGive - Long.valueOf(mItems.get(position).getTime());
         subjectEndtime.setText(millisekFormatChanger.getTimeString(startTimeOnSubject));
         timePlannerActivity.addStartTimeToSubject(position, startTimeOnSubject);
+        timePlannerActivity.checkIfSubjectActiv();
     }
 
     public void clearItemList(){

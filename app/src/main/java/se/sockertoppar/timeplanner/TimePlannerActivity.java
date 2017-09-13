@@ -49,6 +49,8 @@ public class TimePlannerActivity extends AppCompatActivity {
     RecyclerListAdapter adapter;
     RecyclerView recycleView;
 
+    Timer timer;
+    Handler dalaySynkMminuts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,8 @@ public class TimePlannerActivity extends AppCompatActivity {
         setMinutsToDelayTimer();
 
         stopAlarm();
+
+        setTimerToRecycleviewOk();
     }
 
     public void setUpPage(){
@@ -94,14 +98,14 @@ public class TimePlannerActivity extends AppCompatActivity {
         objectEnddate.setText(millisekFormatChanger.getDateString(plannerListObjekt.getDateTimeMillisek()));
     }
 
-    public void upDatePage(String id){
+    public void updatePage(String id){
         plannerListObjekt = myDatabasHelper.getObjektById(id);
 
         setUpPage();
         updateArrayListToRecycleview();
-
         setMinutsToDelayTimerCheckIfSubjectActiv();
-        setMinutsToDelayTimer();
+        changeAlarmTime();
+        //setMinutsToDelayTimer();
     }
 
 
@@ -124,6 +128,7 @@ public class TimePlannerActivity extends AppCompatActivity {
     }
 
     public void seUpRecycleview(){
+        Log.d(TAG, "seUpRecycleview: ");
         if(adapter == null) {
             adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects, this, plannerListObjekt, recycleView);
             //recyclerView.setHasFixedSize(true);
@@ -145,12 +150,14 @@ public class TimePlannerActivity extends AppCompatActivity {
     //gör jag en fördröjning med 10 millisekunder och den då blir rätt längd på recycleview
     //typ get metoder tid att göras klart!?!
     public void setMinutsToDelayTimerCheckIfSubjectActiv(){
+        Log.d(TAG, "setMinutsToDelayTimerCheckIfSubjectActiv: ");
         Calendar cal = Calendar.getInstance();
-        int millisekToDelay =  1;
+        int millisekToDelay =  20;
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
+                Log.d(TAG, "run: kör första check If aktiv");
                 checkIfSubjectActiv();
             }
         }, millisekToDelay);
@@ -161,16 +168,17 @@ public class TimePlannerActivity extends AppCompatActivity {
         int sekund = cal.getTime().getSeconds();
         int millisekToDelay = (60 - sekund) * 1000;
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        dalaySynkMminuts = new Handler();
+        dalaySynkMminuts.postDelayed(new Runnable() {
             public void run() {
                 setMinutsTimer();
             }
         }, millisekToDelay);
+
     }
     
     public void setMinutsTimer(){
-        Timer timer = new Timer();
+        timer = new Timer();
         
         timer.schedule(new TimerTask() {
             @Override
@@ -189,14 +197,42 @@ public class TimePlannerActivity extends AppCompatActivity {
         }, 0, 1000 * 1 * 60); //1000 * 1 * 60 = 60sek
     }
 
+    //körs varje 10 millisek till recyckeVieew ger rätt antal på getChildrenCount(); när det är rätt cancel.
+    public void setTimerToRecycleviewOk(){
+
+        if(!checkIfRecycleViewOk()) {
+            final Timer timer2 = new Timer();
+
+            timer2.schedule(new TimerTask() {
+                @Override
+                public void run() {
+
+                    // When you need to modify a UI element, do so on the UI thread.
+                    // 'getActivity()' is required as this is being ran from a Fragment.
+                    timplannerActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // This code will always run on the UI thread, therefore is safe to modify UI elements.checkIfSubjectActiv();
+                            if(checkIfRecycleViewOk()) {
+                                timer2.cancel();
+                            }
+                        }
+                    });
+                }
+            }, 0, 10);
+        }
+    }
+
     public void checkIfSubjectActiv(){
+
         Calendar cal = Calendar.getInstance();
         long toDayMillisek = cal.getTimeInMillis();
 
         for (int i = 0; i < subjectsArrayList.size(); i++) {
+
             Subjects subject = subjectsArrayList.get(i);
 
-            if(subject.getStartTimeMillisek() != null) {
+            if (subject.getStartTimeMillisek() != null) {
 
                 //om någon syssla är aktiv
                 if (toDayMillisek > Long.valueOf(subject.getStartTimeMillisek())
@@ -206,20 +242,31 @@ public class TimePlannerActivity extends AppCompatActivity {
                     changeActivBackgrund(i);
 
                     //kollar om larmet går igång och gör knapp synlig
-                    if(millisekFormatChanger.getTimeString(toDayMillisek)
-                            .equals(millisekFormatChanger.getTimeString(Long.valueOf(plannerListObjekt.getAlarmTime())))){
-                        Button turnOfAlarmButtom = (Button)findViewById(R.id.turn_of_alarm);
+                    if (millisekFormatChanger.getTimeString(toDayMillisek)
+                            .equals(millisekFormatChanger.getTimeString(Long.valueOf(plannerListObjekt.getAlarmTime())))) {
+                        Button turnOfAlarmButtom = (Button) findViewById(R.id.turn_of_alarm);
                         turnOfAlarmButtom.setVisibility(View.VISIBLE);
                     }
 
                     //break då endast ett objekt kan vara aktivt
                     break;
 
-                }else {
+                } else {
                     changeActivBackgrund(-1);
                 }
             }
         }
+
+    }
+
+    public boolean checkIfRecycleViewOk(){
+        boolean ifRecycleviewIsOk = true;
+        if(recycleView.getChildCount() == 0 && subjectsArrayList.size() > 0){
+            ifRecycleviewIsOk = false;
+        }else{
+            ifRecycleviewIsOk = true;
+        }
+        return ifRecycleviewIsOk;
     }
 
     public void changeActivBackgrund(int indexPosition){
@@ -244,13 +291,6 @@ public class TimePlannerActivity extends AppCompatActivity {
         subjectsArrayList.clear();
     }
 
-    public void onCklickChangEndTime(View view){
-        Log.d(TAG, "onCklickChangEndTime: ");
-        DialogChangePlanner  dialogChangePlanner = new DialogChangePlanner();
-        dialogChangePlanner.showDialogChangePlanner(this, this, plannerListObjekt);
-        //myDatabasHelper.updateEndTime(thisObjektsId, );
-    }
-
     public void viewdata(){
         String data = myDatabasHelper.getData();
         Message.message(this,data);
@@ -265,6 +305,10 @@ public class TimePlannerActivity extends AppCompatActivity {
         return subjects;
     }
 
+    public void onCklickChangPlannerObject(View view){
+        DialogChangePlanner  dialogChangePlanner = new DialogChangePlanner();
+        dialogChangePlanner.showDialogChangePlanner(this, this, plannerListObjekt);
+    }
 
     /**
      * Lägga till syssla
@@ -362,5 +406,14 @@ public class TimePlannerActivity extends AppCompatActivity {
 //        Log.i(TAG, "On Start .....");
 //
 //    }
+    @Override
+    protected void onStop() {
+        Log.d(TAG, "onStop: --------------zz-z-zzzz-z-z-z-z-");
+        super.onStop();
+        if(timer != null) {
+            timer.cancel();
+
+        }
+    }
 
 }
