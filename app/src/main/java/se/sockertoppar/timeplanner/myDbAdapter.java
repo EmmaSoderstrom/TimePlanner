@@ -168,11 +168,6 @@ public class myDbAdapter {
         contentValues2.put(myDbHelper.DATETIMEMILLISEK,newEndDateTime);
         String[] whereArgs2 = {plannerId};
         db.update(myDbHelper.TABLE_NAME, contentValues2, "_id=?", whereArgs2);
-
-//        ContentValues contentValues3 = new ContentValues();
-//        contentValues3.put(myDbHelper.ALARMTIME,newEndDateTime);
-//        String[] whereArgs3 = {plannerId};
-//        db.update(myDbHelper.TABLE_NAME, contentValues3, "_id=?", whereArgs3);
     }
 
     public void updateAlarmTime(String plannerId , String newAlarmTime) {

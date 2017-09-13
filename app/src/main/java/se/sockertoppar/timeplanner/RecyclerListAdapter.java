@@ -110,7 +110,7 @@ public class RecyclerListAdapter extends RecyclerView.Adapter<RecyclerListAdapte
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        Log.d(TAG, "onItemMove: " + fromPosition + " to " + toPosition);
+        //Log.d(TAG, "onItemMove: " + fromPosition + " to " + toPosition);
         Subjects prev = mItems.remove(fromPosition);
         mItems.add(toPosition > fromPosition ? toPosition - 1 : toPosition, prev);
         notifyItemMoved(fromPosition, toPosition);

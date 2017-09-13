@@ -128,7 +128,6 @@ public class TimePlannerActivity extends AppCompatActivity {
     }
 
     public void seUpRecycleview(){
-        Log.d(TAG, "seUpRecycleview: ");
         if(adapter == null) {
             adapter = new RecyclerListAdapter(subjectsArrayList, myDatabasHelperSubjects, this, plannerListObjekt, recycleView);
             //recyclerView.setHasFixedSize(true);
@@ -150,14 +149,12 @@ public class TimePlannerActivity extends AppCompatActivity {
     //gör jag en fördröjning med 10 millisekunder och den då blir rätt längd på recycleview
     //typ get metoder tid att göras klart!?!
     public void setMinutsToDelayTimerCheckIfSubjectActiv(){
-        Log.d(TAG, "setMinutsToDelayTimerCheckIfSubjectActiv: ");
         Calendar cal = Calendar.getInstance();
         int millisekToDelay =  20;
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                Log.d(TAG, "run: kör första check If aktiv");
                 checkIfSubjectActiv();
             }
         }, millisekToDelay);
@@ -174,7 +171,6 @@ public class TimePlannerActivity extends AppCompatActivity {
                 setMinutsTimer();
             }
         }, millisekToDelay);
-
     }
     
     public void setMinutsTimer(){
