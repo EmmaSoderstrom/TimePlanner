@@ -5,7 +5,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Handler;
@@ -28,6 +30,8 @@ public class AlarmtonePlayingService extends Service {
     MillisekFormatChanger millisekFormatCanger;
     String endsInString;
 
+    Uri alert;
+
 
     @Override
     public IBinder onBind(Intent intent){
@@ -38,7 +42,7 @@ public class AlarmtonePlayingService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId){
         final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-
+        Log.d("tag", "onStartCommand: ");
 
 
         Intent intent1 = new Intent(this.getApplicationContext(), MainActivity.class);
@@ -65,7 +69,7 @@ public class AlarmtonePlayingService extends Service {
 
         Notification mNotify  = new Notification.Builder(this)
                 .setContentTitle(title + " " + name + "!")
-                .setContentText(name + " " + subtext + endsInString)
+                .setContentText(name + " " + subtext + " " + endsInString)
                 .setSmallIcon(R.drawable.notiicon)
                 .setContentIntent(pIntent)
                 .setAutoCancel(true)
@@ -86,6 +90,26 @@ public class AlarmtonePlayingService extends Service {
 
         if(!this.isRunning && startId == 1){
             Log.d("tag", " alarm yes");
+
+
+//            alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+//            Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//            Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), notification);
+//
+//
+//            if(alert == null){
+//                // alert is null, using backup
+//                alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+//
+//                // I can't see this ever being null (as always have a default notification)
+//                // but just incase
+//                if(alert == null) {
+//                    // alert backup is null, using 2nd backup
+//                    alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+//                }
+//            }
+//            r.play();
+
 
             Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
             mMediaPlayer = MediaPlayer.create(getApplicationContext(), notification);
