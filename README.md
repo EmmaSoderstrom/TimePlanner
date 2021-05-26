@@ -8,9 +8,14 @@ en att hålla sig till schemat så man i slutändan är i tid samt är klar i ti
 
 
 ![alt text](https://github.com/EmmaSoderstrom/TimePlanner/blob/master/Images/Bild1.png)
+
 ![alt text](https://github.com/EmmaSoderstrom/TimePlanner/blob/master/Images/Bild2.png)
+
 ![alt text](https://github.com/EmmaSoderstrom/TimePlanner/blob/master/Images/Bild3.png)
+
 ![alt text](https://github.com/EmmaSoderstrom/TimePlanner/blob/master/Images/Bild4.png)
+
 ![alt text](https://github.com/EmmaSoderstrom/TimePlanner/blob/master/Images/Bild5.png)
+
 ![alt text](https://github.com/EmmaSoderstrom/TimePlanner/blob/master/Images/Bild7.png)
 
