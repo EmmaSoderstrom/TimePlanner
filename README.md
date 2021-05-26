@@ -11,6 +11,5 @@ en att hålla sig till schemat så man i slutändan är i tid samt är klar i ti
 <img src="./Images/Bild1.jpg">
 <img src="./Images/Bild3.jpg">
 <img src="./Images/Bild4.jpg">
-<img src="./Images/Bild5.jpg">
-<img src="./Images/Bild7.jpg">
+
 
