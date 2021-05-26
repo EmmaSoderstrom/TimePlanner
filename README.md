@@ -7,9 +7,9 @@ För en som har dålig uppfattning om tiden, om man är tex en tidsoptimist, hj�
 en att hålla sig till schemat så man i slutändan är i tid samt är klar i tid.
 
 
-![alt text](https://github.com/EmmaSoderstrom/TimePlanner/blob/master/Images/Bild1.png)
+![alt text](Images/Bild1.png)
 
-![alt text](https://github.com/EmmaSoderstrom/TimePlanner/blob/master/Images/Bild2.png)
+![alt text](Images/Bild2.png)
 
 ![alt text](https://github.com/EmmaSoderstrom/TimePlanner/blob/master/Images/Bild3.png)
 
