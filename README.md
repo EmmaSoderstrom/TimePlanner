@@ -9,7 +9,7 @@ en att hålla sig till schemat så man i slutändan är i tid samt är klar i ti
 
 ![images 1](Images/Bild1.png)
 
-![images 2](Images/Bild2.png)
+<img src="./Images/Bild2.jpg">
 
 ![images 3](https://github.com/EmmaSoderstrom/TimePlanner/blob/master/Images/Bild3.png)
 
