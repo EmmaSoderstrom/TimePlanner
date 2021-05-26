@@ -8,6 +8,9 @@ en att hålla sig till schemat så man i slutändan är i tid samt är klar i ti
 
 
 
-<img src="./Images/Bild1.jpg">
+
+![Images 1](/image/Bild1.jpg?raw=true)
+
+![Images 1](/image/Bild2.jpg?raw=true)
 
 
