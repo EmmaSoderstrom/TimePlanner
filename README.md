@@ -9,6 +9,6 @@ en att hålla sig till schemat så man i slutändan är i tid samt är klar i ti
 
 
 
-![Images 1](/Images/Bild1.jpg)
+![Images 1](https://github.com/EmmaSoderstrom/TimePlanner/blob/master/Images/Bild1.png)
 
 
