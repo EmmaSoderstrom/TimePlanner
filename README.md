@@ -10,7 +10,5 @@ en att hålla sig till schemat så man i slutändan är i tid samt är klar i ti
 
 
 ![Images 1](/Images/Bild1.jpg?raw=true)
-![Images 2](/Images/Bild2.jpg?raw=true)
-![Images 3](/Images/Bild3.jpg?raw=true)
 
 
