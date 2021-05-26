@@ -7,3 +7,4 @@ För en som har dålig uppfattning om tiden, om man är tex en tidsoptimist, hj�
 en att hålla sig till schemat så man i slutändan är i tid samt är klar i tid.
 
 
+![alt text]()
